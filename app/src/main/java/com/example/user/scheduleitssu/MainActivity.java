@@ -6,6 +6,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -62,10 +63,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.drawable.search_icon:
+            case R.id.search_icon:
                 Toast.makeText(getApplicationContext(), "검색 버튼이 클릭됨", Toast.LENGTH_LONG).show();
                 return true;
-            case R.drawable.settings_icon:
+            case R.id.settings_icon:
                 Toast.makeText(getApplicationContext(), "설정 버튼이 클릭됨", Toast.LENGTH_LONG).show();
                 Intent intent=new Intent(this,SettingsActivity.class);
                 startActivity(intent);
