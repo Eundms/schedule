@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/toolbar_theme"
+        app:titleTextAppearance="?attr/toolbar_title_theme" >
+
+    </androidx.appcompat.widget.Toolbar>
+
+
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabs"
+        android:layout_width="409dp"
+        android:layout_height="wrap_content"
+        app:tabIndicatorColor="@android:color/holo_purple"
+        >
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/scheduletab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="SCHEDULE" />
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/notetab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="NOTE" />
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/chattab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Chatting" />
+    </com.google.android.material.tabs.TabLayout>
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/viewpager"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content" />
+
+</LinearLayout>
