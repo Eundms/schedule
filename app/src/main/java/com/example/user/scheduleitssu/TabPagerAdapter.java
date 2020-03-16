@@ -27,6 +27,9 @@ public class TabPagerAdapter extends FragmentPagerAdapter {
             case 1:
                 TabFragment2 tabFragment2=new TabFragment2();
                 return tabFragment2;
+            case 2:
+                TabFragment3 tabFragment3=new TabFragment3();
+                return tabFragment3;
             default: return null;
         }
 
@@ -34,6 +37,6 @@ public class TabPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return tabcount-1;
+        return tabcount;
     }
 }
