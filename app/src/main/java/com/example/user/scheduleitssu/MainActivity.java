@@ -22,8 +22,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("UNIVERSITY NOTE");
+        toolbar.setTitleMarginStart(170);
         setSupportActionBar(toolbar);
 
         //TabLayout과 ViewPager 초기화
@@ -50,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         //앱의 로고 설정
-        toolbar.setLogo(R.drawable.camera_icon);
+        toolbar.setLogo(R.drawable.notelist_icon);
 
     }
     @Override
