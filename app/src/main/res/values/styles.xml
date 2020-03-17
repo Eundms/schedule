@@ -25,4 +25,11 @@
         <!-- Set title color -->
         <item name="android:textColor">#FFFFFF</item>
     </style>
+
+    <style name="ListTitleTheme" parent="TextAppearance.AppCompat">
+            <item name="android:textColor">#5E05FB</item>
+        <item name="android:textStyle">bold</item>
+            <item name="android:textSize">20sp</item>
+    </style>
+
 </resources>

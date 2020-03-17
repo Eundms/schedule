@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".SubjectActivity">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -17,23 +18,29 @@
 
             <TextView
                 style="@style/ListTitleTheme"
-                android:id="@+id/오늘할일"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="오늘 할 일" />
+                android:layout_gravity="center"
+                android:text="노트" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/today2do"
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 
-            <CalendarView
-                android:id="@+id/calendarView"
-                android:layout_width="match_parent"
+            <TextView
+                style="@style/ListTitleTheme"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="217dp" />
+                android:layout_gravity="center"
+                android:text="프로젝트" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            </androidx.recyclerview.widget.RecyclerView>
+
         </LinearLayout>
     </ScrollView>
-
 
 </LinearLayout>

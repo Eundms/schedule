@@ -35,10 +35,10 @@
             android:text="SCHEDULE" />
 
         <com.google.android.material.tabs.TabItem
-            android:id="@+id/notetab"
+            android:id="@+id/hometab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="NOTE" />
+            android:text="HOME" />
 
         <com.google.android.material.tabs.TabItem
             android:id="@+id/chattab"
