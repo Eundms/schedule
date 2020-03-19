@@ -65,10 +65,10 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.search_icon:
-                Toast.makeText(getApplicationContext(), "검색 버튼이 클릭됨", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "검색 버튼이 클릭됨", Toast.LENGTH_SHORT).show();
                 return true;
             case R.id.settings_icon:
-                Toast.makeText(getApplicationContext(), "설정 버튼이 클릭됨", Toast.LENGTH_LONG).show();
+                //Toast.makeText(getApplicationContext(), "설정 버튼이 클릭됨", Toast.LENGTH_SHORT).show();
                 Intent intent=new Intent(this,SettingsActivity.class);
                 startActivity(intent);
                 return true;

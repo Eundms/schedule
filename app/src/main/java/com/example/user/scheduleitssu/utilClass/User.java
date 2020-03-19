@@ -1,6 +1,9 @@
 package com.example.user.scheduleitssu.utilClass;
 
+import java.util.ArrayList;
+
 public class User {
+    //진짜 개인 정보
     String name;
     String email;
     String major;
@@ -8,7 +11,10 @@ public class User {
     enum grade {
         FRESHMAN, SOPHOMORE, JUNOR, SENIOR;
     }
-    //일정
+    //프로그램 내 정보
+    //1. 내가 참여하는 그룹 정보
+    //2. 내가 만든 노트 리스트
+    //3. 공유 받은 노트 리스트
 
     public User(String name, String email){
         this.name=name;

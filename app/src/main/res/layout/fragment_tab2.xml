@@ -6,6 +6,7 @@
     android:layout_height="match_parent" >
 
     <TextView
+        android:id="@+id/과목"
         android:layout_alignParentTop="true"
         android:layout_centerInParent="true"
         android:layout_width="wrap_content"
@@ -14,9 +15,11 @@
         android:text="과목" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/subjectlist"
+        android:id="@+id/subjectRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent"
+        android:layout_below="@+id/과목"
+        >
 
     </androidx.recyclerview.widget.RecyclerView>
 
