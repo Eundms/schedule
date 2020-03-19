@@ -30,7 +30,10 @@ public class TabFragment1 extends Fragment {
         ArrayList<Today2do>today2doArrayList=new ArrayList<>();
         today2doArrayList.add(new Today2do("1)(default)"));
         today2doArrayList.add(new Today2do("2)(default)"));
-
+        today2doArrayList.add(new Today2do("3)(default)"));
+        today2doArrayList.add(new Today2do("4)(default)"));
+        today2doArrayList.add(new Today2do("5)(default)"));
+        today2doArrayList.add(new Today2do("6)(default)"));
         today2doAdapter=new Today2doAdapter(this.getContext(),today2doArrayList);
         today2doRecyclerView.setAdapter(today2doAdapter);
     return root;

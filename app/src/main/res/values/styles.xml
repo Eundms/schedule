@@ -32,4 +32,9 @@
             <item name="android:textSize">20sp</item>
     </style>
 
+    <style name="SpinnerTitleTheme" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">#5E05FB</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
 </resources>

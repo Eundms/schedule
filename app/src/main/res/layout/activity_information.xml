@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/학과학번입력시작"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:layout_marginTop="40dp"
+        android:text="학교 학과 학번을 입력하고 시작하세요" />
+
+    <LinearLayout
+        android:id="@+id/이름입력layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/학과학번입력시작"
+        android:padding="10dp"
+        android:layout_marginTop="30dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="이름" />
+
+        <EditText
+            android:id="@+id/editName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="5"
+            android:inputType="textPersonName"
+            android:text="(defult)박은정" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/학번입력layout"
+        android:layout_below="@+id/이름입력layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="학번" />
+
+        <EditText
+            android:id="@+id/editStudentId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:maxLength="20"
+            android:ems="5"
+            android:singleLine="true"
+ />
+    </LinearLayout>
+
+    <include
+        android:id="@+id/include_departmentsubject"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        layout="@layout/departmentsubject_part"
+        android:layout_below="@+id/학번입력layout"
+        >
+    </include>
+
+    <Button
+        android:id="@+id/addinformationbtn"
+        android:layout_below="@id/include_departmentsubject"
+        android:layout_marginTop="50dp"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="등록하기" />
+
+    <TextView
+        android:id="@+id/다음에입력"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_weight="1"
+        android:text="다음에 입력할래요"
+        android:clickable="true"/>
+</RelativeLayout>

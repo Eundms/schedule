@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
@@ -19,11 +21,12 @@ public class TabFragment2 extends Fragment {
         addclassbtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                Intent intent = new Intent(getActivity(), AddClassNoteActivity.class);
+                Intent intent = new Intent(getActivity(), AddClassActivity.class);
                 startActivity(intent);
                 Toast.makeText(getContext(), "floating btn clicked!", Toast.LENGTH_LONG).show();
             }
         });
+
 
         return root;
     }

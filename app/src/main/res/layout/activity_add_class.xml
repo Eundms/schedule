@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".AddClassActivity">
+
+
+    <include
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        layout="@layout/departmentsubject_part"
+        />
+
+    <LinearLayout
+        android:id="@+id/그룹개설layout"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_below="@+id/과목선택layout"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="그룹 개설"
+            style="@style/SpinnerTitleTheme"
+            />
+
+        <RadioButton
+            android:id="@+id/makegroupornot"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/버튼layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/addsubjectbackbtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="취소하기" />
+
+        <Button
+            android:id="@+id/addsubjectbtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="등록하기" />
+    </LinearLayout>
+
+</LinearLayout>

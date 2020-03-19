@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <CalendarView
+        android:id="@+id/todocalendar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+
+    <EditText
+        android:id="@+id/addwhichdaytodo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="5"
+        android:inputType="date"
+        android:layout_below="@+id/todocalendar"/>
+
+    <EditText
+        android:id="@+id/addwhattodo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:maxLength="20"
+        android:ems="15"
+        android:singleLine="true"
+        android:hint="할 일"
+        android:layout_toRightOf="@id/addwhichdaytodo"
+        android:layout_alignBottom="@id/addwhichdaytodo"
+        />
+    <Button
+        android:layout_marginTop="30dp"
+        android:layout_below="@id/addwhichdaytodo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/addtodobtn"
+        android:text="일정추가" />
+
+</RelativeLayout>
