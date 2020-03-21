@@ -29,4 +29,5 @@
         android:textSize="20sp"
         android:text="소프트웨어프로젝트(나)반(default)" />
 
+
 </RelativeLayout>

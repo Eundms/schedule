@@ -11,8 +11,7 @@
         android:layout_marginTop="50dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        layout="@layout/selectdepartsubject_part"
-        />
+        layout="@layout/selectdepartsubject_part"></include>
 
     <LinearLayout
         android:id="@+id/그룹개설layout"

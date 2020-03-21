@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 public class AddClassActivity extends AppCompatActivity implements View.OnClickListener{
+
 Button backbtn;
 Button addbtn;
     @Override
@@ -38,5 +39,6 @@ Button addbtn;
                 finish();
                 break;
         }
+
     }
 }

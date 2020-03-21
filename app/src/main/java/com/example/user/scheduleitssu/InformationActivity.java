@@ -10,8 +10,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import org.w3c.dom.Text;
-
 public class InformationActivity extends AppCompatActivity implements View.OnClickListener{
     TextView nexttimeaddinfo;
     Button addinfobtn;
