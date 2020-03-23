@@ -5,14 +5,21 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.text.method.SingleLineTransformationMethod;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserInfo;
 
 public class MainActivity extends AppCompatActivity {
     TabLayout tabLayout;
@@ -22,6 +29,32 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        //유저가 로그인이 안된 상태면 회원가입/로그인 창으로 돌아감
+        if(FirebaseAuth.getInstance().getCurrentUser()==null){
+            startSignUpActivity();
+            Log.d("유저 없음","유저");
+        } else{
+            //회원가입 or 로그인
+            if (user != null) {
+                for (UserInfo profile : user.getProviderData()) {
+                    String name = profile.getDisplayName();
+                }
+            }
+        }
+
+        //로그아웃 버튼 생성
+        Button logout=(Button)(findViewById(R.id.logoutbtn));
+        logout.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+
+                FirebaseAuth.getInstance().signOut();
+                startSignUpActivity();
+                //로그아웃 하면 회원가입 화면으로 돌아감
+            }
+        });
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("UNIVERSITY NOTE");
         toolbar.setTitleMarginStart(170);
@@ -74,6 +107,11 @@ public class MainActivity extends AppCompatActivity {
                 return true;
         }
         return false;
+    }
+
+    private void startSignUpActivity(){
+        Intent intent=new Intent(this, SignupActivity.class);
+        startActivity(intent);
     }
 
 }

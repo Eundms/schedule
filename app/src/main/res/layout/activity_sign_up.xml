@@ -5,10 +5,10 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/logintxt"
+        android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:text="로그인"
+        android:text="회원가입"
         android:textSize="24dp"
         android:textStyle="bold" />
 
@@ -37,19 +37,26 @@
             android:hint="password"
             android:inputType="textPassword" />
 
-
-
-        <Button
-            android:id="@+id/sign_inbtn"
+        <EditText
+            android:id="@+id/passwordcheck"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="로그인" />
+            android:layout_marginBottom="5dp"
+            android:ems="10"
+            android:hint="passwordcheck"
+            android:inputType="textPassword" />
 
         <Button
-            android:id="@+id/gotopasswordresetbtn"
+            android:id="@+id/sign_upbtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="비밀번호 재설정" />
+            android:text="회원가입하기" />
+
+        <Button
+            android:id="@+id/gotologin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="로그인하러가기" />
     </LinearLayout>
 
 </LinearLayout>
