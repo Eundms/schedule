@@ -16,6 +16,7 @@
             <TextView
                 style="@style/ListTitleTheme"
                 android:id="@+id/오늘할일"
+                android:layout_gravity="center"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="오늘 할 일" />
@@ -25,7 +26,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="150dp" />
             <include
-                android:layout_marginTop="50dp"
+                android:layout_marginTop="20dp"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
                 layout="@layout/addtodo_part"                />
