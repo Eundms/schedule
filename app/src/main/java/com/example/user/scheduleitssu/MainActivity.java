@@ -43,17 +43,6 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        //로그아웃 버튼 생성
-        Button logout=(Button)(findViewById(R.id.logoutbtn));
-        logout.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-
-                FirebaseAuth.getInstance().signOut();
-                startSignUpActivity();
-                //로그아웃 하면 회원가입 화면으로 돌아감
-            }
-        });
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("UNIVERSITY NOTE");

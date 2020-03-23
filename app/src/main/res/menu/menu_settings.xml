@@ -21,4 +21,8 @@
         android:title="친구 모아보기"
         android:icon="@drawable/people_icon"
     app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/settings_logout"
+        android:title="로그아웃"
+        app:showAsAction="ifRoom"/>
 </menu>

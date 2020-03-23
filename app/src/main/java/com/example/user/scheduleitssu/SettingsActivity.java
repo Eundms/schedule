@@ -16,6 +16,7 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class SettingsActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
     ImageView backbtn;
@@ -55,9 +56,20 @@ public class SettingsActivity extends AppCompatActivity implements NavigationVie
                 case R.id.settings_friends:
                     Toast.makeText(getApplicationContext(), "settings_friends", Toast.LENGTH_SHORT).show();
                     break;
+                case R.id.settings_logout:
+                    Toast.makeText(getApplicationContext(), "settings_logout", Toast.LENGTH_SHORT).show();
+                    FirebaseAuth.getInstance().signOut();
+                    startSignUpActivity();
+                            //로그아웃 하면 회원가입 화면으로 돌아감
+                    break;
                 default:
                     return false;
         }
         return true;
+    }
+
+    private void startSignUpActivity(){
+        Intent intent=new Intent(this, SignupActivity.class);
+        startActivity(intent);
     }
 }

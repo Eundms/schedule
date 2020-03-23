@@ -17,12 +17,6 @@
         android:theme="?attr/toolbar_theme"
         app:titleTextAppearance="?attr/toolbar_title_theme" >
 
-        <Button
-            android:id="@+id/logoutbtn"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="로그아웃"> </Button>
-
     </androidx.appcompat.widget.Toolbar>
 
 
