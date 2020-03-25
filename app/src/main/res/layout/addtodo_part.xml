@@ -14,8 +14,9 @@
         android:id="@+id/addwhichdaytodo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ems="5"
+        android:ems="10"
         android:inputType="date"
+        android:hint="날짜yyyy/mm/dd"
         android:layout_below="@+id/todocalendar"/>
 
     <EditText

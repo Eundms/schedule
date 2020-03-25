@@ -1,33 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-
-
-    <TextView
-        android:id="@+id/subjectnote_item_lastmodifieddate"
-        android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    >
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_toLeftOf="@id/subjectnote_item_lastmodifiedperson"
-        android:text="마지막 수정:20.02.11(default)"
-        android:textSize="10sp" />
-    <TextView
-        android:id="@+id/subjectnote_item_lastmodifiedperson"
-        android:layout_alignParentRight="true"
-        android:layout_below="@id/subjectnote_item_lastmodifieddate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="10sp"
-        android:text="수정한 사람:박은정(default)" />
-
-    <TextView
-        android:id="@+id/subjectnote_item_subjectname"
-        android:layout_below="@id/subjectnote_item_lastmodifiedperson"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:text="소프트웨어프로젝트(나)반(default)" />
-
-
+   />
 </RelativeLayout>

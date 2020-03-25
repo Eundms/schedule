@@ -8,12 +8,13 @@
     tools:context=".SubjectActivity">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar2"
+        android:id="@+id/subject_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
         android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme" />
+        android:theme="?attr/toolbar_theme"
+        app:titleTextAppearance="?attr/toolbar_title_theme" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -43,6 +44,7 @@
                 android:text="프로젝트" />
 
             <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/project_recyclerview"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 

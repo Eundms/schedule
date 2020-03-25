@@ -3,6 +3,7 @@ package com.example.user.scheduleitssu;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -35,13 +36,11 @@ public class InformationActivity extends AppCompatActivity implements View.OnCli
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.다음에입력:
-                Intent intent=new Intent(context,MainActivity.class);
-                startActivity(intent);
+            finish();
                 break;
             case R.id.addinformationbtn:
-                Intent intent2=new Intent(context,MainActivity.class);
-                //파이어베이스에 추가하는 함수 호출
-                startActivity(intent2);
+                finish();
+            //파이어베이스에 추가하는 함수 호출
                 break;
         }
     }

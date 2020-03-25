@@ -7,13 +7,21 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import com.example.user.scheduleitssu.utilClass.Subject;
+import com.example.user.scheduleitssu.DataClass.Subject;
 
 import java.util.ArrayList;
 
 public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectViewHolder> {
     LayoutInflater inflater;
-    private ArrayList<Subject> SubjectArrayList;
+    private ArrayList<Subject> SubjectArrayList;//여기도 나중에 subject->string으로 바뀌어야함.
+
+    public interface OnItemClickListener {
+        void onItemClick(View v, int pos);
+    }
+    private OnItemClickListener listener=null;
+    public void setOnItemClickListener(OnItemClickListener listener){
+        this.listener=listener;
+    }
     public SubjectAdapter(Context context, ArrayList<Subject> SubjectArrayList){
         inflater = LayoutInflater.from(context);
         this.SubjectArrayList = SubjectArrayList;
@@ -44,14 +52,25 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectV
             super(itemView);
             subject_name = itemView.findViewById(R.id.subject_item_name);
             subject_date=itemView.findViewById(R.id.subject_item_date);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int pos=getAdapterPosition();
+                    if(pos!=RecyclerView.NO_POSITION){
+                        if(listener!=null){
+                            listener.onItemClick(v,pos);
+                        }
+                    }
+                }
+            });
         }
 
         public void bindData(Subject object) {
             if (object == null) return;
             else {
                 //itemView각각에 입력하기
-               subject_name.setText(object.getName());
-               subject_date.setText(object.getDate());
+               subject_name.setText(object.getClassname());
+               subject_date.setText(object.getClasshours());
             }
         }
 

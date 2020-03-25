@@ -4,20 +4,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.CheckedTextView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import com.example.user.scheduleitssu.utilClass.Today2do;
+import com.example.user.scheduleitssu.DataClass.What2Do;
 
 import java.util.ArrayList;
 
 public class Today2doAdapter extends RecyclerView.Adapter<Today2doAdapter.Today2doViewHolder> {
     LayoutInflater inflater;
-    private ArrayList<Today2do> today2doArrayList;
+    private ArrayList<What2Do> today2doArrayList;
 
-    public Today2doAdapter(Context context, ArrayList<Today2do> today2doArrayList) {
+    public Today2doAdapter(Context context, ArrayList<What2Do> today2doArrayList) {
         inflater = LayoutInflater.from(context);
         this.today2doArrayList = today2doArrayList;
     }
@@ -47,7 +45,7 @@ public class Today2doAdapter extends RecyclerView.Adapter<Today2doAdapter.Today2
             today2dotext = itemView.findViewById(R.id.checktoday2do_item);
         }
 
-        public void bindData(Today2do object) {
+        public void bindData(What2Do object) {
             if (object == null) return;
             else {
                 today2dotext.setText(object.getWhat2do());

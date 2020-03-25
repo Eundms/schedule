@@ -7,15 +7,16 @@
         android:icon="@drawable/account_icon"
         app:showAsAction="ifRoom"/>
     <item
-        android:id="@+id/settings_payment"
-        android:title="결제 관리"
-        android:icon="@drawable/payment_icon"
-        app:showAsAction="ifRoom"/>
-    <item
         android:id="@+id/settings_alarm"
         android:title="알림 설정"
         android:icon="@drawable/notification_icon"
         app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/settings_payment"
+        android:title="결제 관리"
+        android:icon="@drawable/payment_icon"
+        app:showAsAction="ifRoom"/>
+
     <item
         android:id="@+id/settings_friends"
         android:title="친구 모아보기"
@@ -24,5 +25,6 @@
     <item
         android:id="@+id/settings_logout"
         android:title="로그아웃"
+        android:icon="@drawable/logout_icon"
         app:showAsAction="ifRoom"/>
 </menu>

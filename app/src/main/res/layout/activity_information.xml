@@ -1,25 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/학과학번입력시작"
+        android:id="@+id/개인정보수정"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:textStyle="bold"
         android:textSize="20sp"
         android:layout_marginTop="40dp"
-        android:text="학교 학과 학번을 입력하고 시작하세요" />
+        android:text="개인정보 수정" />
+
+    <ImageView
+        android:id="@+id/edit_userimag"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_below="@id/개인정보수정"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="40dp"
+        android:layout_toRightOf="@id/image"
+        app:srcCompat="@drawable/edit_icon" />
+
+    <ImageView
+        android:id="@+id/image"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_below="@id/개인정보수정"
+        android:layout_centerHorizontal="true"
+        android:padding="10dp"
+        android:layout_marginTop="30dp"
+        app:srcCompat="@mipmap/ic_launcher_round" />
 
     <LinearLayout
         android:id="@+id/이름입력layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/학과학번입력시작"
+        android:layout_below="@id/image"
         android:padding="10dp"
-        android:layout_marginTop="30dp">
+        android:layout_marginTop="10dp">
 
         <TextView
             android:layout_width="wrap_content"
@@ -61,19 +82,35 @@
             android:singleLine="true"
  />
     </LinearLayout>
-
-    <include
-        android:id="@+id/include_departmentsubject"
+    <LinearLayout
+        android:id="@+id/이메일입력layout"
+        android:layout_below="@+id/학번입력layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        layout="@layout/selectdepartsubject_part"
-        android:layout_below="@+id/학번입력layout"
-        >
-    </include>
+        android:padding="10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="이메일" />
+
+        <EditText
+            android:id="@+id/editemailId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:maxLength="20"
+            android:ems="5"
+            android:singleLine="true"
+            />
+    </LinearLayout>
+
 
     <Button
         android:id="@+id/addinformationbtn"
-        android:layout_below="@id/include_departmentsubject"
+        android:layout_below="@id/학번입력layout"
         android:layout_marginTop="50dp"
         android:layout_centerHorizontal="true"
         android:layout_width="wrap_content"

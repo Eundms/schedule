@@ -5,19 +5,50 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".DetailNoteActivity">
-
-    <TextView
-        android:id="@+id/textView5"
-        android:layout_width="wrap_content"
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/detailnote_toolbar"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="제목" />
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/toolbar_theme"
+        app:titleTextAppearance="?attr/toolbar_title_theme" />
 
-    <TextView
-        android:id="@+id/textView6"
-        android:layout_width="wrap_content"
+
+
+        <TextView
+            android:id="@+id/subjectnote_item_lastmodifieddate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/detailnote_toolbar"
+            android:layout_alignParentRight="true"
+            android:layout_toLeftOf="@id/detailnote_lastmodifiedperson"
+            android:text="마지막 수정:20.02.11(default)"
+            android:textSize="10sp" />
+        <TextView
+            android:id="@+id/detailnote_lastmodifiedperson"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/subjectnote_item_lastmodifieddate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="10sp"
+            android:text="수정한 사람:박은정(default)" />
+
+        <TextView
+            android:id="@+id/detailnote_notetitle"
+            android:layout_below="@id/detailnote_lastmodifiedperson"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:text="1주차 강의 필기" />
+
+
+    <EditText
+        android:id="@+id/detailnote_notecontext"
+        android:layout_below="@id/detailnote_notetitle"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="내용" />
-
+        android:text="뭐라 하시는지 모르겠지만 좋은 말이겠지..." />
 
     <ImageButton
         android:id="@+id/imageButton"

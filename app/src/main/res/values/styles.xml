@@ -5,7 +5,7 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorAccent">#FFBAD2</item>
         <item name="toolbar_theme">@style/ToolbarTheme</item>
         <item name="toolbar_title_theme">@style/ToolbarTitleTheme</item>
         <item name="android:textColorPrimary">@android:color/black</item>
@@ -15,7 +15,7 @@
 
     <style name="ToolbarTheme" parent="ThemeOverlay.AppCompat.ActionBar">
         <!-- if you have a navigationdrawer you change it color also -->
-        <item name="colorControlNormal">@color/colorPrimary</item>
+        <item name="colorControlNormal">@color/colorToolbarTitle</item>
     </style>
 
 
@@ -23,7 +23,7 @@
         <!-- Set title size -->
         <item name="android:textSize">@dimen/abc_text_size_title_material_toolbar</item>
         <!-- Set title color -->
-        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textColor">@color/colorToolbarTitle</item>
     </style>
 
     <style name="ListTitleTheme" parent="TextAppearance.AppCompat">

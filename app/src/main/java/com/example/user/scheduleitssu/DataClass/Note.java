@@ -1,4 +1,4 @@
-package com.example.user.scheduleitssu.utilClass;
+package com.example.user.scheduleitssu.DataClass;
 
 public class Note {
     String title_note;
