@@ -1,11 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="400dp"
+    android:background="@drawable/recyclerview_box"
+    android:layout_marginLeft="8dp"
+    android:layout_marginRight="8dp"
+    android:layout_marginTop="8dp"
+    android:padding="16dp"
     >
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-   />
+
+        <ImageView
+            android:id="@+id/sharenotebtn"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_alignParentRight="true"
+            android:clickable="true"
+            app:srcCompat="@drawable/share_icon" />
+
+        <TextView
+            android:id="@+id/subjectnote_item_title"
+            android:layout_alignParentTop="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:text="Day1_과제해설(default)" />
+
+        <TextView
+            android:id="@+id/subjectnote_item_lastmodifiedperson"
+            android:layout_below="@id/subjectnote_item_title"
+            android:layout_toLeftOf="@id/subjectnote_item_lastmodifieddate"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="박은정" />
+        <TextView
+            android:id="@+id/subjectnote_item_lastmodifieddate"
+            android:layout_below="@id/subjectnote_item_title"
+            android:layout_alignBaseline="@id/subjectnote_item_lastmodifiedperson"
+            android:layout_marginLeft="16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="2020.02.11" />
+        <ImageView
+            android:id="@+id/subjectnote_item_includeimg"
+            android:layout_below="@id/subjectnote_item_lastmodifiedperson"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            app:srcCompat="@android:drawable/ic_menu_gallery" />
+
+        <TextView
+            android:id="@+id/subjectnote_item_contents"
+            android:layout_below="@id/subjectnote_item_includeimg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="오늘은\n서버에 대해 공부했다\n\n유익했던 하루였다\n" />
 </RelativeLayout>

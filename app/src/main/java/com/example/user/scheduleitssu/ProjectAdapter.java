@@ -73,6 +73,7 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ProjectV
                 recenttime.setText("원래 시간:이거는 그냥 존재한다~group 에 recent time field를 넣어야하나..");
                 projectname.setText(object.getGroupname());
                 numofmember.setText(""+object.getNumofmember());
+
             }
         }
 

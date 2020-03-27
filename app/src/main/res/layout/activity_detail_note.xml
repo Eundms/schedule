@@ -14,13 +14,20 @@
         android:theme="?attr/toolbar_theme"
         app:titleTextAppearance="?attr/toolbar_title_theme" />
 
-
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/detailnote_toolbar"
+        android:padding="10dp"
+        tools:context=".DetailNoteActivity">
 
         <TextView
-            android:id="@+id/subjectnote_item_lastmodifieddate"
+            android:id="@+id/detailnote_lastmodifieddate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/detailnote_toolbar"
+            android:layout_marginTop="10dp"
             android:layout_alignParentRight="true"
             android:layout_toLeftOf="@id/detailnote_lastmodifiedperson"
             android:text="마지막 수정:20.02.11(default)"
@@ -28,7 +35,7 @@
         <TextView
             android:id="@+id/detailnote_lastmodifiedperson"
             android:layout_alignParentRight="true"
-            android:layout_below="@id/subjectnote_item_lastmodifieddate"
+            android:layout_below="@id/detailnote_lastmodifieddate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="10sp"
@@ -41,20 +48,31 @@
             android:layout_height="wrap_content"
             android:textSize="20sp"
             android:text="1주차 강의 필기" />
-
-
-    <EditText
-        android:id="@+id/detailnote_notecontext"
-        android:layout_below="@id/detailnote_notetitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="뭐라 하시는지 모르겠지만 좋은 말이겠지..." />
-
     <ImageButton
-        android:id="@+id/imageButton"
+        android:id="@+id/detailnote_camerabtn"
+        android:layout_below="@id/detailnote_notetitle"
+        android:layout_toLeftOf="@id/detailnote_editbtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:focusableInTouchMode="true"
+        android:visibility="invisible"
         app:srcCompat="@drawable/camera_icon"
         android:background="@android:color/transparent"/>
+    <ImageButton
+        android:id="@+id/detailnote_editbtn"
+        android:layout_below="@id/detailnote_notetitle"
+        android:layout_alignParentRight="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:focusableInTouchMode="true"
+        app:srcCompat="@drawable/edit_icon"
+        android:background="@android:color/transparent"/>
+    <TextView
+        android:id="@+id/detailnote_notecontext"
+        android:layout_below="@id/detailnote_camerabtn"
+        android:layout_width="match_parent"
+        android:layout_height="500dp"
+        android:text="뭐라 하시는지 모르겠지만 좋은 말이겠지...\n오늘 이런것도 배웠어" />
+    </RelativeLayout>
+
 </RelativeLayout>

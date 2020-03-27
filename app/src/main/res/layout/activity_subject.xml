@@ -32,9 +32,11 @@
                 android:layout_gravity="center"
                 android:text="노트" />
 
-            <androidx.cardview.widget.CardView
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/subject_noterecyclerview"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="wrap_content" />
+
 
             <TextView
                 style="@style/ListTitleTheme"
@@ -44,9 +46,9 @@
                 android:text="프로젝트" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/project_recyclerview"
+                android:id="@+id/subject_projectrecyclerview"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content">
 
             </androidx.recyclerview.widget.RecyclerView>
 

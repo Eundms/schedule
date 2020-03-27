@@ -3,12 +3,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="10dp"
     android:orientation="vertical"
     tools:context=".AddClassActivity">
 
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="과목 추가하기"
+        style="@style/SpinnerTitleTheme"
+       />
+
     <include
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         layout="@layout/selectdepartsubject_part"></include>
@@ -25,7 +33,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="그룹 개설"
-            style="@style/SpinnerTitleTheme"
             />
 
         <RadioButton
@@ -34,6 +41,15 @@
             android:layout_height="wrap_content" />
 
     </LinearLayout>
+
+
+    <EditText
+        android:id="@+id/makegroupname"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:hint="그룹 이름" />
 
     <LinearLayout
         android:id="@+id/버튼layout"

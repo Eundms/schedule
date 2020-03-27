@@ -31,7 +31,7 @@
         />
     <Button
         android:id="@+id/addtodobtn"
-        android:layout_marginLeft="200dp"
+        android:layout_marginLeft="100dp"
         android:layout_toRightOf="@id/addwhichdaytodo"
         android:layout_below="@id/todocalendar"
         android:layout_width="100dp"

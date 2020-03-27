@@ -37,7 +37,6 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectV
     @Override
     public void onBindViewHolder(@NonNull SubjectViewHolder viewHolder, int position) {
         viewHolder.bindData(SubjectArrayList.get(position));
-
     }
 
     @Override

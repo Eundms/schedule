@@ -3,6 +3,7 @@ package com.example.user.scheduleitssu;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
@@ -13,16 +14,21 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.user.scheduleitssu.DataClass.Group;
+import com.example.user.scheduleitssu.DataClass.Note;
 import com.example.user.scheduleitssu.DataClass.Subject;
+import com.google.firebase.internal.InternalTokenProvider;
 
 import java.util.ArrayList;
 
-public class SubjectActivity extends AppCompatActivity  implements ProjectAdapter.OnItemClickListener{
+public class SubjectActivity extends AppCompatActivity  implements ProjectAdapter.OnItemClickListener,NoteAdapter.OnNoteItemClickListener{
     Subject subject;
     Toolbar toolbar;
     RecyclerView ProjectRecyclerView;
     ProjectAdapter projectAdapter;
-    ArrayList<Group> projectArrayList;
+    RecyclerView NoteRecyclerView;
+    NoteAdapter noteAdapter;
+    ArrayList<Group> projectArrayList;//group을 가리키는 데이터 베이스 string형이 들어가야함
+    ArrayList<Note> noteArrayList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,19 +43,30 @@ public class SubjectActivity extends AppCompatActivity  implements ProjectAdapte
         projectArrayList=new ArrayList<>();
         projectArrayList.add(new Group("달려라하니팀",3));
 
-        ProjectRecyclerView=(RecyclerView) findViewById(R.id.project_recyclerview);
+        noteArrayList=new ArrayList<>();
+        noteArrayList.add(new Note("Day1_과제1보충설명","","","",""));
+        noteArrayList.add(new Note("Day2_과제2보충설명","","","",""));
+        noteArrayList.add(new Note("Day3_과제3보충설명","","","",""));
+
+
+        ProjectRecyclerView=(RecyclerView) findViewById(R.id.subject_projectrecyclerview);
         GridLayoutManager layoutManager=new GridLayoutManager(this,2);
+
+        NoteRecyclerView=(RecyclerView)findViewById(R.id.subject_noterecyclerview);
+        LinearLayoutManager layoutManager2=new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
+
         ProjectRecyclerView.setLayoutManager(layoutManager);
+        NoteRecyclerView.setLayoutManager(layoutManager2);
 
-       // Log.d("group",group.getGroupname()+group.getNumofmember());
-
-
-        //projectArrayList.add();
+        // Log.d("group",group.getGroupname()+group.getNumofmember());
 
         projectAdapter=new ProjectAdapter(this,projectArrayList);
         projectAdapter.setOnItemClickListener(this);
         ProjectRecyclerView.setAdapter(projectAdapter);
 
+        noteAdapter=new NoteAdapter(this,noteArrayList);
+        noteAdapter.setOnNoteItemClickListener(this);
+        NoteRecyclerView.setAdapter(noteAdapter);
     }
     private void processIntent(Intent receive){
         String infotype= receive.getStringExtra("SubjectInfoType");
@@ -85,9 +102,19 @@ public class SubjectActivity extends AppCompatActivity  implements ProjectAdapte
         return super.onOptionsItemSelected(item);
     }
 
+
+
     @Override
     public void onItemClick(View v, int pos) {
         Toast.makeText(this, "projectrecyclerview"+pos, Toast.LENGTH_LONG).show();
 
+    }
+
+    @Override
+    public void onNoteItemClick(View v, int pos) {
+        Intent intent=new Intent(this,DetailNoteActivity.class);
+        intent.putExtra("NoteInfoType","NOTEINFO_DEFAULT");
+        intent.putExtra("note_info_data",noteArrayList);
+        startActivity(intent);
     }
 }
