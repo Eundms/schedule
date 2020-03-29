@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("UNIVERSITY NOTE");
         toolbar.setTitleMarginStart(170);
         setSupportActionBar(toolbar);

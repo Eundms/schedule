@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="10dp"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <TextView
+        android:id="@+id/detailnote_lastmodifieddate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="10dp"
+        android:layout_toLeftOf="@id/detailnote_lastmodifiedperson"
+        android:text="마지막 수정:20.02.11(default)"
+        android:textSize="10sp" />
+
+    <TextView
+        android:id="@+id/detailnote_lastmodifiedperson"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/detailnote_lastmodifieddate"
+        android:layout_alignParentRight="true"
+        android:text="수정한 사람:박은정(default)"
+        android:textSize="10sp" />
+
+    <TextView
+        android:id="@+id/detailnote_notetitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/detailnote_lastmodifiedperson"
+        android:text="1주차 강의 필기"
+        android:textSize="20sp" />
+
+    <ImageButton
+        android:id="@+id/detailnote_camerabtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/detailnote_notetitle"
+        android:background="@android:color/transparent"
+        android:focusableInTouchMode="true"
+        android:visibility="invisible"
+        app:srcCompat="@drawable/camera_icon" />
+    <TextView
+        android:id="@+id/editnote_notecontext"
+        android:layout_width="match_parent"
+        android:layout_height="500dp"
+        android:layout_below="@id/detailnote_camerabtn"
+        android:text="뭐라 하시는지 모르겠지만 좋은 말이겠지...\n오늘 이런것도 배웠어" />
+</RelativeLayout>
