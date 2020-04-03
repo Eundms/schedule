@@ -24,7 +24,6 @@ import java.io.IOException;
 
 public class DetailNoteActivity extends AppCompatActivity {
 FragmentManager fmswitch_edit_detail;
-Editor editor;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,6 +77,7 @@ Editor editor;
        // Log.d("onActivityResult!!", "" +requestCode+ resultCode);
         Fragment fragment=getSupportFragmentManager().findFragmentByTag("EDITNOTEFRAGMENT");
         fragment.onActivityResult(requestCode,resultCode,data);
+
     }
 
 }

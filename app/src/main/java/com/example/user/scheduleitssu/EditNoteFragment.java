@@ -196,14 +196,15 @@ public class EditNoteFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onUpload(Bitmap image, String uuid) {
                 Toast.makeText(context, uuid, Toast.LENGTH_LONG).show();
-                Log.d("onUpload!!", "" +uuid);
+                Log.d("onUpload!!", "" + uuid);
 
                 /**
                  * TODO do your upload here from the bitmap received and all onImageUploadComplete(String url); to insert the result url to
                  * let the editor know the upload has completed
                  */
                 editor.onImageUploadComplete("", uuid);//""이 부분에 어떤 코드를 넣어야 한다.
-               // editor.onImageUploadFailed(uuid);
+                // editor.onImageUploadFailed(uuid);
+
 
             }
 
@@ -269,11 +270,12 @@ public class EditNoteFragment extends Fragment implements View.OnClickListener {
 
         }
     }
-@Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-   // Log.d("onActivityResult!!frag", "" +requestCode+ resultCode);
 
-    if (requestCode == editor.PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK&& data != null && data.getData() != null) {
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // Log.d("onActivityResult!!frag", "" +requestCode+ resultCode);
+
+        if (requestCode == editor.PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null && data.getData() != null) {
             Uri uri = data.getData();
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), uri);
@@ -281,10 +283,10 @@ public class EditNoteFragment extends Fragment implements View.OnClickListener {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }
-        else if (resultCode == Activity.RESULT_CANCELED) {
+        } else if (resultCode == Activity.RESULT_CANCELED) {
             // editor.RestoreState();
         }
     }
+
 
 }
