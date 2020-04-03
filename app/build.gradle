@@ -45,4 +45,7 @@ dependencies {
     //firebase UI
     implementation 'com.firebaseui:firebase-ui-auth:4.3.2'
 
+    implementation 'com.github.duanhong169:colorpicker:1.1.1'
+    compile 'com.github.irshulx:laser-native-editor:3.0.3'
+
 }

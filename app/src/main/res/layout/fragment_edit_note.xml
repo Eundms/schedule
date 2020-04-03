@@ -1,47 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="10dp">
-    <TextView
-        android:id="@+id/detailnote_notetitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/detailnote_lastmodifiedperson"
-        android:text="1주차 강의 필기(수정 EditNoteframgnet)"
-        android:textSize="20sp" />
-
-    <ImageButton
-        android:id="@+id/detailnote_camerabtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
-        android:focusableInTouchMode="true"
-        android:layout_gravity="center"
-        app:srcCompat="@drawable/camera_icon" />
-
-    <ImageButton
-        android:id="@+id/editnote_albumbtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:background="@android:color/transparent"
-        android:focusableInTouchMode="true"
-        app:srcCompat="@drawable/notelist_icon" />
-
-
-    <TextView
-        android:id="@+id/editnote_notecontext"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="500dp"
-        android:text="뭐라 하시는지 모르겠지만 좋은 말이겠지...\n오늘 이런것도 배웠어" />
+        android:layout_height="match_parent"
+        >
 
-    <Button
-        android:id="@+id/editnote_savebtn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="저장" />
-</LinearLayout>
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white">
+
+
+            <!-- Begin Editor toolbar -->
+
+        <HorizontalScrollView
+                android:id="@+id/tools"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:background="#e6e6e6"
+                android:scrollbars="none">
+                <include layout="@layout/editor_toolbar_linearlayout_horizontal" />
+
+            </HorizontalScrollView>
+            <!--End of Editor toolbar -->
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:scrollbars="vertical">
+
+            <com.github.irshulx.Editor
+                android:id="@+id/editor"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingLeft="20dp"
+                android:paddingTop="10dp"
+                android:paddingRight="20dp"
+                android:paddingBottom="100dp"
+                app:placeholder="Start writing here..."
+                app:render_type="Editor"></com.github.irshulx.Editor>
+        </ScrollView>
+        </RelativeLayout>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>

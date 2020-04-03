@@ -6,17 +6,25 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.Toast;
+
+import com.github.irshulx.Editor;
+
+import java.io.IOException;
+
 
 public class DetailNoteActivity extends AppCompatActivity {
 FragmentManager fmswitch_edit_detail;
+Editor editor;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,4 +72,24 @@ FragmentManager fmswitch_edit_detail;
         }
         return super.onOptionsItemSelected(item);
     }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.d("onActivityResult!!", "" + resultCode);
+
+        if (requestCode == editor.PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null && data.getData() != null) {
+            Uri uri = data.getData();
+            try {
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+                editor.insertImage(bitmap);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else if (resultCode == Activity.RESULT_CANCELED) {
+            //editor.RestoreState();
+        }
+
+    }
+
 }
+
