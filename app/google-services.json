@@ -1,34 +1,42 @@
 {
   "project_info": {
-    "project_number": "60491969878",
-    "firebase_url": "https://scheduleitssu.firebaseio.com",
-    "project_id": "scheduleitssu",
-    "storage_bucket": "scheduleitssu.appspot.com"
+    "project_number": "765533502313",
+    "firebase_url": "https://scheduleitssu-685f7.firebaseio.com",
+    "project_id": "scheduleitssu-685f7",
+    "storage_bucket": "scheduleitssu-685f7.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:60491969878:android:24c4ae51be0271d01a12f7",
+        "mobilesdk_app_id": "1:765533502313:android:34f67fb8ff9a6ff4a51bf8",
         "android_client_info": {
           "package_name": "com.example.user.scheduleitssu"
         }
       },
       "oauth_client": [
         {
-          "client_id": "60491969878-buardof3jm4olma0ne58l5smr28vn6lp.apps.googleusercontent.com",
+          "client_id": "765533502313-k16beoikgjs6qa1fgia7nfouqpr6a2ec.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.user.scheduleitssu",
+            "certificate_hash": "57801889b5017b91ce441abc29cc3e6a5d12f052"
+          }
+        },
+        {
+          "client_id": "765533502313-mnvev7m93cueokhcnnnhnbvv9sdm1d3s.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyC2AWnN-zZ4xwhp5o6lwoM9QaElbIygpAo"
+          "current_key": "AIzaSyAES-nLvQGePXIStstj-wiuA651THPcFBs"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "60491969878-buardof3jm4olma0ne58l5smr28vn6lp.apps.googleusercontent.com",
+              "client_id": "765533502313-mnvev7m93cueokhcnnnhnbvv9sdm1d3s.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

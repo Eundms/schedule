@@ -1,10 +1,12 @@
 package com.example.user.scheduleitssu;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.method.SingleLineTransformationMethod;
@@ -20,6 +22,12 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserInfo;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
     TabLayout tabLayout;
@@ -42,6 +50,11 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }
+        initialSetting();
+
+
+
+
 
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -76,6 +89,39 @@ public class MainActivity extends AppCompatActivity {
         toolbar.setLogo(R.drawable.notelist_icon);
 
     }
+
+    protected void initialSetting(){
+        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        final String path = user.getDisplayName()+"_"+user.getUid();
+        FirebaseDatabase.getInstance().getReference().child("customer").child(path).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(!dataSnapshot.hasChildren()){
+                    HashMap<String, Object> initial = new HashMap<>();
+                    initial.put("Uid",path);
+                    //initial.put("Name",user.getDisplayName());
+                    FirebaseDatabase.getInstance().getReference().child("Student").child(path).updateChildren(initial);
+                   // SharedPreferences.Editor editor = sharedPreferences.edit();
+                   // editor.putBoolean("initial",true);
+                    //editor.commit();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
+    }
+
+
+
+
+
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();

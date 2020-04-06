@@ -12,6 +12,10 @@ public class Subject implements Parcelable{
     ArrayList<String> notelist;
     //2. Group
     ArrayList<String> group;
+    public Subject(String classname){
+        this.classname=classname;
+        this.classhours="1";
+    }
     public Subject(String classname, String classhours){
         this.classname=classname;
         this.classhours=classhours;

@@ -25,6 +25,7 @@ public class TabFragment2 extends Fragment implements SubjectAdapter.OnItemClick
     RecyclerView subjectRecyclerView;
     SubjectAdapter subjectAdapter;
     ArrayList<Subject> subjectArrayList;
+
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstance){
         View root=inflater.inflate(R.layout.fragment_tab2,container,false);
         this.context=root.getContext();

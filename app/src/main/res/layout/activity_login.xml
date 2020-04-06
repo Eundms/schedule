@@ -2,19 +2,28 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="#9370DB">
+
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="200dp" />
 
     <TextView
         android:id="@+id/logintxt"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:text="로그인"
-        android:textSize="24dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Scheduleitssu"
+        android:textColor="#FFFFFF"
+        android:textSize="40dp"
         android:textStyle="bold" />
+
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="528dp"
         android:clipToPadding="false"
         android:orientation="vertical"
         android:padding="10dp">
@@ -38,17 +47,18 @@
             android:inputType="textPassword" />
 
 
-
         <Button
             android:id="@+id/sign_inbtn"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
             android:text="로그인" />
 
         <Button
             android:id="@+id/gotopasswordresetbtn"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:text="비밀번호 재설정" />
     </LinearLayout>
 
