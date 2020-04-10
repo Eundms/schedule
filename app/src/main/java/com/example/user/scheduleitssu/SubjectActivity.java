@@ -20,14 +20,12 @@ import com.google.firebase.internal.InternalTokenProvider;
 
 import java.util.ArrayList;
 
-public class SubjectActivity extends AppCompatActivity  implements ProjectAdapter.OnItemClickListener,NoteAdapter.OnNoteItemClickListener{
+public class SubjectActivity extends AppCompatActivity  implements NoteAdapter.OnNoteItemClickListener{
     Subject subject;
     Toolbar toolbar;
-    RecyclerView ProjectRecyclerView;
-    ProjectAdapter projectAdapter;
+
     RecyclerView NoteRecyclerView;
     NoteAdapter noteAdapter;
-    ArrayList<Group> projectArrayList;//group을 가리키는 데이터 베이스 string형이 들어가야함
     ArrayList<Note> noteArrayList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,8 +38,6 @@ public class SubjectActivity extends AppCompatActivity  implements ProjectAdapte
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        projectArrayList=new ArrayList<>();
-        projectArrayList.add(new Group("달려라하니팀",3));
 
         noteArrayList=new ArrayList<>();
         noteArrayList.add(new Note("Day1_과제1보충설명","","","",""));
@@ -49,20 +45,16 @@ public class SubjectActivity extends AppCompatActivity  implements ProjectAdapte
         noteArrayList.add(new Note("Day3_과제3보충설명","","","",""));
 
 
-        ProjectRecyclerView=(RecyclerView) findViewById(R.id.subject_projectrecyclerview);
-        GridLayoutManager layoutManager=new GridLayoutManager(this,2);
+
 
         NoteRecyclerView=(RecyclerView)findViewById(R.id.subject_noterecyclerview);
-        LinearLayoutManager layoutManager2=new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
+        LinearLayoutManager layoutManager2=new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
 
-        ProjectRecyclerView.setLayoutManager(layoutManager);
         NoteRecyclerView.setLayoutManager(layoutManager2);
 
         // Log.d("group",group.getGroupname()+group.getNumofmember());
 
-        projectAdapter=new ProjectAdapter(this,projectArrayList);
-        projectAdapter.setOnItemClickListener(this);
-        ProjectRecyclerView.setAdapter(projectAdapter);
+
 
         noteAdapter=new NoteAdapter(this,noteArrayList);
         noteAdapter.setOnNoteItemClickListener(this);
@@ -104,11 +96,7 @@ public class SubjectActivity extends AppCompatActivity  implements ProjectAdapte
 
 
 
-    @Override
-    public void onItemClick(View v, int pos) {
-        Toast.makeText(this, "projectrecyclerview"+pos, Toast.LENGTH_LONG).show();
 
-    }
 
     @Override
     public void onNoteItemClick(View v, int pos) {
