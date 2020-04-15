@@ -1,65 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="#9370DB">
+    android:orientation="vertical">
 
 
-    <Space
+    <com.google.android.gms.common.SignInButton
+        android:id="@+id/loginbtn"
         android:layout_width="match_parent"
-        android:layout_height="200dp" />
-
-    <TextView
-        android:id="@+id/logintxt"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="Scheduleitssu"
-        android:textColor="#FFFFFF"
-        android:textSize="40dp"
-        android:textStyle="bold" />
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="298dp">
 
+    </com.google.android.gms.common.SignInButton>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="528dp"
-        android:clipToPadding="false"
-        android:orientation="vertical"
-        android:padding="10dp">
-
-        <EditText
-            android:id="@+id/email"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:ems="10"
-            android:hint=" 이메일"
-            android:inputType="textEmailAddress" />
-
-        <EditText
-            android:id="@+id/password"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:ems="10"
-            android:hint="password"
-            android:inputType="textPassword" />
-
-
-        <Button
-            android:id="@+id/sign_inbtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:text="로그인" />
-
-        <Button
-            android:id="@+id/gotopasswordresetbtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="비밀번호 재설정" />
-    </LinearLayout>
-
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

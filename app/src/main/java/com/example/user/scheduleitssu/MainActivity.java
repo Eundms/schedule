@@ -30,6 +30,8 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
+
+    SharedPreferences sharedPreferences;
     TabLayout tabLayout;
     ViewPager viewPager;
     Toolbar toolbar;
@@ -37,10 +39,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        /*FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         //유저가 로그인이 안된 상태면 회원가입/로그인 창으로 돌아감
         if(FirebaseAuth.getInstance().getCurrentUser()==null){
-            startSignUpActivity();
+            startSignINActivity();
             Log.d("유저 없음","유저");
         } else{
             //회원가입 or 로그인
@@ -49,12 +52,13 @@ public class MainActivity extends AppCompatActivity {
                     String name = profile.getDisplayName();
                 }
             }
-        }
-        initialSetting();
+        }*/
 
-
-
-
+        sharedPreferences = getSharedPreferences("SCHEDULEITSSU",MODE_PRIVATE);
+        if(!sharedPreferences.getBoolean("initial",false))
+            initialSetting();
+        if(sharedPreferences.getBoolean("notification",true))
+            startNotificationListener();
 
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -92,8 +96,8 @@ public class MainActivity extends AppCompatActivity {
 
     protected void initialSetting(){
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        final String path = user.getDisplayName()+"_"+user.getUid();
-        FirebaseDatabase.getInstance().getReference().child("customer").child(path).addListenerForSingleValueEvent(new ValueEventListener() {
+        final String path = user.getUid();
+        FirebaseDatabase.getInstance().getReference().child("Student").child(path).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(!dataSnapshot.hasChildren()){
@@ -101,9 +105,9 @@ public class MainActivity extends AppCompatActivity {
                     initial.put("Uid",path);
                     //initial.put("Name",user.getDisplayName());
                     FirebaseDatabase.getInstance().getReference().child("Student").child(path).updateChildren(initial);
-                   // SharedPreferences.Editor editor = sharedPreferences.edit();
-                   // editor.putBoolean("initial",true);
-                    //editor.commit();
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putBoolean("initial",true); //intial이 되었다고 sharedpreferences에 정보값 변경
+                    editor.commit();
                 }
             }
 
@@ -115,6 +119,16 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
+
+    public void startNotificationListener(){
+        boolean startByNoti = getIntent().getBooleanExtra("Started By Notification",false);
+        if(!startByNoti) {
+            Log.d("넌 누구인가","어떻게 들어왔징?");
+
+        }
+    }
+
 
 
 
@@ -144,9 +158,11 @@ public class MainActivity extends AppCompatActivity {
         return false;
     }
 
-    private void startSignUpActivity(){
-        Intent intent=new Intent(this, SignupActivity.class);
+
+    private void startSignINActivity(){
+        Intent intent=new Intent(this, LoginActivity.class);
         startActivity(intent);
     }
+
 
 }

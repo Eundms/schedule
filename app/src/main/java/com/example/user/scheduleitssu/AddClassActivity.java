@@ -9,6 +9,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.user.scheduleitssu.DataClass.Subject;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -40,16 +42,18 @@ Button addbtn;
     //firebase를 위한 객체 생성?
     FirebaseDatabase firebaseDatabase= FirebaseDatabase.getInstance();
     DatabaseReference databaseReference=firebaseDatabase.getReference();
+    FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();
 
     @Override
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.addsubjectbtn:
-                //Toast.makeText(getApplicationContext(), "등록하기 클릭됨", Toast.LENGTH_SHORT).show();
-                //파이어베이스에 등록+refresh하는코드 필요
                 TextView groupname=(TextView)findViewById(R.id.makegroupname);
                 String group=groupname.getText().toString();
                 Subject sub=new Subject(group);
+                String uid=user.getUid();
+                //subject class 업로드
+                databaseReference.child("Student").child(uid).child("Subject").setValue(sub);
                 databaseReference.child("Subject").push().setValue(sub);
 
 
