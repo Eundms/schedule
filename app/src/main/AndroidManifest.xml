@@ -24,6 +24,7 @@
 
         <activity android:name=".DetailNoteActivity"
             android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".EditNoteActivity"></activity>
 
         <activity android:name=".InformationActivity"></activity>
         <activity android:name=".SignupActivity"></activity>

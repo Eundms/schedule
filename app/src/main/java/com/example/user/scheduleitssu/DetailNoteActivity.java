@@ -6,24 +6,14 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-import com.github.irshulx.Editor;
-
-import java.io.IOException;
-
 
 public class DetailNoteActivity extends AppCompatActivity {
-FragmentManager fmswitch_edit_detail;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,13 +23,6 @@ FragmentManager fmswitch_edit_detail;
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-
-        fmswitch_edit_detail=getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction=fmswitch_edit_detail.beginTransaction();
-        fragmentTransaction.add(R.id.fragment_detailOReditnote,new DetailNoteFragment(),"DETAILNOTEFRAGMENT");
-        fragmentTransaction.commit();
-
 
     }
 
@@ -57,10 +40,8 @@ FragmentManager fmswitch_edit_detail;
                 return true;
             }
             case R.id.detailnote_edit_menu:{
-                FragmentManager fm = getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = fm.beginTransaction();
-                fragmentTransaction.replace(R.id.fragment_detailOReditnote, new EditNoteFragment(),"EDITNOTEFRAGMENT");
-                fragmentTransaction.commit();
+                Intent intent = new Intent(this, EditNoteActivity.class);
+                startActivity(intent);
                 return true;
             }
             case R.id.detailnote_delete_menu:{
@@ -70,14 +51,6 @@ FragmentManager fmswitch_edit_detail;
             }
         }
         return super.onOptionsItemSelected(item);
-    }
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-       // Log.d("onActivityResult!!", "" +requestCode+ resultCode);
-        Fragment fragment=getSupportFragmentManager().findFragmentByTag("EDITNOTEFRAGMENT");
-        fragment.onActivityResult(requestCode,resultCode,data);
-
     }
 
 }
