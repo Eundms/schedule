@@ -24,7 +24,8 @@
 
         <activity android:name=".DetailNoteActivity"
             android:windowSoftInputMode="adjustResize" />
-        <activity android:name=".EditNoteActivity"></activity>
+        <activity android:name=".EditNoteActivity"
+            android:windowSoftInputMode="adjustResize"></activity>
 
         <activity android:name=".InformationActivity"></activity>
         <activity android:name=".SignupActivity"></activity>
@@ -40,10 +41,20 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity android:name=".MainActivity">
+
 
         </activity>
+        <activity android:name=".MainActivity"></activity>
+            <provider
+                android:name="androidx.core.content.FileProvider"
+                android:authorities="${applicationId}.provider"
+                android:exported="false"
+                android:grantUriPermissions="true">
+                <meta-data
+                    android:name="android.support.FILE_PROVIDER_PATHS"
+                    android:resource="@xml/provider_paths"/>
+            </provider>
+
     </application>
 
 </manifest>
