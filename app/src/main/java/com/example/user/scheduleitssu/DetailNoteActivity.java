@@ -22,13 +22,19 @@ import android.widget.EditText;
 import com.github.irshulx.Editor;
 import com.github.irshulx.EditorListener;
 import com.github.irshulx.models.EditorContent;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Map;
 
 
 public class DetailNoteActivity extends AppCompatActivity {
     private static final int DETAILNOTEACTIVITY_REQUEST = 1234;
-
+    FirebaseDatabase firebaseDatabase= FirebaseDatabase.getInstance();
+    DatabaseReference databaseReference=firebaseDatabase.getReference();
+    FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

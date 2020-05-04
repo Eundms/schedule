@@ -21,7 +21,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 
 public class AddClassActivity extends AppCompatActivity implements View.OnClickListener{
-
+FirebaseCommunicator firebaseCommunicator=new FirebaseCommunicator();
 Button backbtn;
 Button addbtn;
     @Override
@@ -53,8 +53,8 @@ Button addbtn;
                 Subject sub=new Subject(group);
                 String uid=user.getUid();
                 //subject class 업로드
-                databaseReference.child("Student").child(uid).child("Subject").setValue(sub);
-                databaseReference.child("Subject").push().setValue(sub);
+                /*databaseReference.child("Student").child(uid).child("Subject").setValue(sub);
+                databaseReference.child("Subject").push().setValue(sub);*/
 
 
 

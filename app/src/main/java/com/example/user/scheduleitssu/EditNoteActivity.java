@@ -48,6 +48,10 @@ import com.google.api.services.vision.v1.model.BatchAnnotateImagesResponse;
 import com.google.api.services.vision.v1.model.EntityAnnotation;
 import com.google.api.services.vision.v1.model.Feature;
 import com.google.api.services.vision.v1.model.Image;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -64,6 +68,7 @@ import top.defaults.colorpicker.ColorPickerPopup;
 public class EditNoteActivity extends AppCompatActivity  {
    Editor editor;
     static Editable editable;
+    FirebaseCommunicator firebaseCommunicator=new FirebaseCommunicator();
     private static final String CLOUD_VISION_API_KEY = "AIzaSyDQnNiMu_Q50EdL7ryz1CHnJjwfqWtdXxE";
     public static final String FILE_NAME = "temp.jpg";
     private static final String ANDROID_CERT_HEADER = "X-Android-Cert";
@@ -78,6 +83,12 @@ public class EditNoteActivity extends AppCompatActivity  {
 //나중에 바꿔야하는 부분
    /**/ private TextView mImageDetails;
     private ImageView mMainImage;
+  //  Button btn=(Button)findViewById(R.id.adding);
+
+    FirebaseDatabase firebaseDatabase= FirebaseDatabase.getInstance();
+    DatabaseReference databaseReference=firebaseDatabase.getReference();
+    FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -303,7 +314,17 @@ public class EditNoteActivity extends AppCompatActivity  {
                 /*text가 NULL이라면
                 intent.putExtra("RESULT","CANCLED");
                 setResult(RESULT_CANCELED, intent);
+
                 */
+                /*Toast.makeText(getApplicationContext(),"ㅎㅎ",Toast.LENGTH_SHORT);
+                String uid=user.getUid();
+                firebaseCommunicator.uploadNote(editor);
+*/
+                // editor.onImageUploadComplete("", uuid);
+                //databaseReference.child("Student").child(uid).child("Subject").setValue(editor);
+                firebaseCommunicator.uploadNote(editor);
+
+
                 finish();
                 return true;
             }
@@ -491,12 +512,13 @@ public class EditNoteActivity extends AppCompatActivity  {
                  * let the editor know the upload has completed
                  */
                 Log.d("onUpload!!", "" + uuid);
-                editor.onImageUploadComplete("", uuid);
+
             }
 
             @Override
             public View onRenderMacro(String name, Map<String, Object> props, int index) {
                 View view = getLayoutInflater().inflate(R.layout.layout_authored_by, null);
+                //여기서 view 설정해서 액티비티 실행해봐도 될것.
                 return view;
             }
 
@@ -573,6 +595,7 @@ public class EditNoteActivity extends AppCompatActivity  {
                 })
                 .setNegativeButton("No", null)
                 .show();
+
     }
 
 }

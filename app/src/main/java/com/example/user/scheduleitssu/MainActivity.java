@@ -96,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
 
     protected void initialSetting(){
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        final String path = user.getUid();
+        final String path = user.getDisplayName()+"_"+user.getUid();
         FirebaseDatabase.getInstance().getReference().child("Student").child(path).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
