@@ -83,6 +83,7 @@ void setnote(){
             case R.id.detailnote_edit_menu:{
                 Intent intent = new Intent(this, EditNoteActivity.class);
                 String text =this.serialized;/*renderer.getContentAsSerialized();이 부분 때무에 그  에러 뜨는 거임*/
+                intent.putExtra("FROM","DETAILNOTEACTIVITY");
                 intent.putExtra("RESULT","OK");
                 intent.putExtra("NOTECONTENT",text);
                 setResult(RESULT_OK, intent);

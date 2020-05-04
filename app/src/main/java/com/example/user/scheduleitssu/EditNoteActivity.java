@@ -95,13 +95,24 @@ public class EditNoteActivity extends AppCompatActivity  {
         mMainImage = findViewById(R.id.main_image);
         editor = findViewById(R.id.editor);
 
-       Intent fromdetailnote=getIntent();
-        if(fromdetailnote.getStringExtra("RESULT").equals("OK")){
-            serailized=fromdetailnote.getStringExtra("NOTECONTENT");
-            des=editor.getContentDeserialized(serailized);
+       Intent getContents=getIntent();
+        if(getContents.getStringExtra("FROM").equals("DETAILNOTEACTIVITY")&&getContents.getStringExtra("RESULT").equals("OK")) {
+            serailized = getContents.getStringExtra("NOTECONTENT");
+            des = editor.getContentDeserialized(serailized);
+            setUpEditor();
+            editor.render(des);
+
             /*setSerialRenderInProgress*/
+        }else if(getContents.getStringExtra("FROM").equals("SUBJECTACTIVITY")){
+            /*defalt값
+            serailized="{\"nodes\":" +
+                    "[{\"content\":[\"\\u003cp dir\\u003d\\\"ltr\\\"\\u003e\\u003cu\\u003eSTARTWRITE\\u003c/u\\u003e\\u003c/p\\u003e\\n\"]," +
+                    "\"contentStyles\":[]," +
+                    "\"textSettings\":{\"textColor\":\"#000000\"}," +
+                    "\"type\":\"INPUT\"}]}";
+            des = editor.getContentDeserialized(serailized);*/
+            setUpEditor();
         }
-        setUpEditor();
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -290,7 +301,7 @@ public class EditNoteActivity extends AppCompatActivity  {
             }
 
         });
-        editor.render(des);
+
     }
     public void uploadImage(Uri uri) {
         if (uri != null) {
