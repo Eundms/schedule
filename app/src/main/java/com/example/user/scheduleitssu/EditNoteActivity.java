@@ -8,14 +8,12 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.Editable;
-import android.text.SpannableStringBuilder;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -26,13 +24,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.FileProvider;
-
-
-import com.github.irshulx.Components.CustomEditText;
 import com.github.irshulx.Editor;
 import com.github.irshulx.EditorListener;
 import com.github.irshulx.models.EditorContent;
@@ -269,10 +263,8 @@ public class EditNoteActivity extends AppCompatActivity  {
                 editor.clearAllContents();
             }
         });
-        Map<Integer, String> headingTypeface = getHeadingTypeface();
-        Map<Integer, String> contentTypeface = getContentface();
-        editor.setHeadingTypeface(headingTypeface);
-        editor.setContentTypeface(contentTypeface);
+
+
         editor.setDividerLayout(R.layout.tmpl_divider_layout);
         editor.setEditorImageLayout(R.layout.tmpl_image_view);
         editor.setListItemLayout(R.layout.tmpl_list_item);
@@ -540,22 +532,7 @@ public class EditNoteActivity extends AppCompatActivity  {
     }
 
 
-    public Map<Integer, String> getHeadingTypeface() {
-        Map<Integer, String> typefaceMap = new HashMap<>();
-        typefaceMap.put(Typeface.NORMAL, "fonts/GreycliffCF-Bold.ttf");
-        typefaceMap.put(Typeface.BOLD, "fonts/GreycliffCF-Heavy.ttf");
-        typefaceMap.put(Typeface.ITALIC, "fonts/GreycliffCF-Heavy.ttf");
-        typefaceMap.put(Typeface.BOLD_ITALIC, "fonts/GreycliffCF-Bold.ttf");
-        return typefaceMap;
-    }
-    public Map<Integer, String> getContentface() {
-        Map<Integer, String> typefaceMap = new HashMap<>();
-        typefaceMap.put(Typeface.NORMAL, "fonts/Lato-Medium.ttf");
-        typefaceMap.put(Typeface.BOLD, "fonts/Lato-Bold.ttf");
-        typefaceMap.put(Typeface.ITALIC, "fonts/Lato-MediumItalic.ttf");
-        typefaceMap.put(Typeface.BOLD_ITALIC, "fonts/Lato-BoldItalic.ttf");
-        return typefaceMap;
-    }
+
     private static String convertResponseToString(BatchAnnotateImagesResponse response) {
         StringBuilder message = new StringBuilder("I found these things:\n\n");
 

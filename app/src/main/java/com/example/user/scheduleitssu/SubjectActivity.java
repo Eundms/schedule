@@ -42,9 +42,16 @@ public class SubjectActivity extends AppCompatActivity  implements NoteAdapter.O
 
 
         noteArrayList=new ArrayList<>();
-        noteArrayList.add(new Note("Day1_과제1보충설명","","","",""));
-        noteArrayList.add(new Note("Day2_과제2보충설명","","","",""));
-        noteArrayList.add(new Note("Day3_과제3보충설명","","","",""));
+        noteArrayList.add(new Note("{\\\"nodes\\\":\" +\n" +
+                "                    \"[{\\\"content\\\":[\\\"\\\\u003cp dir\\\\u003d\\\\\\\"ltr\\\\\\\"\\\\u003e\\\\u003cu\\\\u003eSTARTWRITE\\\\u003c/u\\\\u003e\\\\u003c/p\\\\u003e\\\\n\\\"],\" +\n" +
+                "                    \"\\\"contentStyles\\\":[],\" +\n" +
+                "                    \"\\\"textSettings\\\":{\\\"textColor\\\":\\\"#000000\\\"},\" +\n" +
+                "                    \"\\\"type\\\":\\\"INPUT\\\"}]}"));
+        noteArrayList.add(new Note("{\\\"nodes\\\":\" +\n" +
+                "                    \"[{\\\"content\\\":[\\\"\\\\u003cp dir\\\\u003d\\\\\\\"ltr\\\\\\\"\\\\u003e\\\\u003cu\\\\u003eSTARTWRITE\\\\u003c/u\\\\u003e\\\\u003c/p\\\\u003e\\\\n\\\"],\" +\n" +
+                "                    \"\\\"contentStyles\\\":[],\" +\n" +
+                "                    \"\\\"textSettings\\\":{\\\"textColor\\\":\\\"#000000\\\"},\" +\n" +
+                "                    \"\\\"type\\\":\\\"INPUT\\\"}]}"));
 
 
 
@@ -73,11 +80,6 @@ public class SubjectActivity extends AppCompatActivity  implements NoteAdapter.O
             subject=receive.getParcelableExtra("subject_info_data");
             toolbar.setTitle(subject.getClassname());
             //노트 부분에 노트를 추가해주세요라고 나오게 레이아웃 설정
-        }else if(infotype.equals("SUBJECTINFO_NOGROUP")){
-            subject=receive.getParcelableExtra("subject_info_data");
-            toolbar.setTitle(subject.getClassname());
-            //그룹 부분에 그룹를 추가해주세요라고 나오게 레이아웃 설정
-
         }else{
            finish();
 
@@ -119,4 +121,5 @@ public class SubjectActivity extends AppCompatActivity  implements NoteAdapter.O
         intent.putExtra("note_info_data",noteArrayList);
         startActivity(intent);
     }
+
 }

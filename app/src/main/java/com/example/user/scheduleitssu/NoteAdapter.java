@@ -1,17 +1,17 @@
 package com.example.user.scheduleitssu;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
+
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.user.scheduleitssu.DataClass.Note;
+import com.github.irshulx.Editor;
+import com.github.irshulx.models.EditorContent;
 
 import java.util.ArrayList;
 
@@ -33,12 +33,13 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
         return noteArrayList;
     }
     public class NoteViewHolder extends RecyclerView.ViewHolder{
-        TextView title;
+//        TextView title;
+         Editor shownote;
         public NoteViewHolder(View itemView){
             super(itemView);
-            this.title=itemView.findViewById(R.id.subjectnote_item_title);
+//            this.title=itemView.findViewById(R.id.subjectnote_item_title);
+            this.shownote=itemView.findViewById(R.id.shownote);
             itemView.setOnClickListener(new View.OnClickListener(){
-
                 @Override
                 public void onClick(View v) {
                     int position =getAdapterPosition();
@@ -60,10 +61,15 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
     @Override
     public void onBindViewHolder(@NonNull NoteViewHolder holder, int position) {
         Note note=noteArrayList.get(position);
-        holder.title.setText(note.getTitle_note());
+  //      holder.title.setText(note.getTitle_note());
+        String a="{\"nodes\":[{\"content\":[\"\\u003cp dir\\u003d\\\"ltr\\\"\\u003e\\u003cu\\u003eabc\\u003c/u\\u003e\\u003c/p\\u003e\\n\"],\"contentStyles\":[],\"textSettings\":{\"textColor\":\"#000000\"},\"type\":\"INPUT\"},{\"content\":[\"\\u003cp dir\\u003d\\\"ltr\\\"\\u003e\\u003cu\\u003edef\\u003c/u\\u003e\\u003c/p\\u003e\\n\"],\"contentStyles\":[],\"textSettings\":{\"textColor\":\"#000000\"},\"type\":\"INPUT\"}]}";
+
+        EditorContent Deserialized= holder.shownote.getContentDeserialized(a);
+        holder.shownote.render(Deserialized);
     }
     @Override
     public int getItemCount(){
         return this.noteArrayList.size();
     }
+
 }

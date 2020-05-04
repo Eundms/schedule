@@ -4,26 +4,25 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class Note implements Parcelable {
-    String title_note;
-    String text_note;
-    String img_note;
+
+    String content;
     String whomake_note;
     String whenmake_note;
     String editdate_note;
     String whoedit_note;
-
-    public Note(String title_note, String text_note, String img_note, String whomake_note, String whenmake_note) {
-        this.title_note = title_note;
-        this.text_note = text_note;
-        this.img_note = img_note;
+    public Note(String serialize_note){
+        this.content=serialize_note;
+    }
+    public Note(String serialized_note, String whomake_note, String whenmake_note) {
+        this.content =serialized_note;
         this.whomake_note = whomake_note;
         this.whenmake_note = whenmake_note;
+        this.editdate_note=editdate_note;
+        this.whoedit_note=whoedit_note;
     }
 
     protected Note(Parcel in) {
-        title_note = in.readString();
-        text_note = in.readString();
-        img_note = in.readString();
+        content =in.readString();
         whomake_note = in.readString();
         whenmake_note = in.readString();
        editdate_note = in.readString();
@@ -42,30 +41,14 @@ public class Note implements Parcelable {
         }
     };
 
-    public String getTitle_note() {
-        return title_note;
+
+    public String getContent() {
+        return content;
     }
 
-    public void setTitle_note(String title_note) {
-        this.title_note = title_note;
+    public void setContent(String content) {
+        this.content = content;
     }
-
-    public String getText_note() {
-        return text_note;
-    }
-
-    public void setText_note(String text_note) {
-        this.text_note = text_note;
-    }
-
-    public String getImg_note() {
-        return img_note;
-    }
-
-    public void setImg_note(String img_note) {
-        this.img_note = img_note;
-    }
-
     public String getWhomake_note() {
         return whomake_note;
     }
@@ -105,9 +88,7 @@ public class Note implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(title_note);
-        dest.writeString(text_note);
-        dest.writeString(img_note);
+        dest.writeString(content);
         dest.writeString(whomake_note);
         dest.writeString(whenmake_note);
         dest.writeString(editdate_note);
