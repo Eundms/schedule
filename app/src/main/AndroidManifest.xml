@@ -28,8 +28,6 @@
             android:windowSoftInputMode="adjustResize"></activity>
 
         <activity android:name=".InformationActivity"></activity>
-        <activity android:name=".SignupActivity"></activity>
-        <activity android:name=".PasswordResetActivity" />
         <activity android:name=".AddClassActivity" />
         <activity android:name=".SubjectActivity"></activity>
         <activity

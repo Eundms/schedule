@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.github.irshulx.Editor;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -19,6 +20,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import com.example.user.scheduleitssu.DataClass.*;
 
+import java.util.HashMap;
 import java.util.Map;
 
 
@@ -38,7 +40,7 @@ public class FirebaseCommunicator {
         if(user==null)
             user=FirebaseAuth.getInstance().getCurrentUser();
         if(userPath==null)
-            userPath=user.getDisplayName()+"-"+user.getUid();
+            userPath=user.getDisplayName()+"_"+user.getUid();
         if(myRef==null)
             myRef = FirebaseDatabase.getInstance().getReference().child("Student").child(userPath);
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -78,10 +80,20 @@ public class FirebaseCommunicator {
     }
 
     public void uploadClass(final Group group){
-        myRef.child("Student").updateChildren((Map<String, Object>) group);
+        myRef.updateChildren((Map<String, Object>) group);
     }
     //수정 필요...
-
+   public void uploadNote(Editor edit){
+        String key=myRef.push().getKey();
+       /* Map<Integer, String> editmap=new HashMap<>();
+        edit.setContentTypeface(editmap);
+        HashMap<String,Object> result=new HashMap<>();
+        result.put("note",editmap);
+        myRef.child("note");*/
+       Map<String,Editor> note=new HashMap<>();
+       note.put("note1",edit);
+       myRef.setValue(note);
+   }
 
 
 
