@@ -51,10 +51,6 @@ import com.google.api.services.vision.v1.model.BatchAnnotateImagesResponse;
 import com.google.api.services.vision.v1.model.EntityAnnotation;
 import com.google.api.services.vision.v1.model.Feature;
 import com.google.api.services.vision.v1.model.Image;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -69,9 +65,8 @@ import java.util.Map;
 import top.defaults.colorpicker.ColorPickerPopup;
 
 public class EditNoteActivity extends AppCompatActivity  {
-   Editor editor;
+    Editor editor;
     static Editable editable;
-    FirebaseCommunicator firebaseCommunicator=new FirebaseCommunicator();
     private static final String CLOUD_VISION_API_KEY = "AIzaSyDQnNiMu_Q50EdL7ryz1CHnJjwfqWtdXxE";
     public static final String FILE_NAME = "temp.jpg";
     private static final String ANDROID_CERT_HEADER = "X-Android-Cert";
@@ -83,18 +78,9 @@ public class EditNoteActivity extends AppCompatActivity  {
     private static final int GALLERY_IMAGE_REQUEST = 11;
     public static final int CAMERA_PERMISSIONS_REQUEST = 22;
     public static final int CAMERA_IMAGE_REQUEST = 33;
-//나중에 바꿔야하는 부분
-   /**/ private TextView mImageDetails;
+    //나중에 바꿔야하는 부분
+    /**/ private TextView mImageDetails;
     private ImageView mMainImage;
-
-  //  Button btn=(Button)findViewById(R.id.adding);
-
-    FirebaseDatabase firebaseDatabase= FirebaseDatabase.getInstance();
-    DatabaseReference databaseReference=firebaseDatabase.getReference();
-    FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();
-
-
-
     String serailized;
     EditorContent des;
     @Override
@@ -109,7 +95,7 @@ public class EditNoteActivity extends AppCompatActivity  {
         mMainImage = findViewById(R.id.main_image);
         editor = findViewById(R.id.editor);
 
-       Intent getContents=getIntent();
+        Intent getContents=getIntent();
         if(getContents.getStringExtra("FROM").equals("DETAILNOTEACTIVITY")&&getContents.getStringExtra("RESULT").equals("OK")) {
             serailized = getContents.getStringExtra("NOTECONTENT");
             des = editor.getContentDeserialized(serailized);
@@ -299,13 +285,15 @@ public class EditNoteActivity extends AppCompatActivity  {
 
             @Override
             public void onUpload(Bitmap image, String uuid) {
-                Toast.makeText(EditNoteActivity.this, uuid, Toast.LENGTH_LONG).show();
+                Toast.makeText(EditNoteActivity.this, uuid+image, Toast.LENGTH_LONG).show();
                 /**
                  * TODO do your upload here from the bitmap received and all onImageUploadComplete(String url); to insert the result url to
                  * let the editor know the upload has completed
+                 * 이곳에서 이미지를 파이어베이스에 올려야함.
                  */
-                Log.d("onUpload!!", "" + uuid);
-                editor.onImageUploadComplete("", uuid);
+                Log.d("onUpload!!", "gs://scheduleitssu-685f7.appspot.com/" + uuid);
+
+                editor.onImageUploadComplete("gs://scheduleitssu-685f7.appspot.com/", uuid);
             }
 
             @Override
@@ -340,7 +328,7 @@ public class EditNoteActivity extends AppCompatActivity  {
     }
     private void callCloudVision(final Bitmap bitmap) {
         // Switch text to loading
-       // mImageDetails.setText(R.string.loading_message);
+        // mImageDetails.setText(R.string.loading_message);
         // Do the real work in an async task, because we need to use the network anyway
         try {
             AsyncTask<Object, Void, String> labelDetectionTask = new LableDetectionTask(this, prepareAnnotationRequest(bitmap));
@@ -449,8 +437,8 @@ public class EditNoteActivity extends AppCompatActivity  {
                 Log.d("EDITNOTEACTIVITY","onPostExecute"+result);
                 //This part is for image=============================================================================여기야 여기====
                 imageDetail.setText(result);
-                
-               //editor.render();
+
+                //editor.render();
 
             }
         }
@@ -501,17 +489,7 @@ public class EditNoteActivity extends AppCompatActivity  {
                 /*text가 NULL이라면
                 intent.putExtra("RESULT","CANCLED");
                 setResult(RESULT_CANCELED, intent);
-
                 */
-                /*Toast.makeText(getApplicationContext(),"ㅎㅎ",Toast.LENGTH_SHORT);
-                String uid=user.getUid();
-                firebaseCommunicator.uploadNote(editor);
-*/
-                // editor.onImageUploadComplete("", uuid);
-                //databaseReference.child("Student").child(uid).child("Subject").setValue(editor);
-                firebaseCommunicator.uploadNote(editor);
-
-
                 finish();
                 return true;
             }
@@ -546,46 +524,6 @@ public class EditNoteActivity extends AppCompatActivity  {
         return new File(dir, FILE_NAME);
     }
 
-
-        Map<Integer, String> headingTypeface = getHeadingTypeface();
-        Map<Integer, String> contentTypeface = getContentface();
-        editor.setHeadingTypeface(headingTypeface);
-        editor.setContentTypeface(contentTypeface);
-        editor.setDividerLayout(R.layout.tmpl_divider_layout);
-        editor.setEditorImageLayout(R.layout.tmpl_image_view);
-        editor.setListItemLayout(R.layout.tmpl_list_item);
-
-        editor.setEditorListener(new EditorListener() {
-            @Override
-            public void onTextChanged(EditText editText, Editable text) {
-                //여기서 인식이 되는 거
-                Toast.makeText(EditNoteActivity.this, text, Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onUpload(Bitmap image, String uuid) {
-                Toast.makeText(EditNoteActivity.this, uuid, Toast.LENGTH_LONG).show();
-                /**
-                 * TODO do your upload here from the bitmap received and all onImageUploadComplete(String url); to insert the result url to
-                 * let the editor know the upload has completed
-                 */
-                Log.d("onUpload!!", "" + uuid);
-
-            }
-
-            @Override
-            public View onRenderMacro(String name, Map<String, Object> props, int index) {
-                View view = getLayoutInflater().inflate(R.layout.layout_authored_by, null);
-                //여기서 view 설정해서 액티비티 실행해봐도 될것.
-                return view;
-            }
-
-        });
-
-
-
-    }
-
     private View insertMacro() {
         View view = getLayoutInflater().inflate(R.layout.layout_authored_by, null);
         Map<String, Object> map = new HashMap<>();
@@ -600,14 +538,7 @@ public class EditNoteActivity extends AppCompatActivity  {
         int b = Color.blue(color);
         return String.format(Locale.getDefault(), "#%02X%02X%02X", r, g, b);
     }
-    public static void setGhost(Button button) {
-        int radius = 4;
-        GradientDrawable background = new GradientDrawable();
-        background.setShape(GradientDrawable.RECTANGLE);
-        background.setStroke(4, Color.WHITE);
-        background.setCornerRadius(radius);
-        button.setBackgroundDrawable(background);
-    }
+
 
     public Map<Integer, String> getHeadingTypeface() {
         Map<Integer, String> typefaceMap = new HashMap<>();
@@ -655,7 +586,18 @@ public class EditNoteActivity extends AppCompatActivity  {
                 })
                 .setNegativeButton("No", null)
                 .show();
-
     }
-
 }
+   /* @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        setGhost((Button) findViewById(R.id.editnote_add_menu));
+    }
+    public static void setGhost(Button button) {
+        int radius = 4;
+        GradientDrawable background = new GradientDrawable();
+        background.setShape(GradientDrawable.RECTANGLE);
+        background.setStroke(4, Color.WHITE);
+        background.setCornerRadius(radius);
+        button.setBackgroundDrawable(background);
+    }*/
