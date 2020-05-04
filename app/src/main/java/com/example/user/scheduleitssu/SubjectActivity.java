@@ -9,6 +9,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
@@ -90,11 +92,23 @@ public class SubjectActivity extends AppCompatActivity  implements NoteAdapter.O
                 finish();
                 return true;
             }
+            case R.id.addnote_add_menu:{ //맞는지 모르겠음
+                Intent intent = new Intent(this, EditNoteActivity.class);
+                intent.putExtra("FROM","SUBJECTACTIVITY");
+                startActivity(intent);
+                return true;
+            }
         }
         return super.onOptionsItemSelected(item);
     }
 
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.menu_addnote, menu);
+        return true;
+    }
 
 
 

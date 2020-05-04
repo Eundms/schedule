@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-
+<!--나중에 여기부터 잘라내기-->
     <TextView
         android:id="@+id/image_details"
         android:layout_width="match_parent"
@@ -17,6 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:scaleType="fitCenter" />
+    <!--나중에 여기까지 잘라내기-->
 
 
     <RelativeLayout

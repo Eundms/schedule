@@ -31,8 +31,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.FileProvider;
 
+
+import com.github.irshulx.Components.CustomEditText;
 import com.github.irshulx.Editor;
 import com.github.irshulx.EditorListener;
+import com.github.irshulx.models.EditorContent;
 import com.github.irshulx.models.EditorTextStyle;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.googleapis.json.GoogleJsonResponseException;
@@ -83,6 +86,7 @@ public class EditNoteActivity extends AppCompatActivity  {
 //나중에 바꿔야하는 부분
    /**/ private TextView mImageDetails;
     private ImageView mMainImage;
+
   //  Button btn=(Button)findViewById(R.id.adding);
 
     FirebaseDatabase firebaseDatabase= FirebaseDatabase.getInstance();
@@ -90,6 +94,9 @@ public class EditNoteActivity extends AppCompatActivity  {
     FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();
 
 
+
+    String serailized;
+    EditorContent des;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -101,7 +108,25 @@ public class EditNoteActivity extends AppCompatActivity  {
         mImageDetails = findViewById(R.id.image_details);
         mMainImage = findViewById(R.id.main_image);
         editor = findViewById(R.id.editor);
-        setUpEditor();
+
+       Intent getContents=getIntent();
+        if(getContents.getStringExtra("FROM").equals("DETAILNOTEACTIVITY")&&getContents.getStringExtra("RESULT").equals("OK")) {
+            serailized = getContents.getStringExtra("NOTECONTENT");
+            des = editor.getContentDeserialized(serailized);
+            setUpEditor();
+            editor.render(des);
+
+            /*setSerialRenderInProgress*/
+        }else if(getContents.getStringExtra("FROM").equals("SUBJECTACTIVITY")){
+            /*defalt값
+            serailized="{\"nodes\":" +
+                    "[{\"content\":[\"\\u003cp dir\\u003d\\\"ltr\\\"\\u003e\\u003cu\\u003eSTARTWRITE\\u003c/u\\u003e\\u003c/p\\u003e\\n\"]," +
+                    "\"contentStyles\":[]," +
+                    "\"textSettings\":{\"textColor\":\"#000000\"}," +
+                    "\"type\":\"INPUT\"}]}";
+            des = editor.getContentDeserialized(serailized);*/
+            setUpEditor();
+        }
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -127,6 +152,170 @@ public class EditNoteActivity extends AppCompatActivity  {
             Toast.makeText(getApplicationContext(), "Cancelled", Toast.LENGTH_SHORT).show();
             // editor.RestoreState();
         }
+    }
+    private void setUpEditor() {
+        findViewById(R.id.action_camera).setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(EditNoteActivity.this, "camera" , Toast.LENGTH_LONG).show();
+                AlertDialog.Builder builder = new AlertDialog.Builder(EditNoteActivity.this);
+                builder
+                        .setMessage(R.string.dialog_select_prompt)
+                        .setPositiveButton(R.string.dialog_select_gallery, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                EditNoteActivity.this.startGalleryChooser();
+                            }
+                        })
+                        .setNegativeButton(R.string.dialog_select_camera, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                EditNoteActivity.this.startCamera();
+                            }
+                        });
+                builder.create().show();
+            }
+        });
+        findViewById(R.id.action_h1).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editor.updateTextStyle(EditorTextStyle.H1);
+            }
+        });
+        findViewById(R.id.action_h2).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editor.updateTextStyle(EditorTextStyle.H2);
+            }
+        });
+        findViewById(R.id.action_h3).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editor.updateTextStyle(EditorTextStyle.H3);
+            }
+        });
+        findViewById(R.id.action_bold).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editor.updateTextStyle(EditorTextStyle.BOLD);
+            }
+        });
+        findViewById(R.id.action_Italic).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editor.updateTextStyle(EditorTextStyle.ITALIC);
+            }
+        });
+        findViewById(R.id.action_indent).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editor.updateTextStyle(EditorTextStyle.INDENT);
+            }
+        });
+        findViewById(R.id.action_blockquote).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editor.updateTextStyle(EditorTextStyle.BLOCKQUOTE);
+            }
+        });
+        findViewById(R.id.action_outdent).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editor.updateTextStyle(EditorTextStyle.OUTDENT);
+            }
+        });
+        findViewById(R.id.action_bulleted).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editor.insertList(false);
+            }
+        });
+        findViewById(R.id.action_unordered_numbered).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editor.insertList(true);
+            }
+        });
+        findViewById(R.id.action_hr).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editor.insertDivider();
+            }
+        });
+        findViewById(R.id.action_color).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new ColorPickerPopup.Builder(EditNoteActivity.this)
+                        .initialColor(Color.RED) // Set initial color
+                        .enableAlpha(true) // Enable alpha slider or not
+                        .okTitle("Choose")
+                        .cancelTitle("Cancel")
+                        .showIndicator(true)
+                        .showValue(true)
+                        .build()
+                        .show(findViewById(android.R.id.content), new ColorPickerPopup.ColorPickerObserver() {
+                            @Override
+                            public void onColorPicked(int color) {
+                                Toast.makeText(EditNoteActivity.this, "picked" + colorHex(color), Toast.LENGTH_LONG).show();
+                                editor.updateTextColor(colorHex(color));
+                            }
+                            @Override
+                            public void onColor(int color, boolean fromUser) {
+                            }
+                        });
+            }
+        });
+        findViewById(R.id.action_insert_image).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editor.openImagePicker();
+            }
+        });
+        findViewById(R.id.action_insert_link).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editor.insertLink();
+            }
+        });
+        findViewById(R.id.action_erase).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editor.clearAllContents();
+            }
+        });
+        Map<Integer, String> headingTypeface = getHeadingTypeface();
+        Map<Integer, String> contentTypeface = getContentface();
+        editor.setHeadingTypeface(headingTypeface);
+        editor.setContentTypeface(contentTypeface);
+        editor.setDividerLayout(R.layout.tmpl_divider_layout);
+        editor.setEditorImageLayout(R.layout.tmpl_image_view);
+        editor.setListItemLayout(R.layout.tmpl_list_item);
+        editor.setEditorListener(new EditorListener() {
+            @Override
+            public void onTextChanged(EditText editText, Editable text) {
+                //여기서 인식이 되는 거
+                // Toast.makeText(EditNoteActivity.this, text, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onUpload(Bitmap image, String uuid) {
+                Toast.makeText(EditNoteActivity.this, uuid, Toast.LENGTH_LONG).show();
+                /**
+                 * TODO do your upload here from the bitmap received and all onImageUploadComplete(String url); to insert the result url to
+                 * let the editor know the upload has completed
+                 */
+                Log.d("onUpload!!", "" + uuid);
+                editor.onImageUploadComplete("", uuid);
+            }
+
+            @Override
+            public View onRenderMacro(String name, Map<String, Object> props, int index) {
+                View view = getLayoutInflater().inflate(R.layout.layout_authored_by, null);
+                return view;
+            }
+
+        });
+
     }
     public void uploadImage(Uri uri) {
         if (uri != null) {
@@ -260,14 +449,12 @@ public class EditNoteActivity extends AppCompatActivity  {
                 Log.d("EDITNOTEACTIVITY","onPostExecute"+result);
                 //This part is for image=============================================================================여기야 여기====
                 imageDetail.setText(result);
-                editable = new SpannableStringBuilder(result);
-                Editor editor=activity.findViewById(R.id.editor);
-                /*has protected access in 'com.github.irshulx.EditorCore*/
-                //CustomEditText editText = editor.getInputExtensions().getEditTextPrevious(editor.getChildCount());
-                //editText.setText(editText.getText() + " " + "TEXT");
+                
+               //editor.render();
 
             }
         }
+
     }
     private Bitmap scaleBitmapDown(Bitmap bitmap, int maxDimension) {
 
@@ -310,7 +497,7 @@ public class EditNoteActivity extends AppCompatActivity  {
                 intent.putExtra("NOTECONTENT",text);
 
                 setResult(RESULT_OK, intent);
-                Log.d("EDITNOTEACTIVITY"," \n"+text+"\n"+editor.getContentAsHTML(text));
+                //Log.d("EDITNOTEACTIVITY"," \n"+text+"\n"+editor.getContentAsHTML(text));
                 /*text가 NULL이라면
                 intent.putExtra("RESULT","CANCLED");
                 setResult(RESULT_CANCELED, intent);
@@ -358,136 +545,7 @@ public class EditNoteActivity extends AppCompatActivity  {
         File dir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         return new File(dir, FILE_NAME);
     }
-    private void setUpEditor() {
-        findViewById(R.id.action_camera).setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(EditNoteActivity.this, "camera" , Toast.LENGTH_LONG).show();
-                AlertDialog.Builder builder = new AlertDialog.Builder(EditNoteActivity.this);
-                builder
-                        .setMessage(R.string.dialog_select_prompt)
-                        .setPositiveButton(R.string.dialog_select_gallery, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                EditNoteActivity.this.startGalleryChooser();
-                            }
-                        })
-                        .setNegativeButton(R.string.dialog_select_camera, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                EditNoteActivity.this.startCamera();
-                            }
-                        });
-                builder.create().show();
-            }
-        });
-        findViewById(R.id.action_h1).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                editor.updateTextStyle(EditorTextStyle.H1);
-            }
-        });
-        findViewById(R.id.action_h2).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                editor.updateTextStyle(EditorTextStyle.H2);
-            }
-        });
-        findViewById(R.id.action_h3).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                editor.updateTextStyle(EditorTextStyle.H3);
-            }
-        });
-        findViewById(R.id.action_bold).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                editor.updateTextStyle(EditorTextStyle.BOLD);
-            }
-        });
-        findViewById(R.id.action_Italic).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                editor.updateTextStyle(EditorTextStyle.ITALIC);
-            }
-        });
-        findViewById(R.id.action_indent).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                editor.updateTextStyle(EditorTextStyle.INDENT);
-            }
-        });
-        findViewById(R.id.action_blockquote).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                editor.updateTextStyle(EditorTextStyle.BLOCKQUOTE);
-            }
-        });
-        findViewById(R.id.action_outdent).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                editor.updateTextStyle(EditorTextStyle.OUTDENT);
-            }
-        });
-        findViewById(R.id.action_bulleted).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                editor.insertList(false);
-            }
-        });
-        findViewById(R.id.action_unordered_numbered).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                editor.insertList(true);
-            }
-        });
-        findViewById(R.id.action_hr).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                editor.insertDivider();
-            }
-        });
-        findViewById(R.id.action_color).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                new ColorPickerPopup.Builder(EditNoteActivity.this)
-                        .initialColor(Color.RED) // Set initial color
-                        .enableAlpha(true) // Enable alpha slider or not
-                        .okTitle("Choose")
-                        .cancelTitle("Cancel")
-                        .showIndicator(true)
-                        .showValue(true)
-                        .build()
-                        .show(findViewById(android.R.id.content), new ColorPickerPopup.ColorPickerObserver() {
-                            @Override
-                            public void onColorPicked(int color) {
-                                Toast.makeText(EditNoteActivity.this, "picked" + colorHex(color), Toast.LENGTH_LONG).show();
-                                editor.updateTextColor(colorHex(color));
-                            }
-                            @Override
-                            public void onColor(int color, boolean fromUser) {
-                            }
-                        });
-            }
-        });
-        findViewById(R.id.action_insert_image).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                editor.openImagePicker();
-            }
-        });
-        findViewById(R.id.action_insert_link).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                editor.insertLink();
-            }
-        });
-        findViewById(R.id.action_erase).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                editor.clearAllContents();
-            }
-        });
+
 
         Map<Integer, String> headingTypeface = getHeadingTypeface();
         Map<Integer, String> contentTypeface = getContentface();
@@ -527,6 +585,7 @@ public class EditNoteActivity extends AppCompatActivity  {
 
 
     }
+
     private View insertMacro() {
         View view = getLayoutInflater().inflate(R.layout.layout_authored_by, null);
         Map<String, Object> map = new HashMap<>();
@@ -573,6 +632,7 @@ public class EditNoteActivity extends AppCompatActivity  {
         if (labels != null) {
             for (EntityAnnotation label : labels) {
                 message.append(String.format(Locale.US, "%.3f: %s", label.getScore(), label.getDescription()));
+                /*Locale에서 korea로 바꿔야함.*/
                 message.append("\n");
             }
         } else {
