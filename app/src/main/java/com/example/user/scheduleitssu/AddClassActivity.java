@@ -1,5 +1,6 @@
 package com.example.user.scheduleitssu;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
@@ -11,8 +12,13 @@ import android.widget.Toast;
 import com.example.user.scheduleitssu.DataClass.Subject;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.HashMap;
 
 //firebase database
 
@@ -48,15 +54,24 @@ Button addbtn;
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.addsubjectbtn:
-                TextView groupname=(TextView)findViewById(R.id.makegroupname);
-                String group=groupname.getText().toString();
-                Subject sub=new Subject(group);
-                String uid=user.getUid();
+                  databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        TextView subjectname=(TextView)findViewById(R.id.makesubjectname);
+                        Subject sub=new Subject(subjectname.getText().toString());
+                        String uid=user.getDisplayName()+"_"+user.getUid();
+                        HashMap<String, Object> add = new HashMap<>();
+                        add.put("Subject_"+sub.getClassname(),sub);
+                        databaseReference.child("Student").child(uid).child("Subject").updateChildren(add);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
                 //subject class 업로드
-                /*databaseReference.child("Student").child(uid).child("Subject").setValue(sub);
-                databaseReference.child("Subject").push().setValue(sub);*/
-
-
+               // FirebaseDatabase.getInstance().getReference().child("Student").child(path).updateChildren(initial);
 
                 finish();
                 break;

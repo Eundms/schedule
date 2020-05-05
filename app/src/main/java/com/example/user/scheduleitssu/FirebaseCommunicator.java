@@ -83,15 +83,15 @@ public class FirebaseCommunicator {
         myRef.updateChildren((Map<String, Object>) group);
     }
     //수정 필요...
-   public void uploadNote(Editor edit){
+   public void uploadNote(Note note){
         String key=myRef.push().getKey();
        /* Map<Integer, String> editmap=new HashMap<>();
         edit.setContentTypeface(editmap);
         HashMap<String,Object> result=new HashMap<>();
         result.put("note",editmap);
         myRef.child("note");*/
-       Map<String,Editor> note=new HashMap<>();
-       note.put("note1",edit);
+       Map<String,Note> note1=new HashMap<>();
+       note1.put("note1",note);
        myRef.setValue(note);
    }
 

@@ -35,7 +35,7 @@
         app:srcCompat="@mipmap/ic_launcher_round" />
 
     <LinearLayout
-        android:id="@+id/이름입력layout"
+        android:id="@+id/닉네임입력layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/image"
@@ -46,10 +46,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="이름" />
+            android:text="닉네임" />
 
         <EditText
-            android:id="@+id/editName"
+            android:id="@+id/editNicName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -60,7 +60,7 @@
 
     <LinearLayout
         android:id="@+id/학번입력layout"
-        android:layout_below="@+id/이름입력layout"
+        android:layout_below="@+id/닉네임입력layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dp"
@@ -80,10 +80,11 @@
             android:maxLength="20"
             android:ems="5"
             android:singleLine="true"
+
  />
     </LinearLayout>
     <LinearLayout
-        android:id="@+id/이메일입력layout"
+        android:id="@+id/연락처입력layout"
         android:layout_below="@+id/학번입력layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -94,10 +95,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="이메일" />
+            android:text="연락처" />
 
         <EditText
-            android:id="@+id/editemailId"
+            android:id="@+id/editContectId"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"

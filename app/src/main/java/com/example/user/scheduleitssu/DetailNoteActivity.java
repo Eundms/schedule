@@ -20,6 +20,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 
+import com.example.user.scheduleitssu.DataClass.Note;
 import com.github.irshulx.Editor;
 import com.github.irshulx.EditorListener;
 import com.github.irshulx.models.EditorContent;
@@ -34,12 +35,11 @@ import java.util.Map;
 
 public class DetailNoteActivity extends AppCompatActivity {
     private static final int DETAILNOTEACTIVITY_REQUEST = 1234;
-
     FirebaseDatabase firebaseDatabase= FirebaseDatabase.getInstance();
     DatabaseReference databaseReference=firebaseDatabase.getReference();
     FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();
-  
-    String serialized="{\"nodes\":[{\"content\":[\"\\u003cp dir\\u003d\\\"ltr\\\"\\u003e\\u003cu\\u003eabc\\u003c/u\\u003e\\u003c/p\\u003e\\n\"],\"contentStyles\":[],\"textSettings\":{\"textColor\":\"#000000\"},\"type\":\"INPUT\"},{\"content\":[\"\\u003cp dir\\u003d\\\"ltr\\\"\\u003e\\u003cu\\u003edef\\u003c/u\\u003e\\u003c/p\\u003e\\n\"],\"contentStyles\":[],\"textSettings\":{\"textColor\":\"#000000\"},\"type\":\"INPUT\"}]}";
+    Note note;
+    String serialized;
     Editor renderer;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,10 +48,25 @@ public class DetailNoteActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.detailnote_toolbar);
         toolbar.setTitle("DetailNoteActivity");
     /*DB에서 serialized받아와서 String serialized에 넣는 부분 추가해야함*/
+
+        processIntent();
         setnote();
+
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
+    }
+    void processIntent(){
+        Intent getIntent=getIntent();
+        String dataexists=getIntent.getStringExtra("DATA");
+        Log.d("DATA_NOTE",""+dataexists);
+        if(dataexists.equals("EXIST")){
+            note= getIntent.getParcelableExtra("NOTE");
+            serialized= note.getContent();
+        }else{/*dataexists.equals("NULL")*/
+            serialized="{\"nodes\":[{\"content\":[\"\\u003cp dir\\u003d\\\"ltr\\\"\\" +
+            "u003e\\u003cu\\u003eabc\\u003c/u\\u003e\\u003c/p\\u003e\\n\"]," +
+            "\"contentStyles\":[],\"textSettings\":{\"textColor\":\"#000000\"},\"type\":\"INPUT\"}]}";
+        }
     }
 void setnote(){
     renderer= (Editor)findViewById(R.id.renderer);
@@ -107,7 +122,7 @@ void setnote(){
         }
         return super.onOptionsItemSelected(item);
     }
-    public Map<Integer, String> getHeadingTypeface() {
+   /* public Map<Integer, String> getHeadingTypeface() {
         Map<Integer, String> typefaceMap = new HashMap<>();
         typefaceMap.put(Typeface.NORMAL, "fonts/GreycliffCF-Bold.ttf");
         typefaceMap.put(Typeface.BOLD, "fonts/GreycliffCF-Heavy.ttf");
@@ -122,7 +137,7 @@ void setnote(){
         typefaceMap.put(Typeface.ITALIC, "fonts/Lato-MediumItalic.ttf");
         typefaceMap.put(Typeface.BOLD_ITALIC, "fonts/Lato-BoldItalic.ttf");
         return typefaceMap;
-    }
+    }*/
 
 }
 

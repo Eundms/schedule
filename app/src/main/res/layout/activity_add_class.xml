@@ -44,12 +44,12 @@
 
 
     <EditText
-        android:id="@+id/makegroupname"
+        android:id="@+id/makesubjectname"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPersonName"
-        android:hint="그룹 이름" />
+        android:hint="과목 이름" />
 
     <LinearLayout
         android:id="@+id/버튼layout"

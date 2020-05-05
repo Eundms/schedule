@@ -69,7 +69,6 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectV
             else {
                 //itemView각각에 입력하기
                subject_name.setText(object.getClassname());
-               subject_date.setText(object.getClasshours());
             }
         }
 

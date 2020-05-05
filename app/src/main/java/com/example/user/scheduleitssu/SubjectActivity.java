@@ -42,17 +42,12 @@ public class SubjectActivity extends AppCompatActivity  implements NoteAdapter.O
 
 
         noteArrayList=new ArrayList<>();
-        noteArrayList.add(new Note("{\\\"nodes\\\":\" +\n" +
-                "                    \"[{\\\"content\\\":[\\\"\\\\u003cp dir\\\\u003d\\\\\\\"ltr\\\\\\\"\\\\u003e\\\\u003cu\\\\u003eSTARTWRITE\\\\u003c/u\\\\u003e\\\\u003c/p\\\\u003e\\\\n\\\"],\" +\n" +
-                "                    \"\\\"contentStyles\\\":[],\" +\n" +
-                "                    \"\\\"textSettings\\\":{\\\"textColor\\\":\\\"#000000\\\"},\" +\n" +
-                "                    \"\\\"type\\\":\\\"INPUT\\\"}]}"));
-        noteArrayList.add(new Note("{\\\"nodes\\\":\" +\n" +
-                "                    \"[{\\\"content\\\":[\\\"\\\\u003cp dir\\\\u003d\\\\\\\"ltr\\\\\\\"\\\\u003e\\\\u003cu\\\\u003eSTARTWRITE\\\\u003c/u\\\\u003e\\\\u003c/p\\\\u003e\\\\n\\\"],\" +\n" +
-                "                    \"\\\"contentStyles\\\":[],\" +\n" +
-                "                    \"\\\"textSettings\\\":{\\\"textColor\\\":\\\"#000000\\\"},\" +\n" +
-                "                    \"\\\"type\\\":\\\"INPUT\\\"}]}"));
-
+        noteArrayList.add(new Note("{\"nodes\":[{\"content\":[\"\\u003cp dir\\u003d\\\"ltr\\\"\\" +
+                "u003e\\u003cu\\u003eaaa\\u003c/u\\u003e\\u003c/p\\u003e\\n\"]," +
+                "\"contentStyles\":[],\"textSettings\":{\"textColor\":\"#000000\"},\"type\":\"INPUT\"}]}"));
+        noteArrayList.add(new Note("{\"nodes\":[{\"content\":[\"\\u003cp dir\\u003d\\\"ltr\\\"\\" +
+                "u003e\\u003cu\\u003eddd\\u003c/u\\u003e\\u003c/p\\u003e\\n\"]," +
+                "\"contentStyles\":[],\"textSettings\":{\"textColor\":\"#000000\"},\"type\":\"INPUT\"}]}"));
 
 
 
@@ -60,10 +55,6 @@ public class SubjectActivity extends AppCompatActivity  implements NoteAdapter.O
         LinearLayoutManager layoutManager2=new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
 
         NoteRecyclerView.setLayoutManager(layoutManager2);
-
-        // Log.d("group",group.getGroupname()+group.getNumofmember());
-
-
 
         noteAdapter=new NoteAdapter(this,noteArrayList);
         noteAdapter.setOnNoteItemClickListener(this);
@@ -80,9 +71,8 @@ public class SubjectActivity extends AppCompatActivity  implements NoteAdapter.O
             subject=receive.getParcelableExtra("subject_info_data");
             toolbar.setTitle(subject.getClassname());
             //노트 부분에 노트를 추가해주세요라고 나오게 레이아웃 설정
-        }else{
-           finish();
-
+        }else {
+            finish();
         }
     }
 
@@ -90,13 +80,13 @@ public class SubjectActivity extends AppCompatActivity  implements NoteAdapter.O
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
-            case android.R.id.home:{ //맞는지 모르겠음
+            case android.R.id.home:{
                 finish();
                 return true;
             }
-            case R.id.addnote_add_menu:{ //맞는지 모르겠음
+            case R.id.addnote_add_menu:{
                 Intent intent = new Intent(this, EditNoteActivity.class);
-                intent.putExtra("FROM","SUBJECTACTIVITY");
+
                 startActivity(intent);
                 return true;
             }
@@ -116,9 +106,11 @@ public class SubjectActivity extends AppCompatActivity  implements NoteAdapter.O
 
     @Override
     public void onNoteItemClick(View v, int pos) {
+        //Log.d("NOTE","Clicked");
         Intent intent=new Intent(this,DetailNoteActivity.class);
-        intent.putExtra("NoteInfoType","NOTEINFO_DEFAULT");
-        intent.putExtra("note_info_data",noteArrayList);
+        intent.putExtra("DATA","EXIST");
+        intent.putExtra("NOTE",noteArrayList.get(pos));
+        Log.d("DATA_NOTE",""+noteArrayList.get(pos).getContent());
         startActivity(intent);
     }
 

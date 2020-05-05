@@ -40,20 +40,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        /*FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        //유저가 로그인이 안된 상태면 회원가입/로그인 창으로 돌아감
-        if(FirebaseAuth.getInstance().getCurrentUser()==null){
-            startSignINActivity();
-            Log.d("유저 없음","유저");
-        } else{
-            //회원가입 or 로그인
-            if (user != null) {
-                for (UserInfo profile : user.getProviderData()) {
-                    String name = profile.getDisplayName();
-                }
-            }
-        }*/
-
         sharedPreferences = getSharedPreferences("SCHEDULEITSSU",MODE_PRIVATE);
         if(!sharedPreferences.getBoolean("initial",false))
             initialSetting();
@@ -89,7 +75,6 @@ public class MainActivity extends AppCompatActivity {
             public void onTabReselected(TabLayout.Tab tab) {
             }
         });
-        //앱의 로고 설정
         toolbar.setLogo(R.drawable.notelist_icon);
 
     }
@@ -103,7 +88,6 @@ public class MainActivity extends AppCompatActivity {
                 if(!dataSnapshot.hasChildren()){
                     HashMap<String, Object> initial = new HashMap<>();
                     initial.put("Uid",path);
-                    //initial.put("Name",user.getDisplayName());
                     FirebaseDatabase.getInstance().getReference().child("Student").child(path).updateChildren(initial);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     editor.putBoolean("initial",true); //intial이 되었다고 sharedpreferences에 정보값 변경
