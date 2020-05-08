@@ -29,6 +29,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.FileProvider;
 
 import com.example.user.scheduleitssu.DataClass.Note;
+import com.example.user.scheduleitssu.DataClass.Subject;
 import com.github.irshulx.Editor;
 import com.github.irshulx.EditorListener;
 import com.github.irshulx.models.EditorContent;
@@ -47,6 +48,13 @@ import com.google.api.services.vision.v1.model.BatchAnnotateImagesResponse;
 import com.google.api.services.vision.v1.model.EntityAnnotation;
 import com.google.api.services.vision.v1.model.Feature;
 import com.google.api.services.vision.v1.model.Image;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -62,7 +70,6 @@ import top.defaults.colorpicker.ColorPickerPopup;
 
 public class EditNoteActivity extends AppCompatActivity  {
     Editor editor;
-    static Editable editable;
     private static final String CLOUD_VISION_API_KEY = "AIzaSyDQnNiMu_Q50EdL7ryz1CHnJjwfqWtdXxE";
     public static final String FILE_NAME = "temp.jpg";
     private static final String ANDROID_CERT_HEADER = "X-Android-Cert";
@@ -74,12 +81,16 @@ public class EditNoteActivity extends AppCompatActivity  {
     private static final int GALLERY_IMAGE_REQUEST = 11;
     public static final int CAMERA_PERMISSIONS_REQUEST = 22;
     public static final int CAMERA_IMAGE_REQUEST = 33;
-    //나중에 바꿔야하는 부분
-    /**/ private TextView mImageDetails;
+    //나중에 mImageDetails지우고 Editor에 값을 넣는 거 해야 함.
+    private TextView mImageDetails;
     private ImageView mMainImage;
     String serailized;
     EditorContent des;
     Note note;
+    Subject subject;
+    int position;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,16 +103,45 @@ public class EditNoteActivity extends AppCompatActivity  {
         mMainImage = findViewById(R.id.main_image);
         editor = findViewById(R.id.editor);
         setUpEditor();
-
         processIntent();
-
+        //firebaseinital();
     }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:{ //맞는지 모르겠음
+                finish();
+                return true;
+            }
+            case R.id.editnote_add_menu:{
+                String text = editor.getContentAsSerialized();
+
+                Intent intent = new Intent();
+                //text가 NULL이 아니라면
+                intent.putExtra("RESULT","OK");
+                intent.putExtra("NOTECONTENT",text);
+                setResult(RESULT_OK, intent);
+                //Log.d("EDITNOTEACTIVITY"," \n"+text+"\n"+editor.getContentAsHTML(text));
+                /*text가 NULL이라면
+                intent.putExtra("RESULT","CANCLED");
+                setResult(RESULT_CANCELED, intent);
+                */
+                finish();
+                return true;
+            }
+
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     void processIntent(){
         Intent getContents=getIntent();
 
-        if(getContents.getStringExtra("EXIST").equals("EXIST")&&getContents.getStringExtra("DATATYPE").equals("NOTE")) {
-            if(getContents.getStringExtra("NOTEINFOTYPE").equals("NOTEINFO_CONTENT")){
-                note=getContents.getParcelableExtra("DATA");
+        if(getContents.getStringExtra("EXIST").equals("EXIST")&&getContents.getStringExtra("DATATYPE").equals("SUBJECT")) {
+            if(getContents.getStringExtra("SUBJECTINFOTYPE").equals("SUBJECTINFO_CONTENT")){
+                subject=getContents.getParcelableExtra("DATA");
+                position=Integer.parseInt(getContents.getStringExtra("POSITION"));
+                note=subject.getNotelist().get(position);
                 serailized=note.getContent();
                 des = editor.getContentDeserialized(serailized);
                 editor.render(des);
@@ -109,8 +149,7 @@ public class EditNoteActivity extends AppCompatActivity  {
             }
             else if(getContents.getStringExtra("NOTEINFOTYPE").equals("NOTEINFO_DEFAULT")){
             }
-
-           }
+        }
 
     }
     @Override
@@ -466,34 +505,7 @@ public class EditNoteActivity extends AppCompatActivity  {
         menuInflater.inflate(R.menu.menu_editnote, menu);
         return true;
     }
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
-            case android.R.id.home:{ //맞는지 모르겠음
-                finish();
-                return true;
-            }
-            case R.id.editnote_add_menu:{
-                String text = editor.getContentAsSerialized();
 
-                Intent intent = new Intent();
-                //text가 NULL이 아니라면
-                intent.putExtra("RESULT","OK");
-                intent.putExtra("NOTECONTENT",text);
-
-                setResult(RESULT_OK, intent);
-                //Log.d("EDITNOTEACTIVITY"," \n"+text+"\n"+editor.getContentAsHTML(text));
-                /*text가 NULL이라면
-                intent.putExtra("RESULT","CANCLED");
-                setResult(RESULT_CANCELED, intent);
-                */
-                finish();
-                return true;
-            }
-
-        }
-        return super.onOptionsItemSelected(item);
-    }
     public void startGalleryChooser() {
         if (PermissionUtils.requestPermission(this, GALLERY_PERMISSIONS_REQUEST, Manifest.permission.READ_EXTERNAL_STORAGE)) {
             Intent intent = new Intent();
@@ -569,6 +581,8 @@ public class EditNoteActivity extends AppCompatActivity  {
                 .setNegativeButton("No", null)
                 .show();
     }
+
+
 }
    /* @Override
     protected void onPostCreate(Bundle savedInstanceState) {

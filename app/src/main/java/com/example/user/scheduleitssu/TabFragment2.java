@@ -60,24 +60,6 @@ public class TabFragment2 extends Fragment implements SubjectAdapter.OnItemClick
                 "\"contentStyles\":[],\"textSettings\":{\"textColor\":\"#000000\"},\"type\":\"INPUT\"}]}"));
 */
 
-        myRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // This method is called once with the initial value and again
-                // whenever data at this location is updated.
-             //   Note value = dataSnapshot.getValue(Note.class);
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError error) {
-                // Failed to read value
-
-            }
-        });
-
-
-
 
         /*subjectArrayList.add(new Subject(groups,"소프트웨어공학(arraylist)","온라인수업",notelist));//SUBJECTINFO_DEFAULT
         subjectArrayList.add(new Subject("데이터베이스(arraylist)","월,수 1:30~",notelist));//SUBJECTINFO_NOGROUP
@@ -106,19 +88,17 @@ public class TabFragment2 extends Fragment implements SubjectAdapter.OnItemClick
         return root;
     }
     public void addListfromfirebase(){
-        myRef.addValueEventListener(new ValueEventListener() {
+      myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 subjectArrayList.clear();
-                for (DataSnapshot dataSnapshot2 : dataSnapshot.getChildren()) { //하위노드가 없을 떄까지 반복
+               for (DataSnapshot dataSnapshot2 : dataSnapshot.getChildren()) { //하위노드가 없을 떄까지 반복
                     Subject subject = dataSnapshot2.getValue(Subject.class);
                     subjectArrayList.add(subject);
                     //subjectAdapter.notifyItemInserted(subjectArrayList.size()-1);
                 }
                 subjectAdapter.notifyDataSetChanged();
-
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 

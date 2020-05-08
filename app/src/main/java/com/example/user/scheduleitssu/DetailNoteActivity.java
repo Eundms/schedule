@@ -21,6 +21,7 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.example.user.scheduleitssu.DataClass.Note;
+import com.example.user.scheduleitssu.DataClass.Subject;
 import com.github.irshulx.Editor;
 import com.github.irshulx.EditorListener;
 import com.github.irshulx.models.EditorContent;
@@ -35,12 +36,18 @@ import java.util.Map;
 
 public class DetailNoteActivity extends AppCompatActivity {
     private static final int DETAILNOTEACTIVITY_REQUEST = 1234;
-    FirebaseDatabase firebaseDatabase= FirebaseDatabase.getInstance();
-    DatabaseReference databaseReference=firebaseDatabase.getReference();
+    //////////////////////////////////////////////////////////////////
+    /*firebase 을 위해서*/
+    DatabaseReference myRef;
+    FirebaseDatabase database= FirebaseDatabase.getInstance();
     FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();
+    String userid=user.getDisplayName()+"_"+user.getUid();
+    //////////////////////////////////////////////////////////////////
+    Subject subject;
     Note note;
     String serialized;
     Editor renderer;
+    int position;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,9 +62,11 @@ public class DetailNoteActivity extends AppCompatActivity {
     }
     void processIntent(){
         Intent getIntent=getIntent();
-        if(getIntent.getStringExtra("EXIST").equals("EXIST")&&getIntent.getStringExtra("DATATYPE").equals("NOTE")){
-            if(getIntent.getStringExtra("NOTEINFOTYPE").equals("NOTEINFO_CONTENT")){
-            note= getIntent.getParcelableExtra("DATA");
+        if(getIntent.getStringExtra("EXIST").equals("EXIST")&&getIntent.getStringExtra("DATATYPE").equals("SUBJECT")){
+            if(getIntent.getStringExtra("SUBJECTINFOTYPE").equals("SUBJECTINFO_CONTENT")){
+            subject= getIntent.getParcelableExtra("DATA");
+            position=Integer.parseInt(getIntent.getStringExtra("POSITION"));
+            note=subject.getNotelist().get(position);
             serialized= note.getContent();
             }else{
             /*노트가 없으면 클릭 자체가 안되므로 else에 오는 경우는 없음*/
@@ -76,10 +85,19 @@ void setnote(){
         if(requestCode == DETAILNOTEACTIVITY_REQUEST && resultCode == RESULT_OK){
             String serialized= data.getStringExtra("NOTECONTENT");
             //Log.d("DETAILNOTEACTIVITY","Success: "+serialized);
+            note.setContent(serialized);
             this.serialized=serialized;
             String content= serialized;
             EditorContent Deserialized2= renderer.getContentDeserialized(content);
             renderer.render(Deserialized2);
+
+//////////////////////////////////////////////////////////////////
+            /*firebase 함수수*/
+           myRef=database.getReference().child("Student").child(userid).child("Subject").child("Subject_"+subject.getClassname()).child("notelist");
+            Map<String,Object>editnote=new HashMap<>();
+            editnote.put(Integer.toString(position),note);
+            myRef.updateChildren(editnote);
+//////////////////////////////////////////////////////////////////
 
         }else if(requestCode == DETAILNOTEACTIVITY_REQUEST && resultCode == RESULT_CANCELED){
             //Log.d("DETAILNOTEACTIVITY","result-cancled..");
@@ -103,9 +121,10 @@ void setnote(){
             case R.id.detailnote_edit_menu:{
                 Intent intent = new Intent(this, EditNoteActivity.class);
                 intent.putExtra("EXIST","EXIST");
-                intent.putExtra("DATATYPE","NOTE");
-                intent.putExtra("NOTEINFOTYPE","NOTEINFO_CONTENT");
-                intent.putExtra("DATA",note);
+                intent.putExtra("DATATYPE","SUBJECT");
+                intent.putExtra("SUBJECTINFOTYPE","SUBJECTINFO_CONTENT");
+                intent.putExtra("POSITION",Integer.toString(position));
+                intent.putExtra("DATA",subject);
 
                 setResult(RESULT_OK, intent);
                 startActivityForResult(intent,DETAILNOTEACTIVITY_REQUEST);

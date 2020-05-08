@@ -62,20 +62,33 @@ Button addbtn;
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         TextView subjectname=(TextView)findViewById(R.id.makesubjectname);
-                      //////////////////////////////////////////////
-                        /*ArrayList<Note> notes=new ArrayList<Note>();
+                      /////////////////if you want to add code directly, do it!!!!!!////////////////
+                      /*  ArrayList<Note> notes=new ArrayList<Note>();
                         notes.add(new Note("{\"nodes\":[{\"content\":[\"\\u003cp dir\\u003d\\\"ltr\\\"\\" +
-                                "u003e\\u003cu\\u003eserialized\\u003c/u\\u003e\\u003c/p\\u003e\\n\"]," +
+                                "u003e\\u003cu\\u003etest_note1\\u003c/u\\u003e\\u003c/p\\u003e\\n\"]," +
                                 "\"contentStyles\":[],\"textSettings\":{\"textColor\":\"#000000\"},\"type\":\"INPUT\"}]}"));
                         notes.add(new Note("{\"nodes\":[{\"content\":[\"\\u003cp dir\\u003d\\\"ltr\\\"\\" +
                                 "u003e\\u003cu\\u003eserialized2\\u003c/u\\u003e\\u003c/p\\u003e\\n\"]," +
-                                "\"contentStyles\":[],\"textSettings\":{\"textColor\":\"#000000\"},\"type\":\"INPUT\"}]}"));*/
-                        /////////////////////////////////////////////
+                                "\"contentStyles\":[],\"textSettings\":{\"textColor\":\"#000000\"},\"type\":\"INPUT\"}]}"));
+                        Subject sub=new Subject(subjectname.getText().toString(),notes);*/
+                        /////////////////////////////////////////////////////////////////////////////
+                        /*1번째 버전*/
                         Subject sub=new Subject(subjectname.getText().toString(),new ArrayList<Note>());
                         String uid=user.getDisplayName()+"_"+user.getUid();
-                        HashMap<String, Object> add = new HashMap<>();
-                        add.put("Subject_"+sub.getClassname(),sub);
-                        databaseReference.child("Student").child(uid).child("Subject").updateChildren(add);
+                        HashMap<String,Object>add_subject=new HashMap<>();
+                        add_subject.put("Subject_"+sub.getClassname(),sub);
+                        databaseReference.child("Student").child(uid).child("Subject").updateChildren(add_subject);
+
+                        /*2번째 버전
+                        Subject sub=new Subject(subjectname.getText().toString(),new ArrayList<Note>());
+                        String uid=user.getDisplayName()+"_"+user.getUid();
+                        HashMap<String, Object> add_subject = new HashMap<>();
+                        add_subject.put("Subject_"+sub.getClassname(),sub);
+                        databaseReference.child("Subject").updateChildren(add_subject);
+
+                        HashMap<String,Object>add_subject_id=new HashMap<>();
+                        add_subject_id.put("Subject_"+sub.getClassname(),"Subject_"+sub.getClassname());
+                        databaseReference.child("Student").child(uid).child("SubjectID").updateChildren(add_subject_id);*/
                     }
 
                     @Override

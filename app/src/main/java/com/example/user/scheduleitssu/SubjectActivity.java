@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.user.scheduleitssu.DataClass.Group;
@@ -25,7 +26,7 @@ import java.util.ArrayList;
 public class SubjectActivity extends AppCompatActivity  implements NoteAdapter.OnNoteItemClickListener{
     Subject subject;
     Toolbar toolbar;
-
+    TextView subject_default;
     RecyclerView NoteRecyclerView;
     NoteAdapter noteAdapter;
     ArrayList<Note> noteArrayList;
@@ -34,6 +35,7 @@ public class SubjectActivity extends AppCompatActivity  implements NoteAdapter.O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_subject);
         toolbar = (Toolbar) findViewById(R.id.subject_toolbar);
+        subject_default=(TextView)findViewById(R.id.subject_default);
 
         Intent receive=getIntent();
         noteArrayList=new ArrayList<>();
@@ -57,7 +59,7 @@ public class SubjectActivity extends AppCompatActivity  implements NoteAdapter.O
                 if (infotype.equals("SUBJECTINFO_DEFAULT")) {/*notelist없음*/
                 subject = receive.getParcelableExtra("DATA");
                 toolbar.setTitle(subject.getClassname());
-                /*PLEASE ADD NOTE*/
+                subject_default.setVisibility(View.VISIBLE);
                 } else if (infotype.equals("SUBJECTINFO_NOTE")) {/*notelist있음*/
                 subject = receive.getParcelableExtra("DATA");
                 toolbar.setTitle(subject.getClassname());
@@ -105,9 +107,10 @@ public class SubjectActivity extends AppCompatActivity  implements NoteAdapter.O
         //Log.d("NOTE","Clicked");
         Intent intent=new Intent(this,DetailNoteActivity.class);
         intent.putExtra("EXIST","EXIST");
-        intent.putExtra("DATATYPE","NOTE");
-        intent.putExtra("NOTEINFOTYPE","NOTEINFO_CONTENT");
-        intent.putExtra("DATA",noteArrayList.get(pos));
+        intent.putExtra("DATATYPE","SUBJECT");
+        intent.putExtra("SUBJECTINFOTYPE","SUBJECTINFO_CONTENT");
+        intent.putExtra("POSITION",Integer.toString(pos));
+        intent.putExtra("DATA",subject);
         startActivity(intent);
     }
 
