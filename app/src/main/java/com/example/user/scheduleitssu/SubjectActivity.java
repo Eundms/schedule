@@ -33,48 +33,43 @@ public class SubjectActivity extends AppCompatActivity  implements NoteAdapter.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_subject);
-
         toolbar = (Toolbar) findViewById(R.id.subject_toolbar);
+
         Intent receive=getIntent();
+        noteArrayList=new ArrayList<>();
         processIntent(receive);
+
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
-        noteArrayList=new ArrayList<>();
-        noteArrayList.add(new Note("{\"nodes\":[{\"content\":[\"\\u003cp dir\\u003d\\\"ltr\\\"\\" +
-                "u003e\\u003cu\\u003eaaa\\u003c/u\\u003e\\u003c/p\\u003e\\n\"]," +
-                "\"contentStyles\":[],\"textSettings\":{\"textColor\":\"#000000\"},\"type\":\"INPUT\"}]}"));
-        noteArrayList.add(new Note("{\"nodes\":[{\"content\":[\"\\u003cp dir\\u003d\\\"ltr\\\"\\" +
-                "u003e\\u003cu\\u003eddd\\u003c/u\\u003e\\u003c/p\\u003e\\n\"]," +
-                "\"contentStyles\":[],\"textSettings\":{\"textColor\":\"#000000\"},\"type\":\"INPUT\"}]}"));
-
-
-
         NoteRecyclerView=(RecyclerView)findViewById(R.id.subject_noterecyclerview);
         LinearLayoutManager layoutManager2=new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
-
         NoteRecyclerView.setLayoutManager(layoutManager2);
-
         noteAdapter=new NoteAdapter(this,noteArrayList);
         noteAdapter.setOnNoteItemClickListener(this);
         NoteRecyclerView.setAdapter(noteAdapter);
     }
     private void processIntent(Intent receive){
-        String infotype= receive.getStringExtra("SubjectInfoType");
-        Log.d("infotype",infotype);
-        if(infotype.equals("SUBJECTINFO_DEFAULT")){//string이랑 같냐
-            subject=receive.getParcelableExtra("subject_info_data");
-            toolbar.setTitle(subject.getClassname());
+        if(receive.getStringExtra("EXIST").equals("EXIST")&&receive.getStringExtra("DATATYPE").equals("SUBJECT")) {
 
-        }else if(infotype.equals("SUBJECTINFO_NONOTE")){
-            subject=receive.getParcelableExtra("subject_info_data");
-            toolbar.setTitle(subject.getClassname());
-            //노트 부분에 노트를 추가해주세요라고 나오게 레이아웃 설정
-        }else {
-            finish();
-        }
+            String infotype=receive.getStringExtra("SUBJECTINFOTYPE");
+                if (infotype.equals("SUBJECTINFO_DEFAULT")) {/*notelist없음*/
+                subject = receive.getParcelableExtra("DATA");
+                toolbar.setTitle(subject.getClassname());
+                /*PLEASE ADD NOTE*/
+                } else if (infotype.equals("SUBJECTINFO_NOTE")) {/*notelist있음*/
+                subject = receive.getParcelableExtra("DATA");
+                toolbar.setTitle(subject.getClassname());
+                noteArrayList = subject.getNotelist();
+                } else {
+                finish();
+            }
+
+            }
+
     }
+
 
 
     @Override
@@ -86,6 +81,7 @@ public class SubjectActivity extends AppCompatActivity  implements NoteAdapter.O
             }
             case R.id.addnote_add_menu:{
                 Intent intent = new Intent(this, EditNoteActivity.class);
+                intent.putExtra("EXIST","NO");
 
                 startActivity(intent);
                 return true;
@@ -108,9 +104,10 @@ public class SubjectActivity extends AppCompatActivity  implements NoteAdapter.O
     public void onNoteItemClick(View v, int pos) {
         //Log.d("NOTE","Clicked");
         Intent intent=new Intent(this,DetailNoteActivity.class);
-        intent.putExtra("DATA","EXIST");
-        intent.putExtra("NOTE",noteArrayList.get(pos));
-        Log.d("DATA_NOTE",""+noteArrayList.get(pos).getContent());
+        intent.putExtra("EXIST","EXIST");
+        intent.putExtra("DATATYPE","NOTE");
+        intent.putExtra("NOTEINFOTYPE","NOTEINFO_CONTENT");
+        intent.putExtra("DATA",noteArrayList.get(pos));
         startActivity(intent);
     }
 

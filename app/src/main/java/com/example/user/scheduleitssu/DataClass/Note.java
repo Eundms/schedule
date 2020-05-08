@@ -10,6 +10,8 @@ public class Note implements Parcelable {
     String whenmake_note;
     String editdate_note;
     String whoedit_note;
+    public Note(){
+    }
     public Note(String serialize_note){
         this.content=serialize_note;
     }

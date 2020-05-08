@@ -27,6 +27,8 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.FileProvider;
+
+import com.example.user.scheduleitssu.DataClass.Note;
 import com.github.irshulx.Editor;
 import com.github.irshulx.EditorListener;
 import com.github.irshulx.models.EditorContent;
@@ -77,6 +79,7 @@ public class EditNoteActivity extends AppCompatActivity  {
     private ImageView mMainImage;
     String serailized;
     EditorContent des;
+    Note note;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,25 +91,27 @@ public class EditNoteActivity extends AppCompatActivity  {
         mImageDetails = findViewById(R.id.image_details);
         mMainImage = findViewById(R.id.main_image);
         editor = findViewById(R.id.editor);
+        setUpEditor();
 
+        processIntent();
+
+    }
+    void processIntent(){
         Intent getContents=getIntent();
-        if(getContents.getStringExtra("FROM").equals("DETAILNOTEACTIVITY")&&getContents.getStringExtra("RESULT").equals("OK")) {
-            serailized = getContents.getStringExtra("NOTECONTENT");
-            des = editor.getContentDeserialized(serailized);
-            setUpEditor();
-            editor.render(des);
 
-            /*setSerialRenderInProgress*/
-        }else if(getContents.getStringExtra("FROM").equals("SUBJECTACTIVITY")){
-            /*defalt값
-            serailized="{\"nodes\":" +
-                    "[{\"content\":[\"\\u003cp dir\\u003d\\\"ltr\\\"\\u003e\\u003cu\\u003eSTARTWRITE\\u003c/u\\u003e\\u003c/p\\u003e\\n\"]," +
-                    "\"contentStyles\":[]," +
-                    "\"textSettings\":{\"textColor\":\"#000000\"}," +
-                    "\"type\":\"INPUT\"}]}";
-            des = editor.getContentDeserialized(serailized);*/
-            setUpEditor();
-        }
+        if(getContents.getStringExtra("EXIST").equals("EXIST")&&getContents.getStringExtra("DATATYPE").equals("NOTE")) {
+            if(getContents.getStringExtra("NOTEINFOTYPE").equals("NOTEINFO_CONTENT")){
+                note=getContents.getParcelableExtra("DATA");
+                serailized=note.getContent();
+                des = editor.getContentDeserialized(serailized);
+                editor.render(des);
+                /*setSerialRenderInProgress*/
+            }
+            else if(getContents.getStringExtra("NOTEINFOTYPE").equals("NOTEINFO_DEFAULT")){
+            }
+
+           }
+
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

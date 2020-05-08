@@ -49,16 +49,16 @@ public class TabFragment2 extends Fragment implements SubjectAdapter.OnItemClick
         GridLayoutManager layoutManager=new GridLayoutManager(this.getContext(),2);
         subjectRecyclerView.setLayoutManager(layoutManager);
 
-
         subjectArrayList=new ArrayList<>();
-        ArrayList<Note>notelist=new ArrayList<>();
+
+/*        ArrayList<Note>notelist=new ArrayList<>();
         notelist.add(new Note("{\"nodes\":[{\"content\":[\"\\u003cp dir\\u003d\\\"ltr\\\"\\" +
                 "u003e\\u003cu\\u003eddd\\u003c/u\\u003e\\u003c/p\\u003e\\n\"]," +
                 "\"contentStyles\":[],\"textSettings\":{\"textColor\":\"#000000\"},\"type\":\"INPUT\"}]}"));
         notelist.add(new Note("{\"nodes\":[{\"content\":[\"\\u003cp dir\\u003d\\\"ltr\\\"\\" +
                 "u003e\\u003cu\\u003eaaa\\u003c/u\\u003e\\u003c/p\\u003e\\n\"]," +
                 "\"contentStyles\":[],\"textSettings\":{\"textColor\":\"#000000\"},\"type\":\"INPUT\"}]}"));
-
+*/
 
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -130,14 +130,15 @@ public class TabFragment2 extends Fragment implements SubjectAdapter.OnItemClick
 
     @Override
     public void onItemClick(View v, int pos) {
-            Intent intent=new Intent(getContext(),SubjectActivity.class);
+        Intent intent=new Intent(getContext(),SubjectActivity.class);
+        intent.putExtra("EXIST","EXIST");
+        intent.putExtra("DATATYPE","SUBJECT");
             if(subjectArrayList.get(pos).getNotelist()==null){
-                intent.putExtra("SubjectInfoType","SUBJECTINFO_NONOTE");
-            }else{
-                intent.putExtra("SubjectInfoType","SUBJECTINFO_DEFAULT");
-                intent.putExtra("DATA",subjectArrayList.get(pos).getNotelist());
+                intent.putExtra("SUBJECTINFOTYPE","SUBJECTINFO_DEFAULT");/*최초 생성되었을 때 그러므로 notelist는 없다*/
+            }else {
+                intent.putExtra("SUBJECTINFOTYPE", "SUBJECTINFO_NOTE");
             }
-            intent.putExtra("subject_info_data",subjectArrayList.get(pos));
-            startActivityForResult(intent,REQUEST_CODE_SUBJECTACTIVITY);
+        intent.putExtra("DATA",subjectArrayList.get(pos));
+        startActivityForResult(intent,REQUEST_CODE_SUBJECTACTIVITY);
     }
 }

@@ -47,8 +47,6 @@ public class DetailNoteActivity extends AppCompatActivity {
         setContentView(R.layout.activity_detail_note);
         Toolbar toolbar = (Toolbar) findViewById(R.id.detailnote_toolbar);
         toolbar.setTitle("DetailNoteActivity");
-    /*DB에서 serialized받아와서 String serialized에 넣는 부분 추가해야함*/
-
         processIntent();
         setnote();
 
@@ -57,15 +55,13 @@ public class DetailNoteActivity extends AppCompatActivity {
     }
     void processIntent(){
         Intent getIntent=getIntent();
-        String dataexists=getIntent.getStringExtra("DATA");
-        Log.d("DATA_NOTE",""+dataexists);
-        if(dataexists.equals("EXIST")){
-            note= getIntent.getParcelableExtra("NOTE");
+        if(getIntent.getStringExtra("EXIST").equals("EXIST")&&getIntent.getStringExtra("DATATYPE").equals("NOTE")){
+            if(getIntent.getStringExtra("NOTEINFOTYPE").equals("NOTEINFO_CONTENT")){
+            note= getIntent.getParcelableExtra("DATA");
             serialized= note.getContent();
-        }else{/*dataexists.equals("NULL")*/
-            serialized="{\"nodes\":[{\"content\":[\"\\u003cp dir\\u003d\\\"ltr\\\"\\" +
-            "u003e\\u003cu\\u003eabc\\u003c/u\\u003e\\u003c/p\\u003e\\n\"]," +
-            "\"contentStyles\":[],\"textSettings\":{\"textColor\":\"#000000\"},\"type\":\"INPUT\"}]}";
+            }else{
+            /*노트가 없으면 클릭 자체가 안되므로 else에 오는 경우는 없음*/
+            }
         }
     }
 void setnote(){
@@ -79,16 +75,16 @@ void setnote(){
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == DETAILNOTEACTIVITY_REQUEST && resultCode == RESULT_OK){
             String serialized= data.getStringExtra("NOTECONTENT");
-            Log.d("DETAILNOTEACTIVITY","Success: "+serialized);
+            //Log.d("DETAILNOTEACTIVITY","Success: "+serialized);
             this.serialized=serialized;
             String content= serialized;
             EditorContent Deserialized2= renderer.getContentDeserialized(content);
             renderer.render(Deserialized2);
 
         }else if(requestCode == DETAILNOTEACTIVITY_REQUEST && resultCode == RESULT_CANCELED){
-            Log.d("DETAILNOTEACTIVITY","result-cancled..");
+            //Log.d("DETAILNOTEACTIVITY","result-cancled..");
         }else{
-            Log.d("DETAILNOTEACTIVITY","what??? ");
+           // Log.d("DETAILNOTEACTIVITY","what??? ");
         }
     }
     @Override
@@ -106,10 +102,11 @@ void setnote(){
             }
             case R.id.detailnote_edit_menu:{
                 Intent intent = new Intent(this, EditNoteActivity.class);
-                String text =this.serialized;/*renderer.getContentAsSerialized();이 부분 때무에 그  에러 뜨는 거임*/
-                intent.putExtra("FROM","DETAILNOTEACTIVITY");
-                intent.putExtra("RESULT","OK");
-                intent.putExtra("NOTECONTENT",text);
+                intent.putExtra("EXIST","EXIST");
+                intent.putExtra("DATATYPE","NOTE");
+                intent.putExtra("NOTEINFOTYPE","NOTEINFO_CONTENT");
+                intent.putExtra("DATA",note);
+
                 setResult(RESULT_OK, intent);
                 startActivityForResult(intent,DETAILNOTEACTIVITY_REQUEST);
                 return true;

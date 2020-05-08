@@ -1,14 +1,17 @@
 package com.example.user.scheduleitssu;
 
+import androidx.annotation.ArrayRes;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.user.scheduleitssu.DataClass.Note;
 import com.example.user.scheduleitssu.DataClass.Subject;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -18,6 +21,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 //firebase database
@@ -54,11 +58,20 @@ Button addbtn;
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.addsubjectbtn:
-                  databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         TextView subjectname=(TextView)findViewById(R.id.makesubjectname);
-                        Subject sub=new Subject(subjectname.getText().toString());
+                      //////////////////////////////////////////////
+                        /*ArrayList<Note> notes=new ArrayList<Note>();
+                        notes.add(new Note("{\"nodes\":[{\"content\":[\"\\u003cp dir\\u003d\\\"ltr\\\"\\" +
+                                "u003e\\u003cu\\u003eserialized\\u003c/u\\u003e\\u003c/p\\u003e\\n\"]," +
+                                "\"contentStyles\":[],\"textSettings\":{\"textColor\":\"#000000\"},\"type\":\"INPUT\"}]}"));
+                        notes.add(new Note("{\"nodes\":[{\"content\":[\"\\u003cp dir\\u003d\\\"ltr\\\"\\" +
+                                "u003e\\u003cu\\u003eserialized2\\u003c/u\\u003e\\u003c/p\\u003e\\n\"]," +
+                                "\"contentStyles\":[],\"textSettings\":{\"textColor\":\"#000000\"},\"type\":\"INPUT\"}]}"));*/
+                        /////////////////////////////////////////////
+                        Subject sub=new Subject(subjectname.getText().toString(),new ArrayList<Note>());
                         String uid=user.getDisplayName()+"_"+user.getUid();
                         HashMap<String, Object> add = new HashMap<>();
                         add.put("Subject_"+sub.getClassname(),sub);
@@ -76,7 +89,6 @@ Button addbtn;
                 finish();
                 break;
             case R.id.addsubjectbackbtn:
-                //Toast.makeText(getApplicationContext(), "취소하기 클릭됨", Toast.LENGTH_SHORT).show();
                 finish();
                 break;
         }
