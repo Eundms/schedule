@@ -59,9 +59,8 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
     @Override
     public void onBindViewHolder(@NonNull NoteViewHolder holder, int position) {
         Note note=noteArrayList.get(position);
-  //      holder.title.setText(note.getTitle_note());
-        String a="{\"nodes\":[{\"content\":[\"\\u003cp dir\\u003d\\\"ltr\\\"\\u003e\\u003cu\\u003eabc\\u003c/u\\u003e\\u003c/p\\u003e\\n\"],\"contentStyles\":[],\"textSettings\":{\"textColor\":\"#000000\"},\"type\":\"INPUT\"},{\"content\":[\"\\u003cp dir\\u003d\\\"ltr\\\"\\u003e\\u003cu\\u003edef\\u003c/u\\u003e\\u003c/p\\u003e\\n\"],\"contentStyles\":[],\"textSettings\":{\"textColor\":\"#000000\"},\"type\":\"INPUT\"}]}";
-
+  //holder.title.setText(note.getTitle_note());
+        String a=note.getContent();
         EditorContent Deserialized= holder.shownote.getContentDeserialized(a);
         holder.shownote.render(Deserialized);
     }
