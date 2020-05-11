@@ -113,7 +113,7 @@ public class EditNoteActivity extends AppCompatActivity  {
                 finish();
                 return true;
             }
-            case R.id.editnote_add_menu:{
+            case R.id.editnote_add_menu:{//저장
                 String text = editor.getContentAsSerialized();
                 Intent intent = new Intent();
                 //text가 NULL이 아니라면

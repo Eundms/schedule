@@ -38,10 +38,12 @@ public class DetailNoteActivity extends AppCompatActivity {
     private static final int DETAILNOTEACTIVITY_REQUEST = 11;
     //////////////////////////////////////////////////////////////////
     /*firebase 을 위해서*/
-    DatabaseReference myRef;
+
     FirebaseDatabase database= FirebaseDatabase.getInstance();
     FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();
     String userid=user.getDisplayName()+"_"+user.getUid();
+    DatabaseReference myRef=database.getReference().child("Student").child(userid).child("Subject");
+
     //////////////////////////////////////////////////////////////////
     Subject subject;
     Note note;
@@ -93,10 +95,10 @@ void setnote(){
 
 //////////////////////////////////////////////////////////////////
             /*firebase 함수수*/
-            myRef=database.getReference().child("Student").child(userid).child("Subject").child("Subject_"+subject.getClassname());
+
             Map<String,Object>editnote=new HashMap<>();
             editnote.put(Integer.toString(position),note);
-            myRef.child("notelist").updateChildren(editnote);
+            myRef.child("Subject_"+subject.getClassname()).child("notelist").updateChildren(editnote);
 //////////////////////////////////////////////////////////////////
 
         }else if(requestCode == DETAILNOTEACTIVITY_REQUEST && resultCode == RESULT_CANCELED){
@@ -131,12 +133,13 @@ void setnote(){
             case R.id.detailnote_delete_menu:{
                 //삭제하는 기능(firebase) NOTELIST를 아제 올리고 내려야 함.
                ///////////////////////////////////////////////
-                /*delete note하는 코드를 옮겨야함
+                /*delete note하는 코드를 옮겨야함  */
                 subject.getNotelist().remove(position);
                 Map<String,Object>deletenote=new HashMap<>();
                 deletenote.put("notelist",subject.getNotelist());
-                myRef.updateChildren(deletenote);
-                */
+                myRef.child("Subject_"+subject.getClassname()).updateChildren(deletenote);
+
+
                 finish();
                 return true;
             }

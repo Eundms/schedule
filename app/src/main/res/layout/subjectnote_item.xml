@@ -12,12 +12,20 @@
     >
 
 
+    <TextView
+        android:id="@+id/note_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="AAAAAAAAAAAAA"
+        android:paddingBottom="10dp"
+        />
 
-                <com.github.irshulx.Editor
+    <com.github.irshulx.Editor
+                    android:layout_below="@id/shownote"
                     android:id="@+id/shownote"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:paddingLeft="20dp"
+                    android:paddingLeft="10dp"
                     android:paddingTop="10dp"
                     android:paddingRight="20dp"
                     android:paddingBottom="10dp"

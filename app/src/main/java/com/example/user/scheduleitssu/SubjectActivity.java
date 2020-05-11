@@ -1,5 +1,6 @@
 package com.example.user.scheduleitssu;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -23,8 +24,11 @@ import com.example.user.scheduleitssu.DataClass.Subject;
 import com.github.irshulx.models.EditorContent;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.internal.InternalTokenProvider;
 
 import java.util.ArrayList;
@@ -44,7 +48,28 @@ public class SubjectActivity extends AppCompatActivity  implements NoteAdapter.O
     FirebaseDatabase database= FirebaseDatabase.getInstance();
     FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();
     String userid=user.getDisplayName()+"_"+user.getUid();
+@Override
+protected void onResume() {
+    Log.d("onResume","onResume");
+    super.onResume();
+    noteArrayList.clear();
+    myRef=database.getReference().child("Student").child(userid).child("Subject").child("Subject_"+subject.getClassname()).child("notelist");
+    myRef.addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                        noteArrayList.clear();
+                                        for (DataSnapshot dataSnapshot2 : dataSnapshot.getChildren()) { //하위노드가 없을 떄까지 반복
+                                            Note note= dataSnapshot2.getValue(Note.class);
+                                            noteArrayList.add(note);
+                                        }
+                                        noteAdapter.notifyDataSetChanged();
+                                    }
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError databaseError) {
 
+                                    }
+                                });
+}
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
