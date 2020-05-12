@@ -51,11 +51,19 @@
         </HorizontalScrollView>
         <!--End of Editor toolbar -->
 
-
-        <ScrollView
+        <EditText
+            android:layout_below="@+id/editnote_toolbar"
+            android:id="@+id/note_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/editnote_toolbar"
+            android:hint="노트제목"
+          />
+
+        <ScrollView
+            android:id="@+id/scrollviewid"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/note_title"
             android:layout_marginBottom="40dp"
             android:scrollbars="vertical">
 
@@ -64,14 +72,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:paddingLeft="20dp"
-                android:paddingTop="10dp"
                 android:paddingRight="20dp"
                 android:paddingBottom="100dp"
                 app:placeholder="Start writing here..."
                 app:render_type="Editor"></com.github.irshulx.Editor>
 
         </ScrollView>
-
 
     </RelativeLayout>
 

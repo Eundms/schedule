@@ -137,7 +137,8 @@ protected void onResume() {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == SUBJECTACTIVITY_REQUEST && resultCode == RESULT_OK){
             String notecontent=data.getStringExtra("NOTECONTENT");
-            Note newnote=new Note(notecontent);
+            String notetitle=data.getStringExtra("NOTETITLE");
+            Note newnote=new Note(notecontent,notetitle);
             noteArrayList.add(newnote);
 /*노트 리스트를 올리는 내용*///////////////////////////////////////////////////////////////////////////////////////////
             myRef=database.getReference().child("Student").child(userid).child("Subject").child("Subject_"+subject.getClassname());

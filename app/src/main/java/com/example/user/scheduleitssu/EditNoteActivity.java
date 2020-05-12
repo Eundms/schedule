@@ -89,7 +89,7 @@ public class EditNoteActivity extends AppCompatActivity  {
     Note note;
     Subject subject;
     int position;
-
+    EditText notetitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,9 +102,15 @@ public class EditNoteActivity extends AppCompatActivity  {
         mImageDetails = findViewById(R.id.image_details);
         mMainImage = findViewById(R.id.main_image);
         editor = findViewById(R.id.editor);
+        notetitle=findViewById(R.id.note_title);
+
         setUpEditor();
+        //insertMacro();
+
         processIntent();
         //firebaseinital();
+        if(note!=null&&note.getTitle()!=null) { notetitle.setText(note.getTitle()); }
+
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -114,10 +120,15 @@ public class EditNoteActivity extends AppCompatActivity  {
                 return true;
             }
             case R.id.editnote_add_menu:{//저장
+                //Log.d("aaaaaaa",""+notetitle.getText());
+                String title;
+               if(notetitle.getText()==null){title="";}
+               else{title=""+notetitle.getText();}
                 String text = editor.getContentAsSerialized();
                 Intent intent = new Intent();
                 //text가 NULL이 아니라면
                 intent.putExtra("RESULT","OK");
+                intent.putExtra("NOTETITLE",title);
                 intent.putExtra("NOTECONTENT",text);
                 setResult(RESULT_OK, intent);
                 //Log.d("EDITNOTEACTIVITY"," \n"+text+"\n"+editor.getContentAsHTML(text));
@@ -343,6 +354,14 @@ public class EditNoteActivity extends AppCompatActivity  {
         });
 
     }
+    private View insertMacro() {
+        View view = getLayoutInflater().inflate(R.layout.layout_authored_by, null);
+        Map<String, Object> map = new HashMap<>();
+        map.put("author-name", "Alex Wong");
+        map.put("date","12 July 2018");
+        editor.insertMacro("author-tag",view, map);
+        return view;
+    }
     public void uploadImage(Uri uri) {
         if (uri != null) {
             try {
@@ -535,14 +554,7 @@ public class EditNoteActivity extends AppCompatActivity  {
         return new File(dir, FILE_NAME);
     }
 
-    private View insertMacro() {
-        View view = getLayoutInflater().inflate(R.layout.layout_authored_by, null);
-        Map<String, Object> map = new HashMap<>();
-        map.put("author-name", "Alex Wong");
-        map.put("date","12 July 2018");
-        editor.insertMacro("author-tag",view, map);
-        return view;
-    }
+
     private String colorHex(int color) {
         int r = Color.red(color);
         int g = Color.green(color);

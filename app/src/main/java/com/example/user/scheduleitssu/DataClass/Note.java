@@ -4,26 +4,34 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class Note implements Parcelable {
-
+    String title;
     String content;
+
     String whomake_note;
     String whenmake_note;
     String editdate_note;
     String whoedit_note;
+
     public Note(){
     }
     public Note(String serialize_note){
         this.content=serialize_note;
     }
-    public Note(String serialized_note, String whomake_note, String whenmake_note) {
-        this.content =serialized_note;
-        this.whomake_note = whomake_note;
-        this.whenmake_note = whenmake_note;
-        this.editdate_note=editdate_note;
-        this.whoedit_note=whoedit_note;
+    public Note( String serialize_note,String title){
+        this.content=serialize_note;
+        this.title=title;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     protected Note(Parcel in) {
+        title=in.readString();
         content =in.readString();
         whomake_note = in.readString();
         whenmake_note = in.readString();
@@ -51,37 +59,7 @@ public class Note implements Parcelable {
     public void setContent(String content) {
         this.content = content;
     }
-    public String getWhomake_note() {
-        return whomake_note;
-    }
 
-    public void setWhomake_note(String whomake_note) {
-        this.whomake_note = whomake_note;
-    }
-
-    public String getWhenmake_note() {
-        return whenmake_note;
-    }
-
-    public void setWhenmake_note(String whenmake_note) {
-        this.whenmake_note = whenmake_note;
-    }
-
-    public String getEditdate_note() {
-        return editdate_note;
-    }
-
-    public void setEditdate_note(String editdate_note) {
-        this.editdate_note = editdate_note;
-    }
-
-    public String getWhoedit_note() {
-        return whoedit_note;
-    }
-
-    public void setWhoedit_note(String whoedit_note) {
-        this.whoedit_note = whoedit_note;
-    }
 
     @Override
     public int describeContents() {
@@ -90,6 +68,7 @@ public class Note implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(title);
         dest.writeString(content);
         dest.writeString(whomake_note);
         dest.writeString(whenmake_note);

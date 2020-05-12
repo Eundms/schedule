@@ -50,13 +50,15 @@ public class DetailNoteActivity extends AppCompatActivity {
     String serialized;
     Editor renderer;
     int position;
+    Toolbar toolbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_note);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.detailnote_toolbar);
-        toolbar.setTitle("DetailNoteActivity");
         processIntent();
+        toolbar = (Toolbar) findViewById(R.id.detailnote_toolbar);
+        if(note.getTitle()==null){toolbar.setTitle(""+(position+1)+"번째 노트");}
+        else{toolbar.setTitle(note.getTitle());}
         setnote();
 
         setSupportActionBar(toolbar);
@@ -87,6 +89,9 @@ void setnote(){
         if(requestCode == DETAILNOTEACTIVITY_REQUEST && resultCode == RESULT_OK){
             String serialized= data.getStringExtra("NOTECONTENT");
             //Log.d("DETAILNOTEACTIVITY","Success: "+serialized);
+            String notetitle=data.getStringExtra("NOTETITLE");
+            toolbar.setTitle(notetitle);
+            note.setTitle(notetitle);
             note.setContent(serialized);
             this.serialized=serialized;
             String content= serialized;
