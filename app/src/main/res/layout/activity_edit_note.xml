@@ -5,10 +5,10 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 <!--나중에 여기부터 잘라내기-->
-    <TextView
+    <EditText
         android:id="@+id/image_details"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="30dp"
         android:layout_marginBottom="8dp"
         android:text="Use the floating action button to select an image." />
 

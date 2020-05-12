@@ -4,6 +4,8 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.TextView;
 
 
 import androidx.annotation.NonNull;
@@ -34,9 +36,12 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
     }
     public class NoteViewHolder extends RecyclerView.ViewHolder{
          Editor shownote;
+       // EditText notetitle;
+
         public NoteViewHolder(View itemView){
             super(itemView);
             this.shownote=itemView.findViewById(R.id.shownote);
+            //this.notetitle=itemView.findViewById(R.id.note_title);
             itemView.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View v) {
@@ -59,7 +64,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
     @Override
     public void onBindViewHolder(@NonNull NoteViewHolder holder, int position) {
         Note note=noteArrayList.get(position);
-  //holder.title.setText(note.getTitle_note());
+        //holder.notetitle.setText(note.getTitle());
         String a=note.getContent();
         EditorContent Deserialized= holder.shownote.getContentDeserialized(a);
         holder.shownote.render(Deserialized);

@@ -30,6 +30,7 @@ import androidx.core.content.FileProvider;
 
 import com.example.user.scheduleitssu.DataClass.Note;
 import com.example.user.scheduleitssu.DataClass.Subject;
+import com.github.irshulx.Components.CustomEditText;
 import com.github.irshulx.Editor;
 import com.github.irshulx.EditorListener;
 import com.github.irshulx.models.EditorContent;
@@ -131,7 +132,8 @@ public class EditNoteActivity extends AppCompatActivity  {
                 intent.putExtra("NOTETITLE",title);
                 intent.putExtra("NOTECONTENT",text);
                 setResult(RESULT_OK, intent);
-                //Log.d("EDITNOTEACTIVITY"," \n"+text+"\n"+editor.getContentAsHTML(text));
+                Log.d("EDITNOTEACTIVITY",text);
+                Log.d("EDITNOTEACTIVITY"," \n"+text+"\n"+editor.getContentAsHTML(text));
                 /*text가 NULL이라면
                 intent.putExtra("RESULT","CANCLED");
                 setResult(RESULT_CANCELED, intent);
@@ -342,7 +344,7 @@ public class EditNoteActivity extends AppCompatActivity  {
                  */
                 Log.d("onUpload!!", "gs://scheduleitssu-685f7.appspot.com/" + uuid);
 
-                editor.onImageUploadComplete("gs://scheduleitssu-685f7.appspot.com/", uuid);
+                editor.onImageUploadComplete("gs://scheduleitssu-685f7.appspot.com", uuid);
             }
 
             @Override
@@ -490,13 +492,20 @@ public class EditNoteActivity extends AppCompatActivity  {
         protected void onPostExecute(String result) {
             EditNoteActivity activity = mActivityWeakReference.get();
             if (activity != null && !activity.isFinishing()) {
-                TextView imageDetail = activity.findViewById(R.id.image_details);
+                //TextView imageDetail = activity.findViewById(R.id.image_details);
+                EditText imageDetail=activity.findViewById(R.id.image_details);
                 Log.d("EDITNOTEACTIVITY","onPostExecute"+result);
                 //This part is for image=============================================================================여기야 여기====
                 imageDetail.setText(result);
 
-                //editor.render();
+               Editor editor=activity.findViewById(R.id.editor);
+               editor.render(editor.getContentAsHTML()+"<p>"+imageDetail.getText()+"</p>");
 
+
+                //editor.appendText();
+              // CustomEditText editText = editor.getInputExtensions().getEditTextPrevious(editor.getChildCount());
+                //editText.setText(editText.getText() + " " + "TEXT");
+                //editor.render();
             }
         }
 
@@ -569,11 +578,9 @@ public class EditNoteActivity extends AppCompatActivity  {
 
         List<EntityAnnotation> labels = response.getResponses().get(0).getTextAnnotations();
         if (labels != null) {
-            for (EntityAnnotation label : labels) {
-                message.append(String.format(Locale.US, "%.3f: %s", label.getScore(), label.getDescription()));
-                /*Locale에서 korea로 바꿔야함.*/
+                message.append(String.format(Locale.US, "%s", labels.get(0).getDescription()));
                 message.append("\n");
-            }
+
         } else {
             message.append("nothing");
         }
