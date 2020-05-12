@@ -50,7 +50,6 @@ public class SubjectActivity extends AppCompatActivity  implements NoteAdapter.O
     String userid=user.getDisplayName()+"_"+user.getUid();
 @Override
 protected void onResume() {
-    Log.d("onResume","onResume");
     super.onResume();
     noteArrayList.clear();
     myRef=database.getReference().child("Student").child(userid).child("Subject").child("Subject_"+subject.getClassname()).child("notelist");

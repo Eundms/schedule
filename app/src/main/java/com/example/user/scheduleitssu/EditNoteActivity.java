@@ -100,8 +100,6 @@ public class EditNoteActivity extends AppCompatActivity  {
         toolbar.setTitle("editNoteActivity");
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        mImageDetails = findViewById(R.id.image_details);
-        mMainImage = findViewById(R.id.main_image);
         editor = findViewById(R.id.editor);
         notetitle=findViewById(R.id.note_title);
 
@@ -374,7 +372,6 @@ public class EditNoteActivity extends AppCompatActivity  {
                                 MAX_DIMENSION);
 
                 callCloudVision(bitmap);
-                mMainImage.setImageBitmap(bitmap);
 
             } catch (IOException e) {
                 Log.d(TAG, "Image picking failed because " + e.getMessage());
@@ -492,20 +489,11 @@ public class EditNoteActivity extends AppCompatActivity  {
         protected void onPostExecute(String result) {
             EditNoteActivity activity = mActivityWeakReference.get();
             if (activity != null && !activity.isFinishing()) {
-                //TextView imageDetail = activity.findViewById(R.id.image_details);
-                EditText imageDetail=activity.findViewById(R.id.image_details);
-                Log.d("EDITNOTEACTIVITY","onPostExecute"+result);
-                //This part is for image=============================================================================여기야 여기====
-                imageDetail.setText(result);
 
                Editor editor=activity.findViewById(R.id.editor);
-               editor.render(editor.getContentAsHTML()+"<p>"+imageDetail.getText()+"</p>");
+               editor.render("<p>"+result+"</p>");
 
 
-                //editor.appendText();
-              // CustomEditText editText = editor.getInputExtensions().getEditTextPrevious(editor.getChildCount());
-                //editText.setText(editText.getText() + " " + "TEXT");
-                //editor.render();
             }
         }
 
@@ -574,7 +562,7 @@ public class EditNoteActivity extends AppCompatActivity  {
 
 
     private static String convertResponseToString(BatchAnnotateImagesResponse response) {
-        StringBuilder message = new StringBuilder("I found these things:\n\n");
+        StringBuilder message = new StringBuilder("");
 
         List<EntityAnnotation> labels = response.getResponses().get(0).getTextAnnotations();
         if (labels != null) {

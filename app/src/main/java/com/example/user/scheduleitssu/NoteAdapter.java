@@ -36,12 +36,12 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
     }
     public class NoteViewHolder extends RecyclerView.ViewHolder{
          Editor shownote;
-       // EditText notetitle;
+       TextView notetitle;
 
         public NoteViewHolder(View itemView){
             super(itemView);
             this.shownote=itemView.findViewById(R.id.shownote);
-            //this.notetitle=itemView.findViewById(R.id.note_title);
+            this.notetitle=itemView.findViewById(R.id.note_title_subject);
             itemView.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View v) {
@@ -64,7 +64,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
     @Override
     public void onBindViewHolder(@NonNull NoteViewHolder holder, int position) {
         Note note=noteArrayList.get(position);
-        //holder.notetitle.setText(note.getTitle());
+        holder.notetitle.setText(note.getTitle());
         String a=note.getContent();
         EditorContent Deserialized= holder.shownote.getContentDeserialized(a);
         holder.shownote.render(Deserialized);
