@@ -3,6 +3,8 @@ package com.example.user.scheduleitssu;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -20,9 +22,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -62,6 +67,8 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -69,7 +76,7 @@ import java.util.Map;
 
 import top.defaults.colorpicker.ColorPickerPopup;
 
-public class EditNoteActivity extends AppCompatActivity  {
+public class EditNoteActivity extends AppCompatActivity implements View.OnClickListener{
     Editor editor;
     private static final String CLOUD_VISION_API_KEY = "AIzaSyDQnNiMu_Q50EdL7ryz1CHnJjwfqWtdXxE";
     public static final String FILE_NAME = "temp.jpg";
@@ -92,6 +99,11 @@ public class EditNoteActivity extends AppCompatActivity  {
     int position;
     EditText notetitle;
 
+    ImageButton note_adddate;
+    ImageButton note_addtime;
+    //date, time 저장해놓는 변수
+    Date date_date;
+    Date time_time;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -103,12 +115,46 @@ public class EditNoteActivity extends AppCompatActivity  {
         editor = findViewById(R.id.editor);
         notetitle=findViewById(R.id.note_title);
 
+        note_adddate=findViewById(R.id.note_adddate);
+        note_addtime=findViewById(R.id.note_addtime);
+        note_adddate.setOnClickListener(this);
+        note_addtime.setOnClickListener(this);
         setUpEditor();
         //insertMacro();
 
         processIntent();
         //firebaseinital();
         if(note!=null&&note.getTitle()!=null) { notetitle.setText(note.getTitle()); }
+
+    }
+    @Override
+    public void onClick(View v) {
+        //현재 년도, 월, 일
+        Calendar cal = Calendar.getInstance();
+        int Current_year = cal.get ( cal.YEAR );
+        int Current_month = cal.get ( cal.MONTH ) ;
+        int Current_date = cal.get ( cal.DATE ) ;
+
+        switch (v.getId()){
+            case R.id.note_adddate:
+                DatePickerDialog datePickerDialog = new DatePickerDialog(EditNoteActivity.this, new DatePickerDialog.OnDateSetListener(){
+                            public void onDateSet(DatePicker view, int year, int month, int day){
+                                Toast.makeText(getApplicationContext(),year+"년 "+(month+1)+"월 "+day +"일을 선택했습니다",Toast.LENGTH_LONG).show();
+                            }
+                        },Current_year,Current_month,Current_date);
+                datePickerDialog.show();
+                break;
+            case R.id.note_addtime:
+                //timepicker
+                TimePickerDialog timePickerDialog = new TimePickerDialog(EditNoteActivity.this, new TimePickerDialog.OnTimeSetListener() {
+                            @Override
+                            public void onTimeSet(TimePicker timePicker, int hour, int minute) {
+                                Toast.makeText(getApplicationContext(),hour+"시 "+ minute +"분을 선택했습니다",Toast.LENGTH_LONG).show();
+                            }
+                        }, 12,30,false);
+                timePickerDialog.show();
+               break;
+        }
 
     }
     @Override
@@ -120,7 +166,11 @@ public class EditNoteActivity extends AppCompatActivity  {
             }
             case R.id.editnote_add_menu:{//저장
                 //Log.d("aaaaaaa",""+notetitle.getText());
-                String title;
+
+
+
+
+               /**/ String title;
                if(notetitle.getText()==null){title="";}
                else{title=""+notetitle.getText();}
                 String text = editor.getContentAsSerialized();
@@ -137,7 +187,6 @@ public class EditNoteActivity extends AppCompatActivity  {
                 setResult(RESULT_CANCELED, intent);
                 */
                 finish();
-
                 return true;
             }
 
@@ -348,6 +397,10 @@ public class EditNoteActivity extends AppCompatActivity  {
             @Override
             public View onRenderMacro(String name, Map<String, Object> props, int index) {
                 View view = getLayoutInflater().inflate(R.layout.layout_authored_by, null);
+                Log.d("onRenderMacro",""+view);
+                /*TextView lblName = layout.findViewById(R.id.lbl_author_name);
+                lblName.setText(props.get("author-name"));
+                return layout;*/
                 return view;
             }
 
@@ -461,6 +514,8 @@ public class EditNoteActivity extends AppCompatActivity  {
 
         return annotateRequest;
     }
+
+
 
     private static class LableDetectionTask extends AsyncTask<Object, Void, String> {
         private final WeakReference<EditNoteActivity> mActivityWeakReference;
