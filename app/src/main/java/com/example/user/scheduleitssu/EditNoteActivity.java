@@ -45,6 +45,7 @@ import com.google.api.client.googleapis.json.GoogleJsonResponseException;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.gson.GsonFactory;
+import com.google.api.client.util.DateTime;
 import com.google.api.services.vision.v1.Vision;
 import com.google.api.services.vision.v1.VisionRequest;
 import com.google.api.services.vision.v1.VisionRequestInitializer;
@@ -66,6 +67,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -102,8 +104,8 @@ public class EditNoteActivity extends AppCompatActivity implements View.OnClickL
     ImageButton note_adddate;
     ImageButton note_addtime;
     //date, time 저장해놓는 변수
-    Date date_date;
-    Date time_time;
+    String calendardate;
+    String calendartime;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -139,7 +141,14 @@ public class EditNoteActivity extends AppCompatActivity implements View.OnClickL
             case R.id.note_adddate:
                 DatePickerDialog datePickerDialog = new DatePickerDialog(EditNoteActivity.this, new DatePickerDialog.OnDateSetListener(){
                             public void onDateSet(DatePicker view, int year, int month, int day){
-                                Toast.makeText(getApplicationContext(),year+"년 "+(month+1)+"월 "+day +"일을 선택했습니다",Toast.LENGTH_LONG).show();
+                                Calendar calendar = Calendar.getInstance();
+                                calendar.set(calendar.YEAR,year);
+                                calendar.set(calendar.MONTH,month);
+                                calendar.set(calendar.DAY_OF_MONTH,day);
+                                SimpleDateFormat simpledateformat = new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ssZ", Locale.KOREA);
+                                String datetime = simpledateformat.format(calendar.getTime());
+                                calendardate=datetime;
+                                Toast.makeText(getApplicationContext(),year+"년 "+(month+1)+"월 "+day +"일을 선택했습니다"+datetime,Toast.LENGTH_LONG).show();
                             }
                         },Current_year,Current_month,Current_date);
                 datePickerDialog.show();
@@ -150,6 +159,7 @@ public class EditNoteActivity extends AppCompatActivity implements View.OnClickL
                             @Override
                             public void onTimeSet(TimePicker timePicker, int hour, int minute) {
                                 Toast.makeText(getApplicationContext(),hour+"시 "+ minute +"분을 선택했습니다",Toast.LENGTH_LONG).show();
+                                calendartime=""+hour+minute;
                             }
                         }, 12,30,false);
                 timePickerDialog.show();
