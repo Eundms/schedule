@@ -9,7 +9,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -21,11 +20,9 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -35,7 +32,6 @@ import androidx.core.content.FileProvider;
 
 import com.example.user.scheduleitssu.DataClass.Note;
 import com.example.user.scheduleitssu.DataClass.Subject;
-import com.github.irshulx.Components.CustomEditText;
 import com.github.irshulx.Editor;
 import com.github.irshulx.EditorListener;
 import com.github.irshulx.models.EditorContent;
@@ -45,7 +41,6 @@ import com.google.api.client.googleapis.json.GoogleJsonResponseException;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.gson.GsonFactory;
-import com.google.api.client.util.DateTime;
 import com.google.api.services.vision.v1.Vision;
 import com.google.api.services.vision.v1.VisionRequest;
 import com.google.api.services.vision.v1.VisionRequestInitializer;
@@ -55,18 +50,12 @@ import com.google.api.services.vision.v1.model.BatchAnnotateImagesResponse;
 import com.google.api.services.vision.v1.model.EntityAnnotation;
 import com.google.api.services.vision.v1.model.Feature;
 import com.google.api.services.vision.v1.model.Image;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -151,7 +140,7 @@ public class EditNoteActivity extends AppCompatActivity implements View.OnClickL
                                 calendar.set(calendar.YEAR,year);
                                 calendar.set(calendar.MONTH,month);
                                 calendar.set(calendar.DAY_OF_MONTH,day);
-                                SimpleDateFormat simpledateformat = new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ssZ", Locale.KOREA);
+                                SimpleDateFormat simpledateformat = new SimpleDateFormat( "yyyy-MM-dd", Locale.KOREA);
                                 String datetime = simpledateformat.format(calendar.getTime());
                                 calendardate=datetime;
                                 showselecteddate.setText(calendardate);
@@ -166,8 +155,17 @@ public class EditNoteActivity extends AppCompatActivity implements View.OnClickL
                             @Override
                             public void onTimeSet(TimePicker timePicker, int hour, int minute) {
                                 calendartime=""+hour+":"+minute;
+                                SimpleDateFormat simpledateformat = new SimpleDateFormat( "HH:MM", Locale.KOREA);
+                                Date date = null;
+                                try {
+                                    date = simpledateformat.parse(""+hour+":"+minute);
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
+                                }
+                                String datetime = simpledateformat.format(date);
+
                                 showselectedtime.setText(calendartime);
-                                Toast.makeText(getApplicationContext(),hour+"시 "+ minute +"분을 선택했습니다",Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(),datetime,Toast.LENGTH_LONG).show();
                             }
                         }, 12,30,false);
                 timePickerDialog.show();
@@ -182,7 +180,7 @@ public class EditNoteActivity extends AppCompatActivity implements View.OnClickL
                 finish();
                 return true;
             }
-            case R.id.editnote_add_menu:{//저장
+            case R.id.editnote_add_menu1:{//저장
                 //Log.d("aaaaaaa",""+notetitle.getText());
                 String title;
                if(notetitle.getText()==null){title="";}
@@ -200,6 +198,14 @@ public class EditNoteActivity extends AppCompatActivity implements View.OnClickL
                 intent.putExtra("RESULT","CANCLED");
                 setResult(RESULT_CANCELED, intent);
                 */
+                /**************************************************구글 캘린더*****************************/
+                CalendarUtil cu=new CalendarUtil();
+                cu.mID=2;
+                cu.datetime =calendardate+'T'+calendardate+":00+09:00";
+                Log.d("22222222", "ddddddddddddd"+cu.datetime);
+
+                cu.getResultsFromApi();
+
                 finish();
                 return true;
             }

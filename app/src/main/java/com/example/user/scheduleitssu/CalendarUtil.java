@@ -43,7 +43,6 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -52,7 +51,7 @@ import pub.devrel.easypermissions.EasyPermissions;
 
 
 public class CalendarUtil extends AppCompatActivity implements EasyPermissions.PermissionCallbacks {
-
+    String datetime;
 
     /**
      * Google Calendar API에 접근하기 위해 사용되는 구글 캘린더 API 서비스 객체
@@ -63,7 +62,7 @@ public class CalendarUtil extends AppCompatActivity implements EasyPermissions.P
     /**
      * Google Calendar API 호출 관련 메커니즘 및 AsyncTask을 재사용하기 위해 사용
      */
-    private int mID = 0;
+    public int mID = 0;
 
 
     GoogleAccountCredential mCredential;
@@ -182,7 +181,7 @@ public class CalendarUtil extends AppCompatActivity implements EasyPermissions.P
      * <p>
      * 하나라도 만족하지 않으면 해당 사항을 사용자에게 알림.
      */
-    private String getResultsFromApi() {
+    public String getResultsFromApi() {
 
         if (!isGooglePlayServicesAvailable()) { // Google Play Services를 사용할 수 없는 경우
 
@@ -613,6 +612,7 @@ public class CalendarUtil extends AppCompatActivity implements EasyPermissions.P
 
         private String addEvent() {
 
+            Log.d("@@@", "ddddddddddddd");
 
             String calendarID = getCalendarID("CalendarTitle");
 
@@ -635,7 +635,7 @@ public class CalendarUtil extends AppCompatActivity implements EasyPermissions.P
             //simpledateformat = new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ssZ", Locale.KOREA);
             // Z에 대응하여 +0900이 입력되어 문제 생겨 수작업으로 입력
             simpledateformat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss+09:00", Locale.KOREA);
-            String datetime = simpledateformat.format(calander.getTime());
+            String datetime = simpledateformat.format(CalendarUtil.this.datetime);
 
             DateTime startDateTime = new DateTime(datetime);
             EventDateTime start = new EventDateTime()
@@ -643,7 +643,6 @@ public class CalendarUtil extends AppCompatActivity implements EasyPermissions.P
                     .setTimeZone("Asia/Seoul");
             event.setStart(start);
 
-            Log.d("@@@", datetime);
 
 
             DateTime endDateTime = new DateTime(datetime);
