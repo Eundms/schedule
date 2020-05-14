@@ -8,6 +8,7 @@ import android.graphics.drawable.shapes.OvalShape;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,9 +16,21 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.user.scheduleitssu.DataClass.Note;
+import com.example.user.scheduleitssu.DataClass.Subject;
 import com.example.user.scheduleitssu.DataClass.User;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.HashMap;
 
 public class InformationActivity extends AppCompatActivity implements View.OnClickListener{
     private static int PICK_IMAGE_REQUEST = 1;
@@ -29,6 +42,11 @@ public class InformationActivity extends AppCompatActivity implements View.OnCli
     /*개인 정보 "등록 및 수정, 취소" 버튼*/
     TextView nexttimeaddinfo;
     Button addinfobtn;
+    /*firebase*/
+    FirebaseDatabase database= FirebaseDatabase.getInstance();
+    DatabaseReference myRef=database.getReference();
+    FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();
+    String uid=user.getDisplayName()+"_"+user.getUid();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,8 +61,10 @@ public class InformationActivity extends AppCompatActivity implements View.OnCli
         nexttimeaddinfo.setOnClickListener(this);
         addinfobtn.setOnClickListener(this);
         editimagebtn.setOnClickListener(this);
+
         nickname=(EditText)findViewById(R.id.editNicName);
         contactinfo=(EditText)findViewById(R.id.editContectInfo);
+
 
     }
 
@@ -56,10 +76,12 @@ public class InformationActivity extends AppCompatActivity implements View.OnCli
             finish();
                 break;
             case R.id.addinformationbtn:
-                User user=new User("firebase에 내용을 받아와야 하나 고민 중",nickname.getText().toString(),contactinfo.getText().toString());
-
+                //파이어베이스에 닉네임, 연락처 추가하는 함수 호출
+                HashMap<String,Object> add_userinfo=new HashMap<>();
+                add_userinfo.put("UserInfo",new User(uid,nickname.getText().toString(),contactinfo.getText().toString()));
+                myRef.child("Student").child(uid).updateChildren(add_userinfo);
+                //Log.d("KEY",myRef.child("Student").child(uid).child("UserInfo").getKey());
                 finish();
-            //파이어베이스에 추가하는 함수 호출
                 break;
             case R.id.edit_userimag:
                 loadImagefromGallery(editimagebtn);

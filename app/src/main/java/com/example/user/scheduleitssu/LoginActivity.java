@@ -121,8 +121,11 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                             FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();
                             String uid=user.getDisplayName()+"_"+user.getUid();
                             HashMap<String,Object>add_userinfo=new HashMap<>();
-                            add_userinfo.put("Userinfo",new User(uid,"",""));
+                            add_userinfo.put("UserInfo",new User(uid,"",""));
+                            add_userinfo.put("Uid",uid);
                             databaseReference.child("Student").child(uid).updateChildren(add_userinfo);
+                            //add_userinfo.put(uid,new User(uid,"",""));
+                            // databaseReference.child("Student").updateChildren(add_userinfo);
 
                             finish();
 

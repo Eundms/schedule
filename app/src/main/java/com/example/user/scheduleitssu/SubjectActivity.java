@@ -51,7 +51,7 @@ public class SubjectActivity extends AppCompatActivity  implements NoteAdapter.O
 @Override
 protected void onResume() {
     super.onResume();
-    myRef=database.getReference().child("Student").child(userid).child("Subject").child("Subject_"+subject.getClassname()).child("notelist");
+    myRef=database.getReference().child("Student").child(userid).child("SubjectList").child("Subject_"+subject.getClassname()).child("notelist");
     myRef.addValueEventListener(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -138,7 +138,7 @@ protected void onResume() {
             Note newnote=new Note(notecontent,notetitle);
             noteArrayList.add(newnote);
 /*노트 리스트를 올리는 내용*///////////////////////////////////////////////////////////////////////////////////////////
-            myRef=database.getReference().child("Student").child(userid).child("Subject").child("Subject_"+subject.getClassname());
+            myRef=database.getReference().child("Student").child(userid).child("SubjectList").child("Subject_"+subject.getClassname());
             Map<String,Object>newnotes=new HashMap<>();
             newnotes.put("notelist",noteArrayList);
             myRef.updateChildren(newnotes);

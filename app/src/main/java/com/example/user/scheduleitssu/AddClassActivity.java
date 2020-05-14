@@ -78,7 +78,7 @@ Button addbtn;
                         String uid=user.getDisplayName()+"_"+user.getUid();
                         HashMap<String,Object>add_subject=new HashMap<>();
                         add_subject.put("Subject_"+sub.getClassname(),sub);
-                        databaseReference.child("Student").child(uid).child("Subject").updateChildren(add_subject);
+                        databaseReference.child("Student").child(uid).child("SubjectList").updateChildren(add_subject);
 
                         /*2번째 버전
                         Subject sub=new Subject(subjectname.getText().toString(),new ArrayList<Note>());
