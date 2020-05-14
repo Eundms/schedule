@@ -184,11 +184,7 @@ public class EditNoteActivity extends AppCompatActivity implements View.OnClickL
             }
             case R.id.editnote_add_menu:{//저장
                 //Log.d("aaaaaaa",""+notetitle.getText());
-
-
-
-
-               /**/ String title;
+                String title;
                if(notetitle.getText()==null){title="";}
                else{title=""+notetitle.getText();}
                 String text = editor.getContentAsSerialized();
@@ -409,7 +405,7 @@ public class EditNoteActivity extends AppCompatActivity implements View.OnClickL
                  */
                 Log.d("onUpload!!", "gs://scheduleitssu-685f7.appspot.com" + uuid);
 
-                editor.onImageUploadComplete("gs://scheduleitssu-685f7.appspot.com", uuid);
+                editor.onImageUploadComplete("gs://scheduleitssu-685f7.appspot.com/", uuid);
             }
 
             @Override

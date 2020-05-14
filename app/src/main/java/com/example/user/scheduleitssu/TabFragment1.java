@@ -1,12 +1,19 @@
 package com.example.user.scheduleitssu;
 
+import android.Manifest;
+import android.app.Activity;
+import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -15,18 +22,28 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.user.scheduleitssu.DataClass.What2Do;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
+import com.google.api.client.util.ExponentialBackOff;
+import com.google.api.services.calendar.CalendarScopes;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 
-public class TabFragment1 extends Fragment {
+import pub.devrel.easypermissions.EasyPermissions;
+
+public class TabFragment1 extends Fragment{
     Context context;
     RecyclerView today2doRecyclerView;
     Today2doAdapter today2doAdapter;
     CalendarView todocalendar;
     EditText selectedday;
     Date now;
+
+
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstance){
 
         View root=inflater.inflate(R.layout.fragment_tab1,container,false);
@@ -55,8 +72,11 @@ public class TabFragment1 extends Fragment {
                 selectedday.setText(""+year+"/"+(month+1)+"/"+dayOfMonth);
             }});
 
+
         return root;
     }
 
-}
 
+
+
+}

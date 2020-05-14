@@ -2,9 +2,12 @@ package com.example.user.scheduleitssu;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -123,6 +126,16 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.menu, menu);
+/*
+        SearchView searchView=(SearchView)menu.findItem(R.id.search_icon).getActionView();
+        searchView.setMaxWidth(Integer.MAX_VALUE);
+        searchView.setQueryHint("노트제목으로 검색합니다");
+        searchView.setOnQueryTextListener(queryTextListener);
+        SearchManager searchManager=(SearchManger)getSystemService(Context.SEARCH_SERVICE);
+        if(null!=searchManager){
+            searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        }
+        searchView.setIconifiedByDefault(true);*/
         return true;
     }
     //toolbar에 삽입된 메뉴 클릭 이벤트 처리
@@ -131,6 +144,7 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.search_icon:
                 Toast.makeText(getApplicationContext(), "검색 버튼이 클릭됨", Toast.LENGTH_SHORT).show();
+
                 return true;
             case R.id.settings_icon:
                 //Toast.makeText(getApplicationContext(), "설정 버튼이 클릭됨", Toast.LENGTH_SHORT).show();
