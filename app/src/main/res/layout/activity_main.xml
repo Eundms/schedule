@@ -50,7 +50,7 @@
                 android:id="@+id/chattab"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Chatting" />
+                android:text="another" />
         </com.google.android.material.tabs.TabLayout>
 
         <androidx.viewpager.widget.ViewPager

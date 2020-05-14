@@ -108,7 +108,6 @@ public class MainActivity extends AppCompatActivity {
     public void startNotificationListener(){
         boolean startByNoti = getIntent().getBooleanExtra("Started By Notification",false);
         if(!startByNoti) {
-            Log.d("넌 누구인가","어떻게 들어왔징?");
 
         }
     }
