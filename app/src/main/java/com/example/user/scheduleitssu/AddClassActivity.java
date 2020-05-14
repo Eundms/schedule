@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.example.user.scheduleitssu.DataClass.Note;
 import com.example.user.scheduleitssu.DataClass.Subject;
+import com.example.user.scheduleitssu.DataClass.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -61,6 +62,7 @@ Button addbtn;
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         TextView subjectname=(TextView)findViewById(R.id.makesubjectname);
+                        TextView subjectinfo=(TextView)findViewById(R.id.makesubjectinfo);
                       /////////////////if you want to add code directly, do it!!!!!!////////////////
                       /*  ArrayList<Note> notes=new ArrayList<Note>();
                         notes.add(new Note("{\"nodes\":[{\"content\":[\"\\u003cp dir\\u003d\\\"ltr\\\"\\" +
@@ -72,12 +74,14 @@ Button addbtn;
                         Subject sub=new Subject(subjectname.getText().toString(),notes);*/
                         /////////////////////////////////////////////////////////////////////////////
                         /*1번째 버전*/
-                        Subject sub=new Subject(subjectname.getText().toString(),new ArrayList<Note>());
+                        Subject sub=new Subject(subjectname.getText().toString(),subjectinfo.getText().toString(),new ArrayList<Note>());
                         String uid=user.getDisplayName()+"_"+user.getUid();
                         HashMap<String,Object>add_subject=new HashMap<>();
                         add_subject.put("Subject_"+sub.getClassname(),sub);
                         databaseReference.child("Student").child(uid).child("Subject").updateChildren(add_subject);
-
+                        HashMap<String,Object>add_userinfo=new HashMap<>();
+                        add_userinfo.put("User",new User("asdfasdf"));
+                        databaseReference.child("Student").child(uid).updateChildren(add_userinfo);
                         /*2번째 버전
                         Subject sub=new Subject(subjectname.getText().toString(),new ArrayList<Note>());
                         String uid=user.getDisplayName()+"_"+user.getUid();

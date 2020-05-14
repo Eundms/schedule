@@ -8,23 +8,28 @@ import android.graphics.drawable.shapes.OvalShape;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.provider.Settings;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.user.scheduleitssu.DataClass.User;
+
 public class InformationActivity extends AppCompatActivity implements View.OnClickListener{
     private static int PICK_IMAGE_REQUEST = 1;
     ImageView imgView;
-
+    Context context;
+    ImageView editimagebtn;
+    EditText nickname;
+    EditText contactinfo;
+    /*개인 정보 "등록 및 수정, 취소" 버튼*/
     TextView nexttimeaddinfo;
     Button addinfobtn;
-    Context context;
-    ImageView imageView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,13 +38,14 @@ public class InformationActivity extends AppCompatActivity implements View.OnCli
 
         nexttimeaddinfo=(TextView)findViewById(R.id.다음에입력);
         addinfobtn=(Button)findViewById(R.id.addinformationbtn);
-        imageView=(ImageView)findViewById(R.id.edit_userimag);
-
+        editimagebtn =(ImageView)findViewById(R.id.edit_userimag);
         //이름은 default로 앞 메일계정에서 받아야한다. 하지만, 고칠 수 있게!
-        /*Intent intent = getIntent(); intent.getParcelableExtra("editTrade");*/
         nexttimeaddinfo.setOnClickListener(this);
         addinfobtn.setOnClickListener(this);
-        imageView.setOnClickListener(this);
+        editimagebtn.setOnClickListener(this);
+        nickname=(EditText)findViewById(R.id.editNicName);
+        contactinfo=(EditText)findViewById(R.id.editContectInfo);
+
     }
 
 
@@ -50,11 +56,13 @@ public class InformationActivity extends AppCompatActivity implements View.OnCli
             finish();
                 break;
             case R.id.addinformationbtn:
+                User user=new User("firebase에 내용을 받아와야 하나 고민 중",nickname.getText().toString(),contactinfo.getText().toString());
+
                 finish();
             //파이어베이스에 추가하는 함수 호출
                 break;
             case R.id.edit_userimag:
-                loadImagefromGallery(imageView);
+                loadImagefromGallery(editimagebtn);
                 break;
         }
     }

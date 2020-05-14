@@ -4,22 +4,13 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.util.ArrayList;
-import com.google.firebase.database.DataSnapshot;
-
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
 
 
 public class User implements Parcelable {
     //진짜 개인 정보
     String userID;
-    String name;
-    String email;
+    String nickname;
+    String contactinfo;
 
     //프로그램 내 정보
     //1. 내가 참여하는 그룹 정보
@@ -30,19 +21,22 @@ public class User implements Parcelable {
     ArrayList<String>shareNoteList;
     //4. 공유 받은 노트 리스트
     ArrayList<String>sharedNoteList;
-    public User(String userID, String name, String email) {
+    public User(){}
+    public User(String userID){
+        this.userID=userID;
+    }
+    public User(String userID, String nickname, String contactinfo) {
         this.userID = userID;
-        this.name = name;
-        this.email = email;
-
+        this.nickname = nickname;
+        this.contactinfo = contactinfo;
     }
 
-    public User(String userID, String name, String email, ArrayList<String> myNoteList) {
-        this(userID, name, email);
+    public User(String userID, String nickname, String contactinfo, ArrayList<String> myNoteList) {
+        this(userID, nickname, contactinfo);
         this.myNoteList = myNoteList;
     }
-    public User(String userID, String name, String email, ArrayList<String> groupList, ArrayList<String> myNoteList, ArrayList<String> shareNoteList, ArrayList<String> sharedNoteList) {
-         this(userID, name, email);
+    public User(String userID, String nickname, String contactinfo, ArrayList<String> groupList, ArrayList<String> myNoteList, ArrayList<String> shareNoteList, ArrayList<String> sharedNoteList) {
+         this(userID, nickname, contactinfo);
         this.groupList = groupList;
         this.myNoteList = myNoteList;
         this.shareNoteList = shareNoteList;
@@ -51,8 +45,8 @@ public class User implements Parcelable {
 
     protected User(Parcel in) {
         userID = in.readString();
-        name = in.readString();
-        email = in.readString();
+        nickname = in.readString();
+        contactinfo = in.readString();
         groupList = in.createStringArrayList();
         myNoteList = in.createStringArrayList();
         shareNoteList = in.createStringArrayList();
@@ -79,20 +73,20 @@ public class User implements Parcelable {
         this.userID = userID;
     }
 
-    public String getName() {
-        return name;
+    public String getNickname() {
+        return nickname;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 
-    public String getEmail() {
-        return email;
+    public String getContactinfo() {
+        return contactinfo;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setContactinfo(String contactinfo) {
+        this.contactinfo = contactinfo;
     }
 
     public ArrayList<String> getGroupList() {
@@ -135,8 +129,8 @@ public class User implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(userID);
-        dest.writeString(name);
-        dest.writeString(email);
+        dest.writeString(nickname);
+        dest.writeString(contactinfo);
         dest.writeStringList(groupList);
         dest.writeStringList(myNoteList);
         dest.writeStringList(shareNoteList);

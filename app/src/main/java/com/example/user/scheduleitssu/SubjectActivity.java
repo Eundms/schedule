@@ -51,7 +51,6 @@ public class SubjectActivity extends AppCompatActivity  implements NoteAdapter.O
 @Override
 protected void onResume() {
     super.onResume();
-    noteArrayList.clear();
     myRef=database.getReference().child("Student").child(userid).child("Subject").child("Subject_"+subject.getClassname()).child("notelist");
     myRef.addValueEventListener(new ValueEventListener() {
                                     @Override
@@ -68,6 +67,7 @@ protected void onResume() {
 
                                     }
                                 });
+        if(noteArrayList.size()==0){ subject_default.setVisibility(View.VISIBLE); }
 }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,10 +105,8 @@ protected void onResume() {
                 noteArrayList = subject.getNotelist();
                 } else {
                 finish();
+                }
             }
-
-            }
-
     }
 
 

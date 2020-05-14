@@ -51,6 +51,15 @@
         android:inputType="textPersonName"
         android:hint="과목 이름" />
 
+    <EditText
+        android:id="@+id/makesubjectinfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="20"
+        android:hint="요일및시간"
+        android:inputType="text" />
+
+
     <LinearLayout
         android:id="@+id/버튼layout"
         android:layout_width="wrap_content"

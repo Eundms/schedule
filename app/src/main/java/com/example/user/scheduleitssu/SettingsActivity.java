@@ -52,7 +52,6 @@ public class SettingsActivity extends AppCompatActivity implements NavigationVie
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch(item.getItemId()){
                 case R.id.settings_information:
-                    Toast.makeText(getApplicationContext(), "settings_information", Toast.LENGTH_SHORT).show();
                     Intent intent=new Intent(this,InformationActivity.class);
                     startActivity(intent);
                     break;

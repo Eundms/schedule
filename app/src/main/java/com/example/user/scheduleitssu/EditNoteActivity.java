@@ -91,21 +91,23 @@ public class EditNoteActivity extends AppCompatActivity implements View.OnClickL
     private static final int GALLERY_IMAGE_REQUEST = 11;
     public static final int CAMERA_PERMISSIONS_REQUEST = 22;
     public static final int CAMERA_IMAGE_REQUEST = 33;
-    //나중에 mImageDetails지우고 Editor에 값을 넣는 거 해야 함.
-    private TextView mImageDetails;
-    private ImageView mMainImage;
+
     String serailized;
     EditorContent des;
-    Note note;
+    /*전 activity에서 받아온 값*/
     Subject subject;
+    Note note;
+    /*리스트에서의 현재 노트의 번호*/
     int position;
     EditText notetitle;
-
+    //date, time
     ImageButton note_adddate;
     ImageButton note_addtime;
     //date, time 저장해놓는 변수
     String calendardate;
     String calendartime;
+    TextView showselecteddate;
+    TextView showselectedtime;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -119,6 +121,8 @@ public class EditNoteActivity extends AppCompatActivity implements View.OnClickL
 
         note_adddate=findViewById(R.id.note_adddate);
         note_addtime=findViewById(R.id.note_addtime);
+        showselecteddate=findViewById(R.id.showdate_editnote);
+        showselectedtime=findViewById(R.id.showtime_editnote);
         note_adddate.setOnClickListener(this);
         note_addtime.setOnClickListener(this);
         setUpEditor();
@@ -129,6 +133,7 @@ public class EditNoteActivity extends AppCompatActivity implements View.OnClickL
         if(note!=null&&note.getTitle()!=null) { notetitle.setText(note.getTitle()); }
 
     }
+
     @Override
     public void onClick(View v) {
         //현재 년도, 월, 일
@@ -139,6 +144,7 @@ public class EditNoteActivity extends AppCompatActivity implements View.OnClickL
 
         switch (v.getId()){
             case R.id.note_adddate:
+                //datepicker
                 DatePickerDialog datePickerDialog = new DatePickerDialog(EditNoteActivity.this, new DatePickerDialog.OnDateSetListener(){
                             public void onDateSet(DatePicker view, int year, int month, int day){
                                 Calendar calendar = Calendar.getInstance();
@@ -148,6 +154,7 @@ public class EditNoteActivity extends AppCompatActivity implements View.OnClickL
                                 SimpleDateFormat simpledateformat = new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ssZ", Locale.KOREA);
                                 String datetime = simpledateformat.format(calendar.getTime());
                                 calendardate=datetime;
+                                showselecteddate.setText(calendardate);
                                 Toast.makeText(getApplicationContext(),year+"년 "+(month+1)+"월 "+day +"일을 선택했습니다"+datetime,Toast.LENGTH_LONG).show();
                             }
                         },Current_year,Current_month,Current_date);
@@ -158,8 +165,9 @@ public class EditNoteActivity extends AppCompatActivity implements View.OnClickL
                 TimePickerDialog timePickerDialog = new TimePickerDialog(EditNoteActivity.this, new TimePickerDialog.OnTimeSetListener() {
                             @Override
                             public void onTimeSet(TimePicker timePicker, int hour, int minute) {
+                                calendartime=""+hour+":"+minute;
+                                showselectedtime.setText(calendartime);
                                 Toast.makeText(getApplicationContext(),hour+"시 "+ minute +"분을 선택했습니다",Toast.LENGTH_LONG).show();
-                                calendartime=""+hour+minute;
                             }
                         }, 12,30,false);
                 timePickerDialog.show();
@@ -399,7 +407,7 @@ public class EditNoteActivity extends AppCompatActivity implements View.OnClickL
                  * let the editor know the upload has completed
                  * 이곳에서 이미지를 파이어베이스에 올려야함.
                  */
-                Log.d("onUpload!!", "gs://scheduleitssu-685f7.appspot.com/" + uuid);
+                Log.d("onUpload!!", "gs://scheduleitssu-685f7.appspot.com" + uuid);
 
                 editor.onImageUploadComplete("gs://scheduleitssu-685f7.appspot.com", uuid);
             }

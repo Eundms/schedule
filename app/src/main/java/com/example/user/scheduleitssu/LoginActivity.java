@@ -64,7 +64,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             public void onClick(View v) {
                 Intent signInIntent = googleSignInClient.getSignInIntent();
                 startActivityForResult(signInIntent, RC_SIGN_IN);
-                System.out.println("클릭클릭");
             }
         });
 
@@ -87,7 +86,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 // Google Sign In failed, update UI appropriately->SHA1
                 Toast.makeText(LoginActivity.this,"로그인 실패",Toast.LENGTH_SHORT).show();
                 Log.w(TAG, "Google sign in failed", e);
-                // ...
             }
         }
     }
@@ -108,6 +106,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                             startActivity(intent);
                             finish();
+
                             Toast.makeText(LoginActivity.this,"파이어베이스 아이디 생성 완료",Toast.LENGTH_SHORT).show();
 
                         }
