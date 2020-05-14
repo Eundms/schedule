@@ -63,7 +63,7 @@
             android:layout_weight="1"
             android:ems="5"
             android:inputType="textPersonName"
-            android:text="(defult)박은정" />
+          />
     </LinearLayout>
 
     <LinearLayout

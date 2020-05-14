@@ -3,19 +3,15 @@ package com.example.user.scheduleitssu;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.user.scheduleitssu.DataClass.Note;
 import com.example.user.scheduleitssu.DataClass.Subject;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
@@ -38,7 +34,7 @@ public class TabFragment2 extends Fragment implements SubjectAdapter.OnItemClick
     FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();
     String userid= user.getDisplayName()+"_"+user.getUid();
     FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference myRef = database.getReference().child("Student").child(userid).child("Subject");
+    DatabaseReference myRef = database.getReference().child("Student").child(userid).child("SubjectList");
 
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstance){
@@ -73,7 +69,7 @@ public class TabFragment2 extends Fragment implements SubjectAdapter.OnItemClick
         subjectRecyclerView.setAdapter(subjectAdapter);
 
 
-        FloatingActionButton addclassbtn=(FloatingActionButton)root.findViewById(R.id.floatingActionButton);
+        FloatingActionButton addclassbtn=(FloatingActionButton)root.findViewById(R.id.fb1);
         addclassbtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){

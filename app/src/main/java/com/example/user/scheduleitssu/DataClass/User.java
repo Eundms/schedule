@@ -25,10 +25,11 @@ public class User implements Parcelable {
     public User(String userID){
         this.userID=userID;
     }
+
     public User(String userID, String nickname, String contactinfo) {
         this.userID = userID;
-        this.nickname = nickname;
-        this.contactinfo = contactinfo;
+        this.nickname=nickname;
+        this.contactinfo=contactinfo;
     }
 
     public User(String userID, String nickname, String contactinfo, ArrayList<String> myNoteList) {

@@ -42,7 +42,7 @@ public class DetailNoteActivity extends AppCompatActivity {
     FirebaseDatabase database= FirebaseDatabase.getInstance();
     FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();
     String userid=user.getDisplayName()+"_"+user.getUid();
-    DatabaseReference myRef=database.getReference().child("Student").child(userid).child("Subject");
+    DatabaseReference myRef=database.getReference().child("Student").child(userid).child("SubjectList");
 
     //////////////////////////////////////////////////////////////////
     Subject subject;

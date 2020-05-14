@@ -3,4 +3,7 @@
     <item
         android:id="@+id/addnote_add_menu"
         android:title="노트추가" />
+    <item
+        android:id="@+id/deletesubject_delete_menu"
+        android:title="과목삭제" />
 </menu>

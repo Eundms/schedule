@@ -8,6 +8,8 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -51,7 +53,7 @@ public class SubjectActivity extends AppCompatActivity  implements NoteAdapter.O
 @Override
 protected void onResume() {
     super.onResume();
-    myRef=database.getReference().child("Student").child(userid).child("Subject").child("Subject_"+subject.getClassname()).child("notelist");
+    myRef=database.getReference().child("Student").child(userid).child("SubjectList").child("Subject_"+subject.getClassname()).child("notelist");
     myRef.addValueEventListener(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -125,6 +127,30 @@ protected void onResume() {
                 startActivityForResult(intent,SUBJECTACTIVITY_REQUEST);
                 return true;
             }
+            case R.id.deletesubject_delete_menu:{
+                AlertDialog.Builder alert_confirm = new AlertDialog.Builder(SubjectActivity.this);
+                alert_confirm.setMessage("과목을 삭제 하시겠습니까?").setCancelable(false).setPositiveButton("확인",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                // 'YES'
+                                database.getReference().child("Student").child(userid).child("SubjectList").child("Subject_"+subject.getClassname()).removeValue();
+                                finish();
+                            }
+                        }).setNegativeButton("취소",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                // 'No'
+                                return;
+                            }
+                        });
+                AlertDialog alert = alert_confirm.create();
+                alert.show();
+
+
+                return true;
+            }
         }
         return super.onOptionsItemSelected(item);
     }
@@ -138,7 +164,7 @@ protected void onResume() {
             Note newnote=new Note(notecontent,notetitle);
             noteArrayList.add(newnote);
 /*노트 리스트를 올리는 내용*///////////////////////////////////////////////////////////////////////////////////////////
-            myRef=database.getReference().child("Student").child(userid).child("Subject").child("Subject_"+subject.getClassname());
+            myRef=database.getReference().child("Student").child(userid).child("SubjectList").child("Subject_"+subject.getClassname());
             Map<String,Object>newnotes=new HashMap<>();
             newnotes.put("notelist",noteArrayList);
             myRef.updateChildren(newnotes);
