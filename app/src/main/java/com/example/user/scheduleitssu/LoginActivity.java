@@ -11,6 +11,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.user.scheduleitssu.DataClass.Note;
+import com.example.user.scheduleitssu.DataClass.Subject;
+import com.example.user.scheduleitssu.DataClass.User;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -30,13 +33,19 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener{
     private FirebaseAuth mAuth;
     private GoogleSignInClient googleSignInClient;
     private static final int RC_SIGN_IN=900;
     private static final String TAG="LOGIN Activity";
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,8 +114,19 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                             // Sign in success, update UI with the signed-in user's information
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                             startActivity(intent);
+                            /////////////
+                            /* */
+                            FirebaseDatabase firebaseDatabase= FirebaseDatabase.getInstance();
+                            DatabaseReference databaseReference=firebaseDatabase.getReference();
+                            FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();
+                            String uid=user.getDisplayName()+"_"+user.getUid();
+                            HashMap<String,Object>add_userinfo=new HashMap<>();
+                            add_userinfo.put("Userinfo",new User(uid,"",""));
+                            databaseReference.child("Student").child(uid).updateChildren(add_userinfo);
+
                             finish();
 
+                            ///////////////
                             Toast.makeText(LoginActivity.this,"파이어베이스 아이디 생성 완료",Toast.LENGTH_SHORT).show();
 
                         }
