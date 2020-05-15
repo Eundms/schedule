@@ -26,6 +26,8 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.FileProvider;
@@ -36,6 +38,10 @@ import com.github.irshulx.Editor;
 import com.github.irshulx.EditorListener;
 import com.github.irshulx.models.EditorContent;
 import com.github.irshulx.models.EditorTextStyle;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.googleapis.json.GoogleJsonResponseException;
 import com.google.api.client.http.HttpTransport;
@@ -50,6 +56,9 @@ import com.google.api.services.vision.v1.model.BatchAnnotateImagesResponse;
 import com.google.api.services.vision.v1.model.EntityAnnotation;
 import com.google.api.services.vision.v1.model.Feature;
 import com.google.api.services.vision.v1.model.Image;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -205,7 +214,7 @@ public class EditNoteActivity extends AppCompatActivity implements View.OnClickL
                 Log.d("22222222", "ddddddddddddd"+cu.datetime);
 
                 cu.getResultsFromApi();
-*****************************/
+                 *****************************/
                 finish();
                 return true;
             }
@@ -412,10 +421,33 @@ public class EditNoteActivity extends AppCompatActivity implements View.OnClickL
                 Log.d("onUpload!!", "gs://scheduleitssu-685f7.appspot.com" + uuid);
 
 
+                /////////////////
 
 
 
-                editor.onImageUploadComplete("gs://scheduleitssu-685f7.appspot.com/", uuid);
+                //uri to bitmap
+
+                String path =  MediaStore.Images.Media.insertImage(getContentResolver(), image, "Title", null);
+                Uri file=Uri.parse(path);
+
+                FirebaseStorage storage = FirebaseStorage.getInstance("gs://scheduleitssu-685f7.appspot.com");//scheduleitssu-685f7.appspot.com0ef41004f62d20200515132229
+                StorageReference storageRef= storage.getReference();
+                Log.d(TAG, "photo file : " + file);
+
+                // stroage images에 절대경로파일 저장
+                StorageReference storageRefer = storageRef.child("40");//file.getLastPathSegment()
+                UploadTask uploadTask = storageRefer.putFile(file);
+                storageRefer.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>()
+                {
+                    @Override
+                        public void onSuccess(Uri downloadUrl) {
+                            Log.d("URL",downloadUrl.toString());
+                    }
+                });
+
+//editor.render(editor.getContentAsHTML()+"<img src=\"https://images.mypetlife.co.kr/content/uploads/2019/09/06150205/cat-baby-4208578_1920.jpg\">");
+////////////
+                editor.onImageUploadComplete("gs://scheduleitssu-685f7.appspot.com", uuid);
             }
 
             @Override
