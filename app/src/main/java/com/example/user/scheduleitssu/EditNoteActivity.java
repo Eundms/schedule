@@ -198,14 +198,14 @@ public class EditNoteActivity extends AppCompatActivity implements View.OnClickL
                 intent.putExtra("RESULT","CANCLED");
                 setResult(RESULT_CANCELED, intent);
                 */
-                /**************************************************구글 캘린더*****************************/
+                /**************************************************구글 캘린더
                 CalendarUtil cu=new CalendarUtil();
                 cu.mID=2;
                 cu.datetime =calendardate+'T'+calendardate+":00+09:00";
                 Log.d("22222222", "ddddddddddddd"+cu.datetime);
 
                 cu.getResultsFromApi();
-
+*****************************/
                 finish();
                 return true;
             }
@@ -410,6 +410,10 @@ public class EditNoteActivity extends AppCompatActivity implements View.OnClickL
                  * 이곳에서 이미지를 파이어베이스에 올려야함.
                  */
                 Log.d("onUpload!!", "gs://scheduleitssu-685f7.appspot.com" + uuid);
+
+
+
+
 
                 editor.onImageUploadComplete("gs://scheduleitssu-685f7.appspot.com/", uuid);
             }
