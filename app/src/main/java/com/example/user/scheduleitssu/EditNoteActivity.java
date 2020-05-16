@@ -421,7 +421,7 @@ public class EditNoteActivity extends AppCompatActivity implements View.OnClickL
                  */
                 Log.d("onUpload!!", "gs://scheduleitssu-685f7.appspot.com" +"\t\t"+uuid);
 
-///////보존///////////Do not touch here////////////////////////
+            ///////보존///////////Do not touch here////////////////////////
                 FirebaseStorage storage = FirebaseStorage.getInstance("gs://scheduleitssu-685f7.appspot.com");//scheduleitssu-685f7.appspot.com0ef41004f62d20200515132229
                 StorageReference storageRef= storage.getReference();
                 String imageName=System.currentTimeMillis()+".jpg";
@@ -443,20 +443,21 @@ public class EditNoteActivity extends AppCompatActivity implements View.OnClickL
                     public void onComplete(@NonNull Task<Uri> task) {
                         if (task.isSuccessful()) {
                             Uri downloadUri = task.getResult();
-                            Log.d("downloadUri","https://firebasestorage.googleapis.com"+downloadUri.getPath());
+                          //  Log.d("downloadUri",editor.getContentAsHTML()+"<img src=\""+downloadUri.toString()+"\">");
+                            editor.onImageUploadComplete(downloadUri.toString(), uuid);
+                            Log.d("downloadUri",editor.getContentAsHTML());
+                            //   editor.render(editor.getContentAsHTML()+"<img src=\""+downloadUri.toString()+"\">");
+
+
                         } else {
                             // Handle failures
                             // ...
                         }
                     }
                 });
-///////보존///////////Do not touch here(^)////////////////////////
 
+                Log.d("downloadUri",editor.getContentAsHTML());
 
-
-//editor.render(editor.getContentAsHTML()+"<img src=\"https://images.mypetlife.co.kr/content/uploads/2019/09/06150205/cat-baby-4208578_1920.jpg\">");
-////////////
-                editor.onImageUploadComplete("gs://scheduleitssu-685f7.appspot.com", uuid);
             }
 
             @Override
