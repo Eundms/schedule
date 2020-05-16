@@ -38,6 +38,7 @@ import com.github.irshulx.Editor;
 import com.github.irshulx.EditorListener;
 import com.github.irshulx.models.EditorContent;
 import com.github.irshulx.models.EditorTextStyle;
+import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -106,6 +107,7 @@ public class EditNoteActivity extends AppCompatActivity implements View.OnClickL
     String calendartime;
     TextView showselecteddate;
     TextView showselectedtime;
+    Uri uri;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -248,7 +250,7 @@ public class EditNoteActivity extends AppCompatActivity implements View.OnClickL
         Log.d( "onActivityResult",""+requestCode+" "+resultCode);
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == editor.PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null && data.getData() != null) {
-            Uri uri = data.getData();
+             uri = data.getData();
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
                 // Log.d(TAG, String.valueOf(bitmap));
@@ -412,38 +414,45 @@ public class EditNoteActivity extends AppCompatActivity implements View.OnClickL
 
             @Override
             public void onUpload(Bitmap image, String uuid) {
-                Toast.makeText(EditNoteActivity.this, uuid+image, Toast.LENGTH_LONG).show();
                 /**
                  * TODO do your upload here from the bitmap received and all onImageUploadComplete(String url); to insert the result url to
                  * let the editor know the upload has completed
                  * 이곳에서 이미지를 파이어베이스에 올려야함.
                  */
-                Log.d("onUpload!!", "gs://scheduleitssu-685f7.appspot.com" + uuid);
+                Log.d("onUpload!!", "gs://scheduleitssu-685f7.appspot.com" +"\t\t"+uuid);
 
-
-                /////////////////
-
-
-
-                //uri to bitmap
-
-                String path =  MediaStore.Images.Media.insertImage(getContentResolver(), image, "Title", null);
-                Uri file=Uri.parse(path);
-
+///////보존///////////Do not touch here////////////////////////
                 FirebaseStorage storage = FirebaseStorage.getInstance("gs://scheduleitssu-685f7.appspot.com");//scheduleitssu-685f7.appspot.com0ef41004f62d20200515132229
                 StorageReference storageRef= storage.getReference();
-                Log.d(TAG, "photo file : " + file);
+                String imageName=System.currentTimeMillis()+".jpg";
+                StorageReference imageRefer = storageRef.child(imageName);//file.getLastPathSegment()
+                UploadTask uploadTask = imageRefer.putFile(uri);
 
-                // stroage images에 절대경로파일 저장
-                StorageReference storageRefer = storageRef.child("40");//file.getLastPathSegment()
-                UploadTask uploadTask = storageRefer.putFile(file);
-                storageRefer.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>()
-                {
+            Log.d("URI!!!!!!",""+uri.getPath());
+                Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
                     @Override
-                        public void onSuccess(Uri downloadUrl) {
-                            Log.d("URL",downloadUrl.toString());
+                    public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                        if (!task.isSuccessful()) {
+                            throw task.getException();
+                        }
+                        // Continue with the task to get the download URL
+                        return imageRefer.getDownloadUrl();
+                    }
+                }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Uri> task) {
+                        if (task.isSuccessful()) {
+                            Uri downloadUri = task.getResult();
+                            Log.d("downloadUri","https://firebasestorage.googleapis.com"+downloadUri.getPath());
+                        } else {
+                            // Handle failures
+                            // ...
+                        }
                     }
                 });
+///////보존///////////Do not touch here(^)////////////////////////
+
+
 
 //editor.render(editor.getContentAsHTML()+"<img src=\"https://images.mypetlife.co.kr/content/uploads/2019/09/06150205/cat-baby-4208578_1920.jpg\">");
 ////////////
