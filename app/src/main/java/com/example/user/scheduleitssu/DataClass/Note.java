@@ -9,8 +9,34 @@ public class Note implements Parcelable {
 
     String whomake_note;
     String whenmake_note;
+
     String editdate_note;
+
+    public String getEditdate_note() {
+        return editdate_note;
+    }
+
+    public void setEditdate_note(String editdate_note) {
+        this.editdate_note = editdate_note;
+    }
+
     String whoedit_note;
+    public String getWhomake_note() {
+        return whomake_note;
+    }
+
+    public void setWhomake_note(String whomake_note) {
+        this.whomake_note = whomake_note;
+    }
+
+    public String getWhenmake_note() {
+        return whenmake_note;
+    }
+
+    public void setWhenmake_note(String whenmake_note) {
+        this.whenmake_note = whenmake_note;
+    }
+
 
     public Note(){
     }
