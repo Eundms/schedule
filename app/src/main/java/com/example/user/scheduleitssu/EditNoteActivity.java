@@ -181,7 +181,6 @@ public class EditNoteActivity extends AppCompatActivity implements View.OnClickL
                 TimePickerDialog timePickerDialog = new TimePickerDialog(EditNoteActivity.this, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int hour, int minute) {
-                        calendartime = "" + hour + ":" + minute;
                         SimpleDateFormat simpledateformat = new SimpleDateFormat("HH:MM", Locale.KOREA);
                         Date date = null;
                         try {
@@ -190,7 +189,7 @@ public class EditNoteActivity extends AppCompatActivity implements View.OnClickL
                             e.printStackTrace();
                         }
                         String datetime = simpledateformat.format(date);
-
+                        calendartime=datetime;
                         showselectedtime.setText(calendartime);
                         Toast.makeText(getApplicationContext(), datetime, Toast.LENGTH_LONG).show();
                     }
@@ -252,7 +251,7 @@ public class EditNoteActivity extends AppCompatActivity implements View.OnClickL
         Intent getContents = getIntent();
 
         if (getContents.getStringExtra("EXIST").equals("EXIST") && getContents.getStringExtra("DATATYPE").equals("SUBJECT")) {
-            if (getContents.getStringExtra("SUBJECTINFOTYPE").equals("SUBJECTINFO_CONTENT")) {
+            if (getContents.getStringExtra("INFOTYPE").equals("SUBJECTINFO_CONTENT")) {
                 subject = getContents.getParcelableExtra("DATA");
                 position = Integer.parseInt(getContents.getStringExtra("POSITION"));
                 note = subject.getNotelist().get(position);
@@ -260,7 +259,9 @@ public class EditNoteActivity extends AppCompatActivity implements View.OnClickL
                 des = editor.getContentDeserialized(serailized);
                 editor.render(des);
                 /*setSerialRenderInProgress*/
-            } else if (getContents.getStringExtra("NOTEINFOTYPE").equals("NOTEINFO_DEFAULT")) {
+            } else if (getContents.getStringExtra("INFOTYPE").equals("NOTEINFO_DEFAULT")) {
+                subject=getContents.getParcelableExtra("DATA");
+
             }
         } else if (getContents.getStringExtra("EXIST").equals("NO")) {
 
@@ -777,7 +778,6 @@ public class EditNoteActivity extends AppCompatActivity implements View.OnClickL
 
         public CalendarUtil(String title,String description){
 
-            Log.d("calendar","util");
 
 
             this.title=title;
@@ -801,12 +801,9 @@ public class EditNoteActivity extends AppCompatActivity implements View.OnClickL
         @Override
         protected String doInBackground(Void ...voids) {
 
-            Log.d("calendar","back");
-            Log.d("calendar",title);
-            Log.d("calendar",description);
 
 
-            String calendarID = getCalendarID("test");
+            String calendarID = getCalendarID(subject.getClassname());
 
             if ( calendarID == null ){
 
@@ -826,22 +823,27 @@ public class EditNoteActivity extends AppCompatActivity implements View.OnClickL
             //simpledateformat = new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ssZ", Locale.KOREA);
             // Z에 대응하여 +0900이 입력되어 문제 생겨 수작업으로 입력
             simpledateformat = new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ss+09:00", Locale.KOREA);
-            String datetime = simpledateformat.format(calander.getTime());
-
-            DateTime startDateTime = new DateTime(datetime);
-            EventDateTime start = new EventDateTime()
-                    .setDateTime(startDateTime)
-                    .setTimeZone("Asia/Seoul");
-            event.setStart(start);
-
-            Log.d( "calendar", datetime );
 
 
-            DateTime endDateTime = new  DateTime(datetime);
-            EventDateTime end = new EventDateTime()
-                    .setDateTime(endDateTime)
-                    .setTimeZone("Asia/Seoul");
-            event.setEnd(end);
+
+                String datetime = simpledateformat.format(calander.getTime());
+
+                Log.d("jjjjjjjjj",calendardate+"'T'"+calendartime+":00+09:00");
+
+                DateTime startDateTime = new DateTime(datetime);
+                EventDateTime start = new EventDateTime()
+                        .setDateTime(startDateTime)
+                        .setTimeZone("Asia/Seoul");
+                event.setStart(start);
+
+
+                DateTime endDateTime = new  DateTime(datetime);
+                EventDateTime end = new EventDateTime()
+                        .setDateTime(endDateTime)
+                        .setTimeZone("Asia/Seoul");
+                event.setEnd(end);
+
+
 
             //String[] recurrence = new String[]{"RRULE:FREQ=DAILY;COUNT=2"};
             //event.setRecurrence(Arrays.asList(recurrence));

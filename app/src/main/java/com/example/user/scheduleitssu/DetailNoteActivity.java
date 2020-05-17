@@ -69,7 +69,7 @@ public class DetailNoteActivity extends AppCompatActivity {
     void processIntent(){
         Intent getIntent=getIntent();
         if(getIntent.getStringExtra("EXIST").equals("EXIST")&&getIntent.getStringExtra("DATATYPE").equals("SUBJECT")){
-            if(getIntent.getStringExtra("SUBJECTINFOTYPE").equals("SUBJECTINFO_CONTENT")){
+            if(getIntent.getStringExtra("INFOTYPE").equals("SUBJECTINFO_CONTENT")){
             subject= getIntent.getParcelableExtra("DATA");
             position=Integer.parseInt(getIntent.getStringExtra("POSITION"));
             note=subject.getNotelist().get(position);
@@ -131,7 +131,7 @@ void setnote(){
                 Intent intent = new Intent(this, EditNoteActivity.class);
                 intent.putExtra("EXIST","EXIST");
                 intent.putExtra("DATATYPE","SUBJECT");
-                intent.putExtra("SUBJECTINFOTYPE","SUBJECTINFO_CONTENT");
+                intent.putExtra("INFOTYPE","SUBJECTINFO_CONTENT");
                 intent.putExtra("POSITION",Integer.toString(position));
                 intent.putExtra("DATA",subject);
                 setResult(RESULT_OK, intent);

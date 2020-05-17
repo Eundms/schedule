@@ -98,7 +98,7 @@ protected void onResume() {
     private void processIntent(Intent receive){
         if(receive.getStringExtra("EXIST").equals("EXIST")&&receive.getStringExtra("DATATYPE").equals("SUBJECT")) {
 
-            String infotype=receive.getStringExtra("SUBJECTINFOTYPE");
+            String infotype=receive.getStringExtra("INFOTYPE");
                 if (infotype.equals("SUBJECTINFO_DEFAULT")) {/*notelist없음*/
                 subject = receive.getParcelableExtra("DATA");
                 toolbar.setTitle(subject.getClassname());
@@ -124,7 +124,10 @@ protected void onResume() {
             }
             case R.id.addnote_add_menu:{
                 Intent intent = new Intent(this, EditNoteActivity.class);
-                intent.putExtra("EXIST","NO");
+                intent.putExtra("EXIST","EXIST");
+                intent.putExtra("DATATYPE","SUBJECT");
+                intent.putExtra("INFOTYPE","NOTEINFO_DEFAULT");
+                intent.putExtra("DATA",subject);
 
                 startActivityForResult(intent,SUBJECTACTIVITY_REQUEST);
                 return true;
@@ -196,7 +199,7 @@ protected void onResume() {
         Intent intent=new Intent(this,DetailNoteActivity.class);
         intent.putExtra("EXIST","EXIST");
         intent.putExtra("DATATYPE","SUBJECT");
-        intent.putExtra("SUBJECTINFOTYPE","SUBJECTINFO_CONTENT");
+        intent.putExtra("INFOTYPE","SUBJECTINFO_CONTENT");
         intent.putExtra("POSITION",Integer.toString(pos));
         intent.putExtra("DATA",subject);
         startActivity(intent);
