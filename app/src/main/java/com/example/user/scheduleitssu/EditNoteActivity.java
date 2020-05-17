@@ -45,6 +45,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
+import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecoverableAuthIOException;
 import com.google.api.client.googleapis.json.GoogleJsonResponseException;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.json.JsonFactory;
@@ -52,6 +53,8 @@ import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.client.util.DateTime;
 import com.google.api.services.calendar.CalendarScopes;
+import com.google.api.services.calendar.model.CalendarList;
+import com.google.api.services.calendar.model.CalendarListEntry;
 import com.google.api.services.calendar.model.Event;
 import com.google.api.services.calendar.model.EventDateTime;
 import com.google.api.services.vision.v1.Vision;
@@ -206,7 +209,6 @@ public class EditNoteActivity extends AppCompatActivity implements View.OnClickL
                 return true;
             }
             case R.id.editnote_add_menu1: {//저장
-                //Log.d("aaaaaaa",""+notetitle.getText());
                 String title;
                 if (notetitle.getText() == null) {
                     title = "";
@@ -235,7 +237,8 @@ public class EditNoteActivity extends AppCompatActivity implements View.OnClickL
 
                  cu.getResultsFromApi();
                  *****************************/
-                new CalendarUtil().execute();
+                Log.d("calendar","jjjjj");
+                new CalendarUtil(title,editor.getContentAsHTML(text)).execute();
 
                 finish();
                 return true;
@@ -768,13 +771,24 @@ public class EditNoteActivity extends AppCompatActivity implements View.OnClickL
         GoogleAccountCredential credential;
         com.google.api.services.calendar.Calendar service = null;
 
-        public CalendarUtil(){
+        String title;
+        String description;
 
+
+        public CalendarUtil(String title,String description){
+
+            Log.d("calendar","util");
+
+
+            this.title=title;
+            this.description=description;
 
             // Google Accounts
             credential =
                     GoogleAccountCredential.usingOAuth2(getApplicationContext(), Collections.singleton(CalendarScopes.CALENDAR));
             credential.setSelectedAccountName(user.getEmail());
+
+            Log.d("calendar", credential.getSelectedAccountName().toString());
 
             // Tasks client
             service =
@@ -787,25 +801,96 @@ public class EditNoteActivity extends AppCompatActivity implements View.OnClickL
         @Override
         protected String doInBackground(Void ...voids) {
 
-            Event event = new Event()
-                    .setSummary(note.getTitle()) //note title
-                    .setDescription(note.getContent());// note detail
+            Log.d("calendar","back");
+            Log.d("calendar",title);
+            Log.d("calendar",description);
 
-            DateTime startDateTime = new DateTime(calendardate+calendartime); //일정시작시간
+
+            String calendarID = getCalendarID("test");
+
+            if ( calendarID == null ){
+
+                return "캘린더를 먼저 생성하세요.";
+
+            }
+
+            Event event = new Event()
+                    .setSummary(title)
+                    .setDescription(description);
+
+
+            java.util.Calendar calander;
+
+            calander = java.util.Calendar.getInstance();
+            SimpleDateFormat simpledateformat;
+            //simpledateformat = new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ssZ", Locale.KOREA);
+            // Z에 대응하여 +0900이 입력되어 문제 생겨 수작업으로 입력
+            simpledateformat = new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ss+09:00", Locale.KOREA);
+            String datetime = simpledateformat.format(calander.getTime());
+
+            DateTime startDateTime = new DateTime(datetime);
             EventDateTime start = new EventDateTime()
                     .setDateTime(startDateTime)
                     .setTimeZone("Asia/Seoul");
             event.setStart(start);
 
+            Log.d( "calendar", datetime );
+
+
+            DateTime endDateTime = new  DateTime(datetime);
+            EventDateTime end = new EventDateTime()
+                    .setDateTime(endDateTime)
+                    .setTimeZone("Asia/Seoul");
+            event.setEnd(end);
+
+            //String[] recurrence = new String[]{"RRULE:FREQ=DAILY;COUNT=2"};
+            //event.setRecurrence(Arrays.asList(recurrence));
+
 
             try {
-                event = service.events().insert(subject.getClassname(), event).execute();
-            } catch (IOException e) {
+                event = service.events().insert(calendarID, event).execute();
+            } catch (Exception e) {
                 e.printStackTrace();
+                Log.e("Exception", "Exception : " + e.toString());
             }
-
-            Log.d("calendar",event.getHtmlLink());
-            return null;
+            System.out.printf("Event created: %s\n", event.getHtmlLink());
+            Log.e("Event", "created : " + event.getHtmlLink());
+            String eventStrings = "created : " + event.getHtmlLink();
+            return eventStrings;
         }
+
+        private String getCalendarID(String calendarTitle){
+
+            String id = null;
+
+            // Iterate through entries in calendar list
+            String pageToken = null;
+            do {
+                CalendarList calendarList = null;
+                try {
+                    calendarList = service.calendarList().list().setPageToken(pageToken).execute();
+                } catch (UserRecoverableAuthIOException e) {
+                    startActivityForResult(e.getIntent(), 1001);
+                }catch (IOException e) {
+                    e.printStackTrace();
+                }
+                List<CalendarListEntry> items = calendarList.getItems();
+
+
+                for (CalendarListEntry calendarListEntry : items) {
+
+                    if ( calendarListEntry.getSummary().toString().equals(calendarTitle)) {
+
+                        id = calendarListEntry.getId().toString();
+                    }
+                }
+                pageToken = calendarList.getNextPageToken();
+            } while (pageToken != null);
+
+            return id;
+        }
+
+
     }
+
 }
