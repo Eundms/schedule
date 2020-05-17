@@ -31,6 +31,7 @@
         <activity android:name=".InformationActivity"></activity>
         <activity android:name=".AddClassActivity" />
         <activity android:name=".SubjectActivity"></activity>
+        <activity android:name=".CalendarActivity"/>
         <activity
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings" />

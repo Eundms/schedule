@@ -205,6 +205,7 @@ public class EditNoteActivity extends AppCompatActivity implements View.OnClickL
                 setResult(RESULT_OK, intent);
                 Log.d("EDITNOTEACTIVITY",text);
                 Log.d("EDITNOTEACTIVITY"," \n"+text+"\n"+editor.getContentAsHTML(text));
+                Log.d("EDITNOTEACTIVITY",editor.getContentAsHTML(text));
                 /*text가 NULL이라면
                 intent.putExtra("RESULT","CANCLED");
                 setResult(RESULT_CANCELED, intent);

@@ -112,7 +112,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                             Toast.makeText(LoginActivity.this,"파이어베이스 아이디 생성 실패",Toast.LENGTH_SHORT).show();
                         } else{
                             // Sign in success, update UI with the signed-in user's information
-                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                            Intent intent = new Intent(LoginActivity.this, CalendarActivity.class);
                             startActivity(intent);
                             /////////////
                             /* */
