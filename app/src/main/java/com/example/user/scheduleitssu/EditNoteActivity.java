@@ -44,10 +44,16 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.api.client.extensions.android.http.AndroidHttp;
+import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 import com.google.api.client.googleapis.json.GoogleJsonResponseException;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.gson.GsonFactory;
+import com.google.api.client.json.jackson2.JacksonFactory;
+import com.google.api.client.util.DateTime;
+import com.google.api.services.calendar.CalendarScopes;
+import com.google.api.services.calendar.model.Event;
+import com.google.api.services.calendar.model.EventDateTime;
 import com.google.api.services.vision.v1.Vision;
 import com.google.api.services.vision.v1.VisionRequest;
 import com.google.api.services.vision.v1.VisionRequestInitializer;
@@ -57,6 +63,8 @@ import com.google.api.services.vision.v1.model.BatchAnnotateImagesResponse;
 import com.google.api.services.vision.v1.model.EntityAnnotation;
 import com.google.api.services.vision.v1.model.Feature;
 import com.google.api.services.vision.v1.model.Image;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -68,7 +76,9 @@ import java.lang.ref.WeakReference;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -77,7 +87,7 @@ import java.util.Map;
 
 import top.defaults.colorpicker.ColorPickerPopup;
 
-public class EditNoteActivity extends AppCompatActivity implements View.OnClickListener{
+public class EditNoteActivity extends AppCompatActivity implements View.OnClickListener {
     Editor editor;
     private static final String CLOUD_VISION_API_KEY = "AIzaSyDQnNiMu_Q50EdL7ryz1CHnJjwfqWtdXxE";
     public static final String FILE_NAME = "temp.jpg";
@@ -108,6 +118,7 @@ public class EditNoteActivity extends AppCompatActivity implements View.OnClickL
     TextView showselecteddate;
     TextView showselectedtime;
     Uri uri;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -117,12 +128,12 @@ public class EditNoteActivity extends AppCompatActivity implements View.OnClickL
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         editor = findViewById(R.id.editor);
-        notetitle=findViewById(R.id.note_title);
+        notetitle = findViewById(R.id.note_title);
 
-        note_adddate=findViewById(R.id.note_adddate);
-        note_addtime=findViewById(R.id.note_addtime);
-        showselecteddate=findViewById(R.id.showdate_editnote);
-        showselectedtime=findViewById(R.id.showtime_editnote);
+        note_adddate = findViewById(R.id.note_adddate);
+        note_addtime = findViewById(R.id.note_addtime);
+        showselecteddate = findViewById(R.id.showdate_editnote);
+        showselectedtime = findViewById(R.id.showtime_editnote);
         note_adddate.setOnClickListener(this);
         note_addtime.setOnClickListener(this);
         setUpEditor();
@@ -130,7 +141,9 @@ public class EditNoteActivity extends AppCompatActivity implements View.OnClickL
 
         processIntent();
         //firebaseinital();
-        if(note!=null&&note.getTitle()!=null) { notetitle.setText(note.getTitle()); }
+        if (note != null && note.getTitle() != null) {
+            notetitle.setText(note.getTitle());
+        }
 
     }
 
@@ -138,86 +151,92 @@ public class EditNoteActivity extends AppCompatActivity implements View.OnClickL
     public void onClick(View v) {
         //현재 년도, 월, 일
         Calendar cal = Calendar.getInstance();
-        int Current_year = cal.get ( cal.YEAR );
-        int Current_month = cal.get ( cal.MONTH ) ;
-        int Current_date = cal.get ( cal.DATE ) ;
+        int Current_year = cal.get(cal.YEAR);
+        int Current_month = cal.get(cal.MONTH);
+        int Current_date = cal.get(cal.DATE);
 
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.note_adddate:
                 //datepicker
-                DatePickerDialog datePickerDialog = new DatePickerDialog(EditNoteActivity.this, new DatePickerDialog.OnDateSetListener(){
-                            public void onDateSet(DatePicker view, int year, int month, int day){
-                                Calendar calendar = Calendar.getInstance();
-                                calendar.set(calendar.YEAR,year);
-                                calendar.set(calendar.MONTH,month);
-                                calendar.set(calendar.DAY_OF_MONTH,day);
-                                SimpleDateFormat simpledateformat = new SimpleDateFormat( "yyyy-MM-dd", Locale.KOREA);
-                                String datetime = simpledateformat.format(calendar.getTime());
-                                calendardate=datetime;
-                                showselecteddate.setText(calendardate);
-                                Toast.makeText(getApplicationContext(),year+"년 "+(month+1)+"월 "+day +"일을 선택했습니다"+datetime,Toast.LENGTH_LONG).show();
-                            }
-                        },Current_year,Current_month,Current_date);
+                DatePickerDialog datePickerDialog = new DatePickerDialog(EditNoteActivity.this, new DatePickerDialog.OnDateSetListener() {
+                    public void onDateSet(DatePicker view, int year, int month, int day) {
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.set(calendar.YEAR, year);
+                        calendar.set(calendar.MONTH, month);
+                        calendar.set(calendar.DAY_OF_MONTH, day);
+                        SimpleDateFormat simpledateformat = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
+                        String datetime = simpledateformat.format(calendar.getTime());
+                        calendardate = datetime;
+                        showselecteddate.setText(calendardate);
+                        Toast.makeText(getApplicationContext(), year + "년 " + (month + 1) + "월 " + day + "일을 선택했습니다" + datetime, Toast.LENGTH_LONG).show();
+                    }
+                }, Current_year, Current_month, Current_date);
                 datePickerDialog.show();
                 break;
             case R.id.note_addtime:
                 //timepicker
                 TimePickerDialog timePickerDialog = new TimePickerDialog(EditNoteActivity.this, new TimePickerDialog.OnTimeSetListener() {
-                            @Override
-                            public void onTimeSet(TimePicker timePicker, int hour, int minute) {
-                                calendartime=""+hour+":"+minute;
-                                SimpleDateFormat simpledateformat = new SimpleDateFormat( "HH:MM", Locale.KOREA);
-                                Date date = null;
-                                try {
-                                    date = simpledateformat.parse(""+hour+":"+minute);
-                                } catch (ParseException e) {
-                                    e.printStackTrace();
-                                }
-                                String datetime = simpledateformat.format(date);
+                    @Override
+                    public void onTimeSet(TimePicker timePicker, int hour, int minute) {
+                        calendartime = "" + hour + ":" + minute;
+                        SimpleDateFormat simpledateformat = new SimpleDateFormat("HH:MM", Locale.KOREA);
+                        Date date = null;
+                        try {
+                            date = simpledateformat.parse("" + hour + ":" + minute);
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                        String datetime = simpledateformat.format(date);
 
-                                showselectedtime.setText(calendartime);
-                                Toast.makeText(getApplicationContext(),datetime,Toast.LENGTH_LONG).show();
-                            }
-                        }, 12,30,false);
+                        showselectedtime.setText(calendartime);
+                        Toast.makeText(getApplicationContext(), datetime, Toast.LENGTH_LONG).show();
+                    }
+                }, 12, 30, false);
                 timePickerDialog.show();
-               break;
+                break;
         }
 
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
-            case android.R.id.home:{ //맞는지 모르겠음
+        switch (item.getItemId()) {
+            case android.R.id.home: { //맞는지 모르겠음
                 finish();
                 return true;
             }
-            case R.id.editnote_add_menu1:{//저장
+            case R.id.editnote_add_menu1: {//저장
                 //Log.d("aaaaaaa",""+notetitle.getText());
                 String title;
-               if(notetitle.getText()==null){title="";}
-               else{title=""+notetitle.getText();}
+                if (notetitle.getText() == null) {
+                    title = "";
+                } else {
+                    title = "" + notetitle.getText();
+                }
                 String text = editor.getContentAsSerialized();
                 Intent intent = new Intent();
                 //text가 NULL이 아니라면
-                intent.putExtra("RESULT","OK");
-                intent.putExtra("NOTETITLE",title);
-                intent.putExtra("NOTECONTENT",text);
+                intent.putExtra("RESULT", "OK");
+                intent.putExtra("NOTETITLE", title);
+                intent.putExtra("NOTECONTENT", text);
                 setResult(RESULT_OK, intent);
-                Log.d("EDITNOTEACTIVITY",text);
-                Log.d("EDITNOTEACTIVITY"," \n"+text+"\n"+editor.getContentAsHTML(text));
-                Log.d("EDITNOTEACTIVITY",editor.getContentAsHTML(text));
+                Log.d("EDITNOTEACTIVITY", text);
+                Log.d("EDITNOTEACTIVITY", " \n" + text + "\n" + editor.getContentAsHTML(text));
+                Log.d("EDITNOTEACTIVITY", editor.getContentAsHTML(text));
                 /*text가 NULL이라면
                 intent.putExtra("RESULT","CANCLED");
                 setResult(RESULT_CANCELED, intent);
                 */
                 /**************************************************구글 캘린더
-                CalendarUtil cu=new CalendarUtil();
-                cu.mID=2;
-                cu.datetime =calendardate+'T'+calendardate+":00+09:00";
-                Log.d("22222222", "ddddddddddddd"+cu.datetime);
+                 CalendarUtil cu=new CalendarUtil();
+                 cu.mID=2;
+                 cu.datetime =calendardate+'T'+calendardate+":00+09:00";
+                 Log.d("22222222", "ddddddddddddd"+cu.datetime);
 
-                cu.getResultsFromApi();
+                 cu.getResultsFromApi();
                  *****************************/
+                new CalendarUtil().execute();
+
                 finish();
                 return true;
             }
@@ -226,32 +245,32 @@ public class EditNoteActivity extends AppCompatActivity implements View.OnClickL
         return super.onOptionsItemSelected(item);
     }
 
-    void processIntent(){
-        Intent getContents=getIntent();
+    void processIntent() {
+        Intent getContents = getIntent();
 
-        if(getContents.getStringExtra("EXIST").equals("EXIST")&&getContents.getStringExtra("DATATYPE").equals("SUBJECT")) {
-            if(getContents.getStringExtra("SUBJECTINFOTYPE").equals("SUBJECTINFO_CONTENT")){
-                subject=getContents.getParcelableExtra("DATA");
-                position=Integer.parseInt(getContents.getStringExtra("POSITION"));
-                note=subject.getNotelist().get(position);
-                serailized=note.getContent();
+        if (getContents.getStringExtra("EXIST").equals("EXIST") && getContents.getStringExtra("DATATYPE").equals("SUBJECT")) {
+            if (getContents.getStringExtra("SUBJECTINFOTYPE").equals("SUBJECTINFO_CONTENT")) {
+                subject = getContents.getParcelableExtra("DATA");
+                position = Integer.parseInt(getContents.getStringExtra("POSITION"));
+                note = subject.getNotelist().get(position);
+                serailized = note.getContent();
                 des = editor.getContentDeserialized(serailized);
                 editor.render(des);
                 /*setSerialRenderInProgress*/
+            } else if (getContents.getStringExtra("NOTEINFOTYPE").equals("NOTEINFO_DEFAULT")) {
             }
-            else if(getContents.getStringExtra("NOTEINFOTYPE").equals("NOTEINFO_DEFAULT")){
-            }
-        }else if(getContents.getStringExtra("EXIST").equals("NO")){
+        } else if (getContents.getStringExtra("EXIST").equals("NO")) {
 
         }
 
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.d( "onActivityResult",""+requestCode+" "+resultCode);
+        Log.d("onActivityResult", "" + requestCode + " " + resultCode);
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == editor.PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null && data.getData() != null) {
-             uri = data.getData();
+            uri = data.getData();
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
                 // Log.d(TAG, String.valueOf(bitmap));
@@ -265,17 +284,18 @@ public class EditNoteActivity extends AppCompatActivity implements View.OnClickL
         } else if (requestCode == CAMERA_IMAGE_REQUEST && resultCode == RESULT_OK) {
             Uri photoUri = FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".provider", getCameraFile());
             uploadImage(photoUri);
-        }else if (resultCode == Activity.RESULT_CANCELED) {
+        } else if (resultCode == Activity.RESULT_CANCELED) {
             //Write your code if there's no result
             Toast.makeText(getApplicationContext(), "Cancelled", Toast.LENGTH_SHORT).show();
             // editor.RestoreState();
         }
     }
+
     private void setUpEditor() {
-        findViewById(R.id.action_camera).setOnClickListener(new View.OnClickListener(){
+        findViewById(R.id.action_camera).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(EditNoteActivity.this, "camera" , Toast.LENGTH_LONG).show();
+                Toast.makeText(EditNoteActivity.this, "camera", Toast.LENGTH_LONG).show();
                 AlertDialog.Builder builder = new AlertDialog.Builder(EditNoteActivity.this);
                 builder
                         .setMessage(R.string.dialog_select_prompt)
@@ -377,6 +397,7 @@ public class EditNoteActivity extends AppCompatActivity implements View.OnClickL
                                 Toast.makeText(EditNoteActivity.this, "picked" + colorHex(color), Toast.LENGTH_LONG).show();
                                 editor.updateTextColor(colorHex(color));
                             }
+
                             @Override
                             public void onColor(int color, boolean fromUser) {
                             }
@@ -420,16 +441,16 @@ public class EditNoteActivity extends AppCompatActivity implements View.OnClickL
                  * let the editor know the upload has completed
                  * 이곳에서 이미지를 파이어베이스에 올려야함.
                  */
-                Log.d("onUpload!!", "gs://scheduleitssu-685f7.appspot.com" +"\t\t"+uuid);
+                Log.d("onUpload!!", "gs://scheduleitssu-685f7.appspot.com" + "\t\t" + uuid);
 
-            ///////보존///////////Do not touch here////////////////////////
+                ///////보존///////////Do not touch here////////////////////////
                 FirebaseStorage storage = FirebaseStorage.getInstance("gs://scheduleitssu-685f7.appspot.com");//scheduleitssu-685f7.appspot.com0ef41004f62d20200515132229
-                StorageReference storageRef= storage.getReference();
-                String imageName=System.currentTimeMillis()+".jpg";
+                StorageReference storageRef = storage.getReference();
+                String imageName = System.currentTimeMillis() + ".jpg";
                 StorageReference imageRefer = storageRef.child(imageName);//file.getLastPathSegment()
                 UploadTask uploadTask = imageRefer.putFile(uri);
 
-            Log.d("URI!!!!!!",""+uri.getPath());
+                Log.d("URI!!!!!!", "" + uri.getPath());
                 Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
                     @Override
                     public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
@@ -444,9 +465,9 @@ public class EditNoteActivity extends AppCompatActivity implements View.OnClickL
                     public void onComplete(@NonNull Task<Uri> task) {
                         if (task.isSuccessful()) {
                             Uri downloadUri = task.getResult();
-                          //  Log.d("downloadUri",editor.getContentAsHTML()+"<img src=\""+downloadUri.toString()+"\">");
+                            //  Log.d("downloadUri",editor.getContentAsHTML()+"<img src=\""+downloadUri.toString()+"\">");
                             editor.onImageUploadComplete(downloadUri.toString(), uuid);
-                            Log.d("downloadUri",editor.getContentAsHTML());
+                            Log.d("downloadUri", editor.getContentAsHTML());
                             //   editor.render(editor.getContentAsHTML()+"<img src=\""+downloadUri.toString()+"\">");
 
 
@@ -457,14 +478,14 @@ public class EditNoteActivity extends AppCompatActivity implements View.OnClickL
                     }
                 });
 
-                Log.d("downloadUri",editor.getContentAsHTML());
+                Log.d("downloadUri", editor.getContentAsHTML());
 
             }
 
             @Override
             public View onRenderMacro(String name, Map<String, Object> props, int index) {
                 View view = getLayoutInflater().inflate(R.layout.layout_authored_by, null);
-                Log.d("onRenderMacro",""+view);
+                Log.d("onRenderMacro", "" + view);
                 /*TextView lblName = layout.findViewById(R.id.lbl_author_name);
                 lblName.setText(props.get("author-name"));
                 return layout;*/
@@ -474,14 +495,16 @@ public class EditNoteActivity extends AppCompatActivity implements View.OnClickL
         });
 
     }
+
     private View insertMacro() {
         View view = getLayoutInflater().inflate(R.layout.layout_authored_by, null);
         Map<String, Object> map = new HashMap<>();
         map.put("author-name", "Alex Wong");
-        map.put("date","12 July 2018");
-        editor.insertMacro("author-tag",view, map);
+        map.put("date", "12 July 2018");
+        editor.insertMacro("author-tag", view, map);
         return view;
     }
+
     public void uploadImage(Uri uri) {
         if (uri != null) {
             try {
@@ -502,6 +525,7 @@ public class EditNoteActivity extends AppCompatActivity implements View.OnClickL
             Toast.makeText(this, R.string.image_picker_error, Toast.LENGTH_LONG).show();
         }
     }
+
     private void callCloudVision(final Bitmap bitmap) {
         // Switch text to loading
         // mImageDetails.setText(R.string.loading_message);
@@ -583,10 +607,10 @@ public class EditNoteActivity extends AppCompatActivity implements View.OnClickL
     }
 
 
-
     private static class LableDetectionTask extends AsyncTask<Object, Void, String> {
         private final WeakReference<EditNoteActivity> mActivityWeakReference;
         private Vision.Images.Annotate mRequest;
+
         LableDetectionTask(EditNoteActivity activity, Vision.Images.Annotate annotate) {
             mActivityWeakReference = new WeakReference<>(activity);
             mRequest = annotate;
@@ -612,14 +636,15 @@ public class EditNoteActivity extends AppCompatActivity implements View.OnClickL
             EditNoteActivity activity = mActivityWeakReference.get();
             if (activity != null && !activity.isFinishing()) {
 
-               Editor editor=activity.findViewById(R.id.editor);
-               editor.render("<p>"+result+"</p>");
+                Editor editor = activity.findViewById(R.id.editor);
+                editor.render("<p>" + result + "</p>");
 
 
             }
         }
 
     }
+
     private Bitmap scaleBitmapDown(Bitmap bitmap, int maxDimension) {
 
         int originalWidth = bitmap.getWidth();
@@ -639,6 +664,7 @@ public class EditNoteActivity extends AppCompatActivity implements View.OnClickL
         }
         return Bitmap.createScaledBitmap(bitmap, resizedWidth, resizedHeight, false);
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
@@ -655,6 +681,7 @@ public class EditNoteActivity extends AppCompatActivity implements View.OnClickL
                     GALLERY_IMAGE_REQUEST);
         }
     }
+
     public void startCamera() {
         if (PermissionUtils.requestPermission(
                 this,
@@ -668,6 +695,7 @@ public class EditNoteActivity extends AppCompatActivity implements View.OnClickL
             startActivityForResult(intent, CAMERA_IMAGE_REQUEST);
         }
     }
+
     public File getCameraFile() {
         File dir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         return new File(dir, FILE_NAME);
@@ -682,14 +710,13 @@ public class EditNoteActivity extends AppCompatActivity implements View.OnClickL
     }
 
 
-
     private static String convertResponseToString(BatchAnnotateImagesResponse response) {
         StringBuilder message = new StringBuilder("");
 
         List<EntityAnnotation> labels = response.getResponses().get(0).getTextAnnotations();
         if (labels != null) {
-                message.append(String.format(Locale.US, "%s", labels.get(0).getDescription()));
-                message.append("\n");
+            message.append(String.format(Locale.US, "%s", labels.get(0).getDescription()));
+            message.append("\n");
 
         } else {
             message.append("nothing");
@@ -697,6 +724,7 @@ public class EditNoteActivity extends AppCompatActivity implements View.OnClickL
 
         return message.toString();
     }
+
     @Override
     public void onBackPressed() {
         new AlertDialog.Builder(this)
@@ -714,7 +742,7 @@ public class EditNoteActivity extends AppCompatActivity implements View.OnClickL
     }
 
 
-}
+
    /* @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
@@ -728,3 +756,56 @@ public class EditNoteActivity extends AppCompatActivity implements View.OnClickL
         background.setCornerRadius(radius);
         button.setBackgroundDrawable(background);
     }*/
+
+
+    class CalendarUtil extends AsyncTask<Void, Void, String> {
+
+        HttpTransport transport = AndroidHttp.newCompatibleTransport();
+        JacksonFactory jsonFactory = JacksonFactory.getDefaultInstance();
+
+        FirebaseAuth mAuth=FirebaseAuth.getInstance();
+        FirebaseUser user=mAuth.getCurrentUser();
+        GoogleAccountCredential credential;
+        com.google.api.services.calendar.Calendar service = null;
+
+        public CalendarUtil(){
+
+
+            // Google Accounts
+            credential =
+                    GoogleAccountCredential.usingOAuth2(getApplicationContext(), Collections.singleton(CalendarScopes.CALENDAR));
+            credential.setSelectedAccountName(user.getEmail());
+
+            // Tasks client
+            service =
+                    new com.google.api.services.calendar.Calendar.Builder(transport, jsonFactory, credential)
+                            .setApplicationName("Uninote").build();
+
+        }
+
+
+        @Override
+        protected String doInBackground(Void ...voids) {
+
+            Event event = new Event()
+                    .setSummary(note.getTitle()) //note title
+                    .setDescription(note.getContent());// note detail
+
+            DateTime startDateTime = new DateTime(calendardate+calendartime); //일정시작시간
+            EventDateTime start = new EventDateTime()
+                    .setDateTime(startDateTime)
+                    .setTimeZone("Asia/Seoul");
+            event.setStart(start);
+
+
+            try {
+                event = service.events().insert(subject.getClassname(), event).execute();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            Log.d("calendar",event.getHtmlLink());
+            return null;
+        }
+    }
+}
