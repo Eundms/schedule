@@ -23,6 +23,7 @@
         layout="@layout/selectdepartsubject_part"></include>
 
     <LinearLayout
+        android:visibility="gone"
         android:id="@+id/그룹개설layout"
         android:layout_marginTop="10dp"
         android:layout_width="match_parent"
