@@ -33,7 +33,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.internal.InternalTokenProvider;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -162,6 +164,10 @@ protected void onResume() {
             String notecontent=data.getStringExtra("NOTECONTENT");
             String notetitle=data.getStringExtra("NOTETITLE");
             Note newnote=new Note(notecontent,notetitle);
+            /*만든시간 추가*/
+            SimpleDateFormat format1 = new SimpleDateFormat ( "yyyy-MM-dd");
+            newnote.setWhenmake_note(format1.format(new Date()));
+
             noteArrayList.add(newnote);
 /*노트 리스트를 올리는 내용*///////////////////////////////////////////////////////////////////////////////////////////
             myRef=database.getReference().child("Student").child(userid).child("SubjectList").child("Subject_"+subject.getClassname());

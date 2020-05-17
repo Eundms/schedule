@@ -30,6 +30,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -92,6 +94,7 @@ void setnote(){
             String notetitle=data.getStringExtra("NOTETITLE");
             toolbar.setTitle(notetitle);
             note.setTitle(notetitle);
+
             note.setContent(serialized);
             this.serialized=serialized;
             String content= serialized;
@@ -100,7 +103,8 @@ void setnote(){
 
 //////////////////////////////////////////////////////////////////
             /*firebase 함수수*/
-
+            SimpleDateFormat format1 = new SimpleDateFormat ( "yyyy-MM-dd");
+            note.setEditdate_note(format1.format(new Date()));
             Map<String,Object>editnote=new HashMap<>();
             editnote.put(Integer.toString(position),note);
             myRef.child("Subject_"+subject.getClassname()).child("notelist").updateChildren(editnote);
