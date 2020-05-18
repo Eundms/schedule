@@ -178,7 +178,9 @@ public class EditNoteActivity extends AppCompatActivity implements View.OnClickL
                 break;
             case R.id.note_addtime:
                 //timepicker
-                TimePickerDialog timePickerDialog = new TimePickerDialog(EditNoteActivity.this, new TimePickerDialog.OnTimeSetListener() {
+
+                TimePickerDialog timePickerDialog = new TimePickerDialog(EditNoteActivity.this,android.R.style.Theme_Holo_Light_Dialog_NoActionBar, new TimePickerDialog.OnTimeSetListener() {
+
                     @Override
                     public void onTimeSet(TimePicker timePicker, int hour, int minute) {
                         calendartime = "" + hour + ":" + minute;

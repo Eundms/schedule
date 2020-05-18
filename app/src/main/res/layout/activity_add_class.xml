@@ -3,15 +3,30 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="30dp"
     android:orientation="vertical"
-    tools:context=".AddClassActivity">
+    tools:context=".AddClassActivity"
+    android:gravity="center_vertical"
+    android:padding="20dp"
+    android:background="#99000000">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/rounded"
+    android:orientation="vertical"
+    android:layout_margin="10dp"
+    android:padding="10dp">
 
-
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="15dp"
+        android:orientation="vertical">
     <TextView
+        android:layout_marginTop="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="과목 추가하기"
+        android:textColor="@color/black"
         style="@style/SpinnerTitleTheme"
        />
 
@@ -23,10 +38,11 @@
         layout="@layout/selectdepartsubject_part"></include>
 
     <LinearLayout
+        android:visibility="gone"
         android:id="@+id/그룹개설layout"
         android:layout_marginTop="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_below="@+id/과목선택layout"
         android:orientation="horizontal">
 
@@ -45,40 +61,55 @@
 
 
     <EditText
+        android:layout_marginTop="20dp"
         android:id="@+id/makesubjectname"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:hint="과목 이름" />
+        android:hint="과목 이름"
+        android:background="@null"
+        android:padding="5dp"/>
 
     <EditText
         android:id="@+id/makesubjectinfo"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:ems="20"
         android:hint="요일및시간"
-        android:inputType="text" />
+        android:inputType="text"
+        android:background="@null"
+        android:padding="5dp"/>
 
 
     <LinearLayout
         android:id="@+id/버튼layout"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_marginTop="25dp">
 
         <Button
             android:id="@+id/addsubjectbackbtn"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="20dp"
+            android:background="@color/colorBack"
+            android:layout_marginRight="5dp"
             android:text="취소하기" />
 
         <Button
             android:id="@+id/addsubjectbtn"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="20dp"
+            android:background="@color/colorBack"
+            android:layout_marginLeft="5dp"
             android:text="등록하기" />
     </LinearLayout>
-
+    </LinearLayout>
+</LinearLayout>
 </LinearLayout>

@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -24,6 +25,15 @@ import com.example.user.scheduleitssu.DataClass.Group;
 import com.example.user.scheduleitssu.DataClass.Note;
 import com.example.user.scheduleitssu.DataClass.Subject;
 import com.github.irshulx.models.EditorContent;
+import com.google.api.client.extensions.android.http.AndroidHttp;
+import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
+import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecoverableAuthIOException;
+import com.google.api.client.http.HttpTransport;
+import com.google.api.client.json.jackson2.JacksonFactory;
+import com.google.api.services.calendar.CalendarScopes;
+import com.google.api.services.calendar.model.Calendar;
+import com.google.api.services.calendar.model.CalendarList;
+import com.google.api.services.calendar.model.CalendarListEntry;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -33,10 +43,13 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.internal.InternalTokenProvider;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class SubjectActivity extends AppCompatActivity  implements NoteAdapter.OnNoteItemClickListener{
@@ -135,6 +148,8 @@ protected void onResume() {
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
+                                new CalendarUtil().execute();
+
                                 // 'YES'
                                 database.getReference().child("Student").child(userid).child("SubjectList").child("Subject_"+subject.getClassname()).removeValue();
                                 finish();
@@ -201,5 +216,83 @@ protected void onResume() {
         intent.putExtra("DATA",subject);
         startActivity(intent);
     }
+
+    class CalendarUtil extends AsyncTask<Void, Void, String> {
+
+        HttpTransport transport = AndroidHttp.newCompatibleTransport();
+        JacksonFactory jsonFactory = JacksonFactory.getDefaultInstance();
+
+        FirebaseAuth mAuth=FirebaseAuth.getInstance();
+        FirebaseUser user=mAuth.getCurrentUser();
+        GoogleAccountCredential credential;
+        com.google.api.services.calendar.Calendar service = null;
+
+        public CalendarUtil(){
+
+
+            // Google Accounts
+            credential =
+                    GoogleAccountCredential.usingOAuth2(getApplicationContext(), Collections.singleton(CalendarScopes.CALENDAR));
+            credential.setSelectedAccountName(user.getEmail());
+
+            // Tasks client
+            service =
+                    new com.google.api.services.calendar.Calendar.Builder(transport, jsonFactory, credential)
+                            .setApplicationName("Uninote").build();
+
+        }
+
+
+        @Override
+        protected String doInBackground(Void ...voids) {
+
+
+
+            try {
+                service.calendars().delete(getCalendarID(subject.getClassname())).execute();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+
+        /*
+         * 캘린더 이름에 대응하는 캘린더 ID를 리턴
+         */
+        private String getCalendarID(String calendarTitle){
+
+            String id = null;
+
+            // Iterate through entries in calendar list
+            String pageToken = null;
+            do {
+                CalendarList calendarList = null;
+                try {
+                    calendarList = service.calendarList().list().setPageToken(pageToken).execute();
+                } catch (UserRecoverableAuthIOException e) {
+                    startActivityForResult(e.getIntent(), 1001);
+                }catch (IOException e) {
+                    e.printStackTrace();
+                }
+                List<CalendarListEntry> items = calendarList.getItems();
+
+
+                for (CalendarListEntry calendarListEntry : items) {
+
+                    if ( calendarListEntry.getSummary().toString().equals(calendarTitle)) {
+
+                        id = calendarListEntry.getId().toString();
+                    }
+                }
+                pageToken = calendarList.getNextPageToken();
+            } while (pageToken != null);
+
+            return id;
+        }
+
+    }
+
+
 
 }
