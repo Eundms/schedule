@@ -181,10 +181,10 @@ public class EditNoteActivity extends AppCompatActivity implements View.OnClickL
                 TimePickerDialog timePickerDialog = new TimePickerDialog(EditNoteActivity.this, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int hour, int minute) {
-                        SimpleDateFormat simpledateformat = new SimpleDateFormat("HH:MM", Locale.KOREA);
+                        SimpleDateFormat simpledateformat = new SimpleDateFormat("HH:mm:ss", Locale.KOREA);
                         Date date = null;
                         try {
-                            date = simpledateformat.parse("" + hour + ":" + minute);
+                            date = simpledateformat.parse("" + hour + ":" + minute+":00");
                         } catch (ParseException e) {
                             e.printStackTrace();
                         }
@@ -816,33 +816,51 @@ public class EditNoteActivity extends AppCompatActivity implements View.OnClickL
                     .setDescription(description);
 
 
-            java.util.Calendar calander;
-
+            /////////////////////////////////////
+            /*java.util.Calendar calander;
             calander = java.util.Calendar.getInstance();
             SimpleDateFormat simpledateformat;
-            //simpledateformat = new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ssZ", Locale.KOREA);
-            // Z에 대응하여 +0900이 입력되어 문제 생겨 수작업으로 입력
+
             simpledateformat = new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ss+09:00", Locale.KOREA);
-
-
-
-                String datetime = simpledateformat.format(calander.getTime());
-
-                Log.d("jjjjjjjjj",calendardate+"'T'"+calendartime+":00+09:00");
+            String datetime = simpledateformat.format(calander.getTime());
+            //Log.d("jjjjjjjjj",calendardate+"'T'"+calendartime+":00+09:00");
+            Log.d("aaaa",datetime);
 
                 DateTime startDateTime = new DateTime(datetime);
                 EventDateTime start = new EventDateTime()
                         .setDateTime(startDateTime)
                         .setTimeZone("Asia/Seoul");
                 event.setStart(start);
-
-
                 DateTime endDateTime = new  DateTime(datetime);
                 EventDateTime end = new EventDateTime()
                         .setDateTime(endDateTime)
                         .setTimeZone("Asia/Seoul");
                 event.setEnd(end);
+                */
+                java.util.Calendar cal=Calendar.getInstance();
+               SimpleDateFormat format=new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ss+09:00", Locale.KOREA);
+               SimpleDateFormat date=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss",Locale.KOREA);
+            try {
+                String str=calendardate+" "+calendartime;
+                Log.d("str",str);
+                Date date1=date.parse(str);
+                cal.setTime(date1);
 
+                String datetime=format.format(cal.getTime());
+                DateTime startDateTime = new DateTime(datetime);
+                EventDateTime start = new EventDateTime()
+                        .setDateTime(startDateTime)
+                        .setTimeZone("Asia/Seoul");
+                event.setStart(start);
+                DateTime endDateTime = new  DateTime(datetime);
+                EventDateTime end = new EventDateTime()
+                        .setDateTime(endDateTime)
+                        .setTimeZone("Asia/Seoul");
+                event.setEnd(end);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            /////////////////////////////////////
 
 
             //String[] recurrence = new String[]{"RRULE:FREQ=DAILY;COUNT=2"};

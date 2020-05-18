@@ -139,6 +139,7 @@ protected void onResume() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 // 'YES'
+
                                 database.getReference().child("Student").child(userid).child("SubjectList").child("Subject_"+subject.getClassname()).removeValue();
                                 finish();
                             }
