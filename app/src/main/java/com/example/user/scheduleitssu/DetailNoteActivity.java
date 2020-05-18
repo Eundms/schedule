@@ -3,27 +3,14 @@ package com.example.user.scheduleitssu;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-
-import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.Typeface;
 import android.os.Bundle;
-import android.text.Editable;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.EditText;
-
 import com.example.user.scheduleitssu.DataClass.Note;
 import com.example.user.scheduleitssu.DataClass.Subject;
 import com.github.irshulx.Editor;
-import com.github.irshulx.EditorListener;
 import com.github.irshulx.models.EditorContent;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -34,6 +21,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import com.google.api.services.calendar.Calendar;
 
 
 public class DetailNoteActivity extends AppCompatActivity {
@@ -141,14 +129,17 @@ void setnote(){
             }
             case R.id.detailnote_delete_menu:{
                 //삭제하는 기능(firebase) NOTELIST를 아제 올리고 내려야 함.
-               ///////////////////////////////////////////////
                 /*delete note하는 코드를 옮겨야함  */
                 subject.getNotelist().remove(position);
                 Map<String,Object>deletenote=new HashMap<>();
                 deletenote.put("notelist",subject.getNotelist());
                 myRef.child("Subject_"+subject.getClassname()).updateChildren(deletenote);
-
-
+/*
+//Initialize Calendar service with valid OAuth credentials
+                Calendar service = new Calendar.Builder(httpTransport, jsonFactory, credentials).setApplicationName("applicationName").build();
+// Delete an event
+                service.events().delete('primary', "eventId").execute();
+*/
                 finish();
                 return true;
             }

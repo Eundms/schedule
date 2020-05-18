@@ -139,7 +139,10 @@ protected void onResume() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 // 'YES'
-
+                                //Initialize Calendar service with valid OAuth credentials
+                                //Calendar service = new Calendar.Builder(httpTransport, jsonFactory, credentials).setApplicationName("applicationName").build();
+                                // Delete an event
+                                //service.calendars().delete(subject.getClassname()).execute();
                                 database.getReference().child("Student").child(userid).child("SubjectList").child("Subject_"+subject.getClassname()).removeValue();
                                 finish();
                             }

@@ -228,14 +228,7 @@ public class EditNoteActivity extends AppCompatActivity implements View.OnClickL
                 intent.putExtra("RESULT","CANCLED");
                 setResult(RESULT_CANCELED, intent);
                 */
-                /**************************************************구글 캘린더
-                 CalendarUtil cu=new CalendarUtil();
-                 cu.mID=2;
-                 cu.datetime =calendardate+'T'+calendardate+":00+09:00";
-                 Log.d("22222222", "ddddddddddddd"+cu.datetime);
 
-                 cu.getResultsFromApi();
-                 *****************************/
                 Log.d("calendar","jjjjj");
                 new CalendarUtil(title,editor.getContentAsHTML(text)).execute();
 
@@ -796,47 +789,17 @@ public class EditNoteActivity extends AppCompatActivity implements View.OnClickL
                             .setApplicationName("Uninote").build();
 
         }
-
-
         @Override
         protected String doInBackground(Void ...voids) {
-
-
-
             String calendarID = getCalendarID(subject.getClassname());
-
             if ( calendarID == null ){
-
                 return "캘린더를 먼저 생성하세요.";
-
             }
-
             Event event = new Event()
                     .setSummary(title)
                     .setDescription(description);
-
-
             /////////////////////////////////////
-            /*java.util.Calendar calander;
-            calander = java.util.Calendar.getInstance();
-            SimpleDateFormat simpledateformat;
 
-            simpledateformat = new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ss+09:00", Locale.KOREA);
-            String datetime = simpledateformat.format(calander.getTime());
-            //Log.d("jjjjjjjjj",calendardate+"'T'"+calendartime+":00+09:00");
-            Log.d("aaaa",datetime);
-
-                DateTime startDateTime = new DateTime(datetime);
-                EventDateTime start = new EventDateTime()
-                        .setDateTime(startDateTime)
-                        .setTimeZone("Asia/Seoul");
-                event.setStart(start);
-                DateTime endDateTime = new  DateTime(datetime);
-                EventDateTime end = new EventDateTime()
-                        .setDateTime(endDateTime)
-                        .setTimeZone("Asia/Seoul");
-                event.setEnd(end);
-                */
                 java.util.Calendar cal=Calendar.getInstance();
                SimpleDateFormat format=new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ss+09:00", Locale.KOREA);
                SimpleDateFormat date=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss",Locale.KOREA);
@@ -862,10 +825,8 @@ public class EditNoteActivity extends AppCompatActivity implements View.OnClickL
             }
             /////////////////////////////////////
 
-
             //String[] recurrence = new String[]{"RRULE:FREQ=DAILY;COUNT=2"};
             //event.setRecurrence(Arrays.asList(recurrence));
-
 
             try {
                 event = service.events().insert(calendarID, event).execute();
@@ -896,11 +857,8 @@ public class EditNoteActivity extends AppCompatActivity implements View.OnClickL
                 }
                 List<CalendarListEntry> items = calendarList.getItems();
 
-
                 for (CalendarListEntry calendarListEntry : items) {
-
                     if ( calendarListEntry.getSummary().toString().equals(calendarTitle)) {
-
                         id = calendarListEntry.getId().toString();
                     }
                 }
