@@ -11,7 +11,7 @@ public class Note implements Parcelable {
     String whenmake_note;
 
     String editdate_note;
-
+    String whoedit_note;
     public String getEditdate_note() {
         return editdate_note;
     }
@@ -20,7 +20,7 @@ public class Note implements Parcelable {
         this.editdate_note = editdate_note;
     }
 
-    String whoedit_note;
+
     public String getWhomake_note() {
         return whomake_note;
     }

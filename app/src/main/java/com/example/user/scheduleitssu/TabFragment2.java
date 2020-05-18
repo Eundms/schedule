@@ -110,9 +110,9 @@ public class TabFragment2 extends Fragment implements SubjectAdapter.OnItemClick
         intent.putExtra("EXIST","EXIST");
         intent.putExtra("DATATYPE","SUBJECT");
             if(subjectArrayList.get(pos).getNotelist()==null){
-                intent.putExtra("SUBJECTINFOTYPE","SUBJECTINFO_DEFAULT");/*최초 생성되었을 때 그러므로 notelist는 없다*/
+                intent.putExtra("INFOTYPE","SUBJECTINFO_DEFAULT");/*최초 생성되었을 때 그러므로 notelist는 없다*/
             }else {
-                intent.putExtra("SUBJECTINFOTYPE", "SUBJECTINFO_NOTE");
+                intent.putExtra("INFOTYPE", "SUBJECTINFO_NOTE");
             }
         intent.putExtra("DATA",subjectArrayList.get(pos));
         startActivityForResult(intent,REQUEST_CODE_SUBJECTACTIVITY);
