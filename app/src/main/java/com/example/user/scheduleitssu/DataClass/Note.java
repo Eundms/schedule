@@ -12,8 +12,18 @@ public class Note implements Parcelable {
 
     String editdate_note;
     String whoedit_note;
+
+    String eventId;
     public String getEditdate_note() {
         return editdate_note;
+    }
+
+    public String getEventId() {
+        return eventId;
+    }
+
+    public void setEventId(String eventId) {
+        this.eventId = eventId;
     }
 
     public void setEditdate_note(String editdate_note) {
@@ -63,6 +73,7 @@ public class Note implements Parcelable {
         whenmake_note = in.readString();
        editdate_note = in.readString();
         whoedit_note = in.readString();
+        eventId=in.readString();
     }
 
     public static final Creator<Note> CREATOR = new Creator<Note>() {
@@ -100,5 +111,6 @@ public class Note implements Parcelable {
         dest.writeString(whenmake_note);
         dest.writeString(editdate_note);
         dest.writeString(whoedit_note);
+        dest.writeString(eventId);
     }
 }
