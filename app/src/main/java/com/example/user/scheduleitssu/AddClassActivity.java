@@ -73,6 +73,7 @@ String subject;
         switch (v.getId()){
             case R.id.addsubjectbtn:
                 databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         TextView subjectname=(TextView)findViewById(R.id.makesubjectname);
@@ -88,13 +89,20 @@ String subject;
                         Subject sub=new Subject(subjectname.getText().toString(),notes);*/
                         /////////////////////////////////////////////////////////////////////////////
                         /*1번째 버전*/
-                        Subject sub=new Subject(subjectname.getText().toString(),subjectinfo.getText().toString(),new ArrayList<Note>());
-                        subject=subjectname.getText().toString();
-                        String uid=user.getDisplayName()+"_"+user.getUid();
-                        HashMap<String,Object>add_subject=new HashMap<>();
-                        add_subject.put("Subject_"+sub.getClassname(),sub);
-                        databaseReference.child("Student").child(uid).child("SubjectList").updateChildren(add_subject);
-                        new CalendarUtil().execute();
+
+                        if(subjectname.getText().length()<=0){
+                            Toast.makeText(AddClassActivity.this, "subject 이름을 입력하세요.",Toast.LENGTH_SHORT).show();
+                        }
+                        else{
+                            Subject sub = new Subject(subjectname.getText().toString(), subjectinfo.getText().toString(), new ArrayList<Note>());
+                            subject = subjectname.getText().toString();
+                            String uid = user.getDisplayName() + "_" + user.getUid();
+                            HashMap<String, Object> add_subject = new HashMap<>();
+                            add_subject.put("Subject_" + sub.getClassname(), sub);
+                            databaseReference.child("Student").child(uid).child("SubjectList").updateChildren(add_subject);
+                            new CalendarUtil().execute();
+                            finish();
+                        }
 
                         /*2번째 버전
                         Subject sub=new Subject(subjectname.getText().toString(),new ArrayList<Note>());
@@ -116,8 +124,8 @@ String subject;
                 //subject class 업로드
                // FirebaseDatabase.getInstance().getReference().child("Student").child(path).updateChildren(initial);
 
-                finish();
-                break;
+              break;
+
             case R.id.addsubjectbackbtn:
                 finish();
                 break;
