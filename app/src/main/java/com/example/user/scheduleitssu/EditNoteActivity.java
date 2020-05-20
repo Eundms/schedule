@@ -891,6 +891,7 @@ public class EditNoteActivity extends AppCompatActivity implements View.OnClickL
 
                 try {
                     event = service.events().insert(calendarID, event).execute();
+                    note.setEventId(event.getId());
                 } catch (Exception e) {
                     e.printStackTrace();
                     Log.e("Exception", "Exception : " + e.toString());
