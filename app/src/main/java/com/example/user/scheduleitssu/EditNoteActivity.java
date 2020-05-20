@@ -762,8 +762,8 @@ public class EditNoteActivity extends AppCompatActivity implements View.OnClickL
         HttpTransport transport = AndroidHttp.newCompatibleTransport();
         JacksonFactory jsonFactory = JacksonFactory.getDefaultInstance();
 
-        FirebaseAuth mAuth=FirebaseAuth.getInstance();
-        FirebaseUser user=mAuth.getCurrentUser();
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = mAuth.getCurrentUser();
         GoogleAccountCredential credential;
         com.google.api.services.calendar.Calendar service = null;
 
@@ -771,12 +771,11 @@ public class EditNoteActivity extends AppCompatActivity implements View.OnClickL
         String description;
 
 
-        public CalendarUtil(String title,String description){
+        public CalendarUtil(String title, String description) {
 
 
-
-            this.title=title;
-            this.description=description;
+            this.title = title;
+            this.description = description;
 
             // Google Accounts
             credential =
@@ -791,56 +790,119 @@ public class EditNoteActivity extends AppCompatActivity implements View.OnClickL
                             .setApplicationName("Uninote").build();
 
         }
+
         @Override
-        protected String doInBackground(Void ...voids) {
-            String calendarID = getCalendarID(subject.getClassname());
-            if ( calendarID == null ){
-                return "캘린더를 먼저 생성하세요.";
+        protected String doInBackground(Void... voids) {
+
+            if (calendartime == null && calendardate == null) {
+
+                return null;
+            } else if (note != null && note.getEventId()!=null) {
+
+
+                String calendarID = getCalendarID(subject.getClassname());
+                if (calendarID == null) {
+                    return "캘린더를 먼저 생성하세요.";
+                }
+                Event event= null;
+                try {
+                    event = service.events().get(calendarID,note.getEventId()).execute();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                java.util.Calendar cal = Calendar.getInstance();
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss+09:00", Locale.KOREA);
+                SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA);
+                try {
+                    String str = calendardate + " " + calendartime;
+                    Log.d("str", str);
+                    Date date1 = date.parse(str);
+                    cal.setTime(date1);
+
+                    String datetime = format.format(cal.getTime());
+                    DateTime startDateTime = new DateTime(datetime);
+                    EventDateTime start = new EventDateTime()
+                            .setDateTime(startDateTime)
+                            .setTimeZone("Asia/Seoul");
+                    event.setStart(start);
+                    DateTime endDateTime = new DateTime(datetime);
+                    EventDateTime end = new EventDateTime()
+                            .setDateTime(endDateTime)
+                            .setTimeZone("Asia/Seoul");
+                    event.setEnd(end);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                    Log.e("Exception", "Exception : " + e.toString());
+
+                }
+
+                try {
+                    Event updatedEvent = service.events().update("primary", event.getId(), event).execute();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Log.e("Exception", "Exception : " + e.toString());
+
+                }
+
+
+                System.out.printf("Event created: %s\n", event.getHtmlLink());
+                Log.e("Event", "update : " + event.getHtmlLink());
+                String eventStrings = "update: " + event.getHtmlLink();
+                return eventStrings;
+
+
+            } else {
+                String calendarID = getCalendarID(subject.getClassname());
+                if (calendarID == null) {
+                    return "캘린더를 먼저 생성하세요.";
+                }
+                Event event = new Event()
+                        .setSummary(title)
+                        .setDescription(description);
+
+                java.util.Calendar cal = Calendar.getInstance();
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss+09:00", Locale.KOREA);
+                SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA);
+                try {
+                    String str = calendardate + " " + calendartime;
+                    Log.d("str", str);
+                    Date date1 = date.parse(str);
+                    cal.setTime(date1);
+
+                    String datetime = format.format(cal.getTime());
+                    DateTime startDateTime = new DateTime(datetime);
+                    EventDateTime start = new EventDateTime()
+                            .setDateTime(startDateTime)
+                            .setTimeZone("Asia/Seoul");
+                    event.setStart(start);
+                    DateTime endDateTime = new DateTime(datetime);
+                    EventDateTime end = new EventDateTime()
+                            .setDateTime(endDateTime)
+                            .setTimeZone("Asia/Seoul");
+                    event.setEnd(end);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                /////////////////////////////////////
+
+                //String[] recurrence = new String[]{"RRULE:FREQ=DAILY;COUNT=2"};
+                //event.setRecurrence(Arrays.asList(recurrence));
+
+                try {
+                    event = service.events().insert(calendarID, event).execute();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Log.e("Exception", "Exception : " + e.toString());
+                }
+                System.out.printf("Event created: %s\n", event.getHtmlLink());
+                Log.e("Event", "created : " + event.getHtmlLink());
+                String eventStrings = "created : " + event.getHtmlLink();
+                return eventStrings;
             }
-            Event event = new Event()
-                    .setSummary(title)
-                    .setDescription(description);
-            /////////////////////////////////////
-
-                java.util.Calendar cal=Calendar.getInstance();
-               SimpleDateFormat format=new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ss+09:00", Locale.KOREA);
-               SimpleDateFormat date=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss",Locale.KOREA);
-            try {
-                String str=calendardate+" "+calendartime;
-                Log.d("str",str);
-                Date date1=date.parse(str);
-                cal.setTime(date1);
-
-                String datetime=format.format(cal.getTime());
-                DateTime startDateTime = new DateTime(datetime);
-                EventDateTime start = new EventDateTime()
-                        .setDateTime(startDateTime)
-                        .setTimeZone("Asia/Seoul");
-                event.setStart(start);
-                DateTime endDateTime = new  DateTime(datetime);
-                EventDateTime end = new EventDateTime()
-                        .setDateTime(endDateTime)
-                        .setTimeZone("Asia/Seoul");
-                event.setEnd(end);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-            /////////////////////////////////////
-
-            //String[] recurrence = new String[]{"RRULE:FREQ=DAILY;COUNT=2"};
-            //event.setRecurrence(Arrays.asList(recurrence));
-
-            try {
-                event = service.events().insert(calendarID, event).execute();
-            } catch (Exception e) {
-                e.printStackTrace();
-                Log.e("Exception", "Exception : " + e.toString());
-            }
-            System.out.printf("Event created: %s\n", event.getHtmlLink());
-            Log.e("Event", "created : " + event.getHtmlLink());
-            String eventStrings = "created : " + event.getHtmlLink();
-            return eventStrings;
         }
+
+
 
         private String getCalendarID(String calendarTitle){
 
