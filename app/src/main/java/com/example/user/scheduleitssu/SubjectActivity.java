@@ -185,7 +185,12 @@ protected void onResume() {
         if(requestCode == SUBJECTACTIVITY_REQUEST && resultCode == RESULT_OK){
             String notecontent=data.getStringExtra("NOTECONTENT");
             String notetitle=data.getStringExtra("NOTETITLE");
+            String noteeventid=data.getStringExtra("NOTEEVENTID");
+            Log.d("NOTE2",noteeventid);
+
             Note newnote=new Note(notecontent,notetitle);
+            newnote.setEventId(noteeventid);
+            Log.d("NOTE2",newnote.getEventId());
             /*만든시간 추가*/
             SimpleDateFormat format1 = new SimpleDateFormat ( "yyyy-MM-dd");
             newnote.setWhenmake_note(format1.format(new Date()));

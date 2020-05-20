@@ -103,7 +103,7 @@ public class EditNoteActivity extends AppCompatActivity implements View.OnClickL
     private static final int GALLERY_IMAGE_REQUEST = 11;
     public static final int CAMERA_PERMISSIONS_REQUEST = 22;
     public static final int CAMERA_IMAGE_REQUEST = 33;
-
+    String eventidplease="aaa";
     String serailized;
     EditorContent des;
     /*전 activity에서 받아온 값*/
@@ -210,6 +210,7 @@ public class EditNoteActivity extends AppCompatActivity implements View.OnClickL
                 return true;
             }
             case R.id.editnote_add_menu1: {//저장
+
                 String title;
                 if (notetitle.getText() == null) {
                     title = "";
@@ -217,11 +218,14 @@ public class EditNoteActivity extends AppCompatActivity implements View.OnClickL
                     title = "" + notetitle.getText();
                 }
                 String text = editor.getContentAsSerialized();
+                new CalendarUtil(title,editor.getContentAsHTML(text)).execute();
+                Log.d("eventidplease",eventidplease);
                 Intent intent = new Intent();
                 //text가 NULL이 아니라면
                 intent.putExtra("RESULT", "OK");
                 intent.putExtra("NOTETITLE", title);
                 intent.putExtra("NOTECONTENT", text);
+                intent.putExtra("NOTEEVENTID",""+this.eventidplease);
                 setResult(RESULT_OK, intent);
                 Log.d("EDITNOTEACTIVITY", text);
                 Log.d("EDITNOTEACTIVITY", " \n" + text + "\n" + editor.getContentAsHTML(text));
@@ -232,7 +236,6 @@ public class EditNoteActivity extends AppCompatActivity implements View.OnClickL
                 */
 
                 Log.d("calendar","jjjjj");
-                new CalendarUtil(title,editor.getContentAsHTML(text)).execute();
 
                 finish();
                 return true;
@@ -838,7 +841,7 @@ public class EditNoteActivity extends AppCompatActivity implements View.OnClickL
                 }
 
                 try {
-                    Event updatedEvent = service.events().update("primary", event.getId(), event).execute();
+                    Event updatedEvent = service.events().update(calendarID, event.getId(), event).execute();
                 } catch (IOException e) {
                     e.printStackTrace();
                     Log.e("Exception", "Exception : " + e.toString());
@@ -853,6 +856,7 @@ public class EditNoteActivity extends AppCompatActivity implements View.OnClickL
 
 
             } else {
+
                 String calendarID = getCalendarID(subject.getClassname());
                 if (calendarID == null) {
                     return "캘린더를 먼저 생성하세요.";
@@ -891,7 +895,8 @@ public class EditNoteActivity extends AppCompatActivity implements View.OnClickL
 
                 try {
                     event = service.events().insert(calendarID, event).execute();
-                    note.setEventId(event.getId());
+                    eventidplease=event.getId();
+                    Log.d("eventid",eventidplease);
                 } catch (Exception e) {
                     e.printStackTrace();
                     Log.e("Exception", "Exception : " + e.toString());

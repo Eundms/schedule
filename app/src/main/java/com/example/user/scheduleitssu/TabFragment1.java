@@ -5,8 +5,10 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,14 +26,32 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.user.scheduleitssu.DataClass.What2Do;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
+import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecoverableAuthIOException;
+import com.google.api.client.http.HttpTransport;
+import com.google.api.client.json.jackson2.JacksonFactory;
+import com.google.api.client.util.DateTime;
 import com.google.api.client.util.ExponentialBackOff;
 import com.google.api.services.calendar.CalendarScopes;
+import com.google.api.services.calendar.model.CalendarList;
+import com.google.api.services.calendar.model.CalendarListEntry;
+import com.google.api.services.calendar.model.Event;
+import com.google.api.services.calendar.model.EventDateTime;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
+import java.io.IOException;
 import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 import pub.devrel.easypermissions.EasyPermissions;
 
@@ -77,6 +97,72 @@ public class TabFragment1 extends Fragment{
     }
 
 
+    class CalendarUtil extends AsyncTask<Void, Void, String> {
+
+        HttpTransport transport = AndroidHttp.newCompatibleTransport();
+        JacksonFactory jsonFactory = JacksonFactory.getDefaultInstance();
+
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = mAuth.getCurrentUser();
+        GoogleAccountCredential credential;
+        com.google.api.services.calendar.Calendar service = null;
+
+        String title;
+        String description;
 
 
+        public CalendarUtil(String title, String description) {
+
+
+            this.title = title;
+            this.description = description;
+
+            // Google Accounts
+            credential =
+                    GoogleAccountCredential.usingOAuth2(context, Collections.singleton(CalendarScopes.CALENDAR));
+            credential.setSelectedAccountName(user.getEmail());
+
+            Log.d("calendar", credential.getSelectedAccountName().toString());
+
+            // Tasks client
+            service =
+                    new com.google.api.services.calendar.Calendar.Builder(transport, jsonFactory, credential)
+                            .setApplicationName("Uninote").build();
+
+        }
+
+        @Override
+        protected String doInBackground(Void... voids) {
+
+            ArrayList<String> calendarList=new ArrayList<>();
+
+            return "";
+        }
+
+        private String getCalendarID(String calendarTitle){
+            String id = null;
+            // Iterate through entries in calendar list
+            String pageToken = null;
+            do {
+                CalendarList calendarList = null;
+                try {
+                    calendarList = service.calendarList().list().setPageToken(pageToken).execute();
+                } catch (UserRecoverableAuthIOException e) {
+                    startActivityForResult(e.getIntent(), 1001);
+                }catch (IOException e) {
+                    e.printStackTrace();
+                }
+                List<CalendarListEntry> items = calendarList.getItems();
+
+                for (CalendarListEntry calendarListEntry : items) {
+                    if ( calendarListEntry.getSummary().toString().equals(calendarTitle)) {
+                        id = calendarListEntry.getId().toString();
+                    }
+                }
+                pageToken = calendarList.getNextPageToken();
+            } while (pageToken != null);
+
+            return id;
+        }
+    }
 }

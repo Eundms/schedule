@@ -14,8 +14,23 @@ public class Note implements Parcelable {
     String whoedit_note;
 
     String eventId;
-    public String getEditdate_note() {
-        return editdate_note;
+
+    protected Note(Parcel in) {
+        title = in.readString();
+        content = in.readString();
+        whomake_note = in.readString();
+        whenmake_note = in.readString();
+        editdate_note = in.readString();
+        whoedit_note = in.readString();
+        eventId = in.readString();
+    }
+
+    public String getWhoedit_note() {
+        return whoedit_note;
+    }
+
+    public void setWhoedit_note(String whoedit_note) {
+        this.whoedit_note = whoedit_note;
     }
 
     public String getEventId() {
@@ -24,6 +39,26 @@ public class Note implements Parcelable {
 
     public void setEventId(String eventId) {
         this.eventId = eventId;
+    }
+
+    public static Creator<Note> getCREATOR() {
+        return CREATOR;
+    }
+
+    public static final Creator<Note> CREATOR = new Creator<Note>() {
+        @Override
+        public Note createFromParcel(Parcel in) {
+            return new Note(in);
+        }
+
+        @Override
+        public Note[] newArray(int size) {
+            return new Note[size];
+        }
+    };
+
+    public String getEditdate_note() {
+        return editdate_note;
     }
 
     public void setEditdate_note(String editdate_note) {
@@ -66,27 +101,8 @@ public class Note implements Parcelable {
         this.title = title;
     }
 
-    protected Note(Parcel in) {
-        title=in.readString();
-        content =in.readString();
-        whomake_note = in.readString();
-        whenmake_note = in.readString();
-       editdate_note = in.readString();
-        whoedit_note = in.readString();
-        eventId=in.readString();
-    }
 
-    public static final Creator<Note> CREATOR = new Creator<Note>() {
-        @Override
-        public Note createFromParcel(Parcel in) {
-            return new Note(in);
-        }
 
-        @Override
-        public Note[] newArray(int size) {
-            return new Note[size];
-        }
-    };
 
 
     public String getContent() {
