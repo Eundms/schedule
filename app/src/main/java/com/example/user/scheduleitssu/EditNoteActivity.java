@@ -90,7 +90,7 @@ import java.util.Map;
 
 import top.defaults.colorpicker.ColorPickerPopup;
 
-public class EditNoteActivity extends AppCompatActivity implements AsyncResponse,View.OnClickListener {
+public class EditNoteActivity extends AppCompatActivity implements View.OnClickListener {
     Editor editor;
     private static final String CLOUD_VISION_API_KEY = "AIzaSyDQnNiMu_Q50EdL7ryz1CHnJjwfqWtdXxE";
     public static final String FILE_NAME = "temp.jpg";
@@ -217,7 +217,6 @@ public class EditNoteActivity extends AppCompatActivity implements AsyncResponse
                 }
                 String text = editor.getContentAsSerialized();
                 CalendarUtil util=new CalendarUtil(title,text);
-                util.delegate=this;
                 util.execute();
                 /*Log.d("eventidplease","_addmenu"+eventidplease);
                 Intent intent = new Intent();
@@ -607,11 +606,7 @@ public class EditNoteActivity extends AppCompatActivity implements AsyncResponse
         return annotateRequest;
     }
 
-    @Override
-    public void processFinish(String output) {
-        eventidplease=output;
-        Log.d("eventidplease","_processFinish  "+output);
-    }
+
 
     private static class LableDetectionTask extends AsyncTask<Object, Void, String> {
         private final WeakReference<EditNoteActivity> mActivityWeakReference;
@@ -765,7 +760,6 @@ public class EditNoteActivity extends AppCompatActivity implements AsyncResponse
 
 
      private class CalendarUtil extends AsyncTask<Void, Void, String> {
-        public AsyncResponse delegate=null;
         HttpTransport transport = AndroidHttp.newCompatibleTransport();
         JacksonFactory jsonFactory = JacksonFactory.getDefaultInstance();
 
@@ -798,7 +792,6 @@ public class EditNoteActivity extends AppCompatActivity implements AsyncResponse
         }
         @Override
         protected void onPostExecute(String output){
-            delegate.processFinish(output);
             Intent intent = new Intent();
             //text가 NULL이 아니라면
             intent.putExtra("RESULT", "OK");

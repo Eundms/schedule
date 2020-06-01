@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,7 +15,14 @@ import java.util.ArrayList;
 public class Today2doAdapter extends RecyclerView.Adapter<Today2doAdapter.Today2doViewHolder> {
     LayoutInflater inflater;
     private ArrayList<What2Do> today2doArrayList;
-
+    private Context context;
+    public interface OnTodayItemClickListener{
+        void onTodayItemClick(View v, int pos);
+    }
+    private OnTodayItemClickListener listener=null;
+    public void setOnTodayItemClickListener(OnTodayItemClickListener listener){
+        this.listener=listener;
+    };
     public Today2doAdapter(Context context, ArrayList<What2Do> today2doArrayList) {
         inflater = LayoutInflater.from(context);
         this.today2doArrayList = today2doArrayList;
@@ -38,11 +46,11 @@ public class Today2doAdapter extends RecyclerView.Adapter<Today2doAdapter.Today2
 
 
     public class Today2doViewHolder extends RecyclerView.ViewHolder {
-        CheckBox today2dotext;
+        TextView today2dotext;
 
         public Today2doViewHolder(View itemView) {
             super(itemView);
-            today2dotext = itemView.findViewById(R.id.checktoday2do_item);
+            today2dotext = itemView.findViewById(R.id.texttoday2do_item);
         }
 
         public void bindData(What2Do object) {

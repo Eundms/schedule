@@ -1,20 +1,13 @@
 package com.example.user.scheduleitssu;
 
-import android.Manifest;
-import android.app.Activity;
-import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.CalendarView;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,23 +16,18 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.user.scheduleitssu.DataClass.Note;
 import com.example.user.scheduleitssu.DataClass.Subject;
 import com.example.user.scheduleitssu.DataClass.What2Do;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecoverableAuthIOException;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.client.util.DateTime;
-import com.google.api.client.util.ExponentialBackOff;
 import com.google.api.services.calendar.CalendarScopes;
 import com.google.api.services.calendar.model.CalendarList;
 import com.google.api.services.calendar.model.CalendarListEntry;
 import com.google.api.services.calendar.model.Event;
-import com.google.api.services.calendar.model.EventDateTime;
 import com.google.api.services.calendar.model.Events;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -50,30 +38,22 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
-import pub.devrel.easypermissions.EasyPermissions;
-
-public class TabFragment1 extends Fragment{
+public class TabFragment1 extends Fragment implements Today2doAdapter.OnTodayItemClickListener{
     Context context;
     RecyclerView today2doRecyclerView;
     Today2doAdapter today2doAdapter;
     CalendarView todocalendar;
-    EditText selectedday;
+    TextView selectedday;
     Date now;
     ArrayList<Subject> subjectArrayList= new ArrayList<>();
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     FirebaseUser user = mAuth.getCurrentUser();
-
+    ArrayList<What2Do>today2doArrayList=new ArrayList<>();
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstance){
         subjectArrayList=new ArrayList<>();
 
@@ -84,16 +64,9 @@ public class TabFragment1 extends Fragment{
         LinearLayoutManager layoutManager=new LinearLayoutManager(this.getContext(),LinearLayoutManager.VERTICAL,false);
         today2doRecyclerView.setLayoutManager(layoutManager);
         now =new Date();
-        ArrayList<What2Do>today2doArrayList=new ArrayList<>();
-        today2doArrayList.add(new What2Do("1)(default)", now.getTime()));
-        today2doArrayList.add(new What2Do("2)(default)", now.getTime()));
-        today2doArrayList.add(new What2Do("3)(default)", now.getTime()));
-        today2doArrayList.add(new What2Do("4)(default)", now.getTime()));
-        today2doArrayList.add(new What2Do("5)(default)", now.getTime()));
 
-        today2doAdapter=new Today2doAdapter(this.getContext(),today2doArrayList);
-        today2doRecyclerView.setAdapter(today2doAdapter);
-        selectedday=(EditText)root.findViewById(R.id.addwhichdaytodo);
+
+        selectedday=(TextView)root.findViewById(R.id.addwhichdaytodo);
         todocalendar=(CalendarView)root.findViewById(R.id.todocalendar);
 
         todocalendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
@@ -122,10 +95,11 @@ public class TabFragment1 extends Fragment{
                 subjectArrayList.clear();
                 for (DataSnapshot dataSnapshot2 : dataSnapshot.getChildren()) { //하위노드가 없을 떄까지 반복
                     Subject subject = dataSnapshot2.getValue(Subject.class);
-                    Log.d("TABFRAGMENT1",subject.getClassname());
+                    Log.d("TABFRAGMENT2",subject.getClassname());
                     subjectArrayList.add(subject);
                     //subjectAdapter.notifyItemInserted(subjectArrayList.size()-1);
                 }
+               //Log.d("TABFRAGMENT2",""+subjectArrayList.size());
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
@@ -138,6 +112,37 @@ public class TabFragment1 extends Fragment{
         return root;
     }
 
+    @Override
+    public void onTodayItemClick(View v, int pos) {
+        Log.d("ONITEM","TA");
+    }
+
+    public class todoEvent{
+
+        String title;
+        String description;
+
+        public todoEvent(String title,String description){
+
+            this.description=description;
+            this.title=title;
+
+        }
+
+        public String getTitle() {
+            return title;
+        }
+
+        public String getDescription() {
+            return description;
+        }
+
+        @NonNull
+        @Override
+        public String toString() {
+            return title+": "+description;
+        }
+    }
 
     class CalendarUtil extends AsyncTask<Void, Void, String> {
 
@@ -148,9 +153,10 @@ public class TabFragment1 extends Fragment{
         GoogleAccountCredential credential;
         com.google.api.services.calendar.Calendar service = null;
 
-        List<String> eventStrings=new ArrayList<>() ;
+        ArrayList<What2Do> eventStrings=new ArrayList<>() ;
 
         String eventDate;
+
 
         public CalendarUtil(String eventDate) {
 
@@ -168,10 +174,19 @@ public class TabFragment1 extends Fragment{
                             .setApplicationName("Uninote").build();
 
         }
+        @Override
+        protected void onPostExecute(String result) {
+            Log.d("calendar5",eventStrings.toString());
 
+            today2doAdapter=new Today2doAdapter(context,eventStrings);
+            today2doRecyclerView.setAdapter(today2doAdapter);
+
+
+
+
+        }
         @Override
         protected String doInBackground(Void... voids) {
-
 
             for(Subject subject:subjectArrayList)
             try {
@@ -181,7 +196,8 @@ public class TabFragment1 extends Fragment{
                 }
 
                 Log.d("calendar4", eventStrings.toString());
-                return "";
+
+            return null;
 
         }
         private String getCalendarID(String calendarTitle){
@@ -210,13 +226,13 @@ public class TabFragment1 extends Fragment{
             return id;
         }
 
-        private String getEvent(String calendarTitle) throws IOException {
+        private List<todoEvent> getEvent(String calendarTitle) throws IOException {
 
 
             String calendarID = getCalendarID(calendarTitle);
             if ( calendarID == null ){
 
-                return "캘린더를 먼저 생성하세요.";
+                return null;
             }
 
 
@@ -241,12 +257,13 @@ public class TabFragment1 extends Fragment{
                 }
 
 
-                Log.d("calendar3",String.format("%s \n (%s)", event.getSummary(), start));
-                eventStrings.add(String.format("%s \n (%s)", event.getSummary(), start));
+                eventStrings.add(new What2Do(event.getSummary(),0));
+                //Log.d("calendar3",eventStrings.toString());
+
             }
 
 
-            return eventStrings.size() + "개의 데이터를 가져왔습니다.";
+            return null;
         }
     }
 

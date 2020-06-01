@@ -22,6 +22,7 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectV
     public void setOnItemClickListener(OnItemClickListener listener){
         this.listener=listener;
     }
+
     public SubjectAdapter(Context context, ArrayList<Subject> SubjectArrayList){
         inflater = LayoutInflater.from(context);
         this.SubjectArrayList = SubjectArrayList;

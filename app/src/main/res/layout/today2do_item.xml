@@ -5,8 +5,8 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <CheckBox
-        android:id="@+id/checktoday2do_item"
+    <TextView
+        android:id="@+id/texttoday2do_item"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="오늘은 이런 일을 해야해요" />
