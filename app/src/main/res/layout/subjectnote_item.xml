@@ -21,7 +21,7 @@
         />
 
     <TextView
-        android:id="@+id/note_reserve_subject"
+        android:id="@+id/note_reserve_date"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:layout_width="wrap_content"

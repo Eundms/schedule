@@ -16,12 +16,25 @@
         app:popupTheme="@style/ThemeOverlay.AppCompat.DayNight.ActionBar" />
 
 
-
+    <TextView
+        android:id="@+id/note_make_date"
+        android:layout_toLeftOf="@id/note_edit_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/detailnote_toolbar"
+        android:text="만듦:" />
+    <TextView
+        android:id="@+id/note_edit_date"
+        android:layout_alignParentRight="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/detailnote_toolbar"
+        android:text="수정:" />
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/detailnote_toolbar"
+        android:layout_below="@+id/note_edit_date"
         android:layout_marginBottom="40dp"
         android:scrollbars="vertical">
 

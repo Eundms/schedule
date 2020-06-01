@@ -5,7 +5,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.TextView;
 
 
@@ -45,7 +44,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
             super(itemView);
             this.shownote=itemView.findViewById(R.id.shownote);
             this.notetitle=itemView.findViewById(R.id.note_title_subject);
-            this.notereserve=itemView.findViewById(R.id.note_reserve_subject);
+            this.notereserve=itemView.findViewById(R.id.note_reserve_date);
             itemView.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View v) {

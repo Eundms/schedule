@@ -799,13 +799,6 @@ public class EditNoteActivity extends AppCompatActivity implements View.OnClickL
             intent.putExtra("NOTECONTENT", description);
             intent.putExtra("NOTEEVENTID",""+output);
             setResult(RESULT_OK, intent);
-            //Log.d("EDITNOTEACTIVITY", description);
-            //Log.d("EDITNOTEACTIVITY", " \n" + description + "\n" + editor.getContentAsHTML(description));
-            //Log.d("EDITNOTEACTIVITY", editor.getContentAsHTML(description));
-            //text가 NULL이라면
-            //intent.putExtra("RESULT","CANCLED");
-            //setResult(RESULT_CANCELED, intent);
-            //Log.d("calendar","jjjjj");
             finish();
 
         }

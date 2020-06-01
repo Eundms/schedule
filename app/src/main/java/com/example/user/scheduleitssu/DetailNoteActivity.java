@@ -10,6 +10,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.TextView;
+
 import com.example.user.scheduleitssu.DataClass.Note;
 import com.example.user.scheduleitssu.DataClass.Subject;
 import com.github.irshulx.Editor;
@@ -54,11 +56,17 @@ public class DetailNoteActivity extends AppCompatActivity {
     Editor renderer;
     int position;
     Toolbar toolbar;
+    TextView notemakedate;
+    TextView noteeditdate;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_note);
         processIntent();
+        notemakedate=findViewById(R.id.note_make_date);
+        noteeditdate=findViewById(R.id.note_edit_date);
+        notemakedate.setText(notemakedate.getText()+note.getWhenmake_note());
+        noteeditdate.setText(noteeditdate.getText()+note.getEditdate_note());
         toolbar = (Toolbar) findViewById(R.id.detailnote_toolbar);
         if(note.getTitle()==null){toolbar.setTitle(""+(position+1)+"번째 노트");}
         else{toolbar.setTitle(note.getTitle());}
