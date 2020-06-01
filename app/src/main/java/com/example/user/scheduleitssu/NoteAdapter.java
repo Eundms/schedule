@@ -1,6 +1,7 @@
 package com.example.user.scheduleitssu;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -69,6 +70,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
         Note note=noteArrayList.get(position);
         holder.notetitle.setText(note.getTitle());
         String a=note.getContent();
+        Log.d("NoteAdapter",a);
         EditorContent Deserialized= holder.shownote.getContentDeserialized(a);
         holder.shownote.render(Deserialized);
     }

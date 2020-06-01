@@ -90,7 +90,7 @@ import java.util.Map;
 
 import top.defaults.colorpicker.ColorPickerPopup;
 
-public class EditNoteActivity extends AppCompatActivity implements View.OnClickListener {
+public class EditNoteActivity extends AppCompatActivity implements AsyncResponse,View.OnClickListener {
     Editor editor;
     private static final String CLOUD_VISION_API_KEY = "AIzaSyDQnNiMu_Q50EdL7ryz1CHnJjwfqWtdXxE";
     public static final String FILE_NAME = "temp.jpg";
@@ -147,9 +147,7 @@ public class EditNoteActivity extends AppCompatActivity implements View.OnClickL
         if (note != null && note.getTitle() != null) {
             notetitle.setText(note.getTitle());
         }
-
     }
-
     @Override
     public void onClick(View v) {
         //현재 년도, 월, 일
@@ -218,8 +216,10 @@ public class EditNoteActivity extends AppCompatActivity implements View.OnClickL
                     title = "" + notetitle.getText();
                 }
                 String text = editor.getContentAsSerialized();
-                new CalendarUtil(title,editor.getContentAsHTML(text)).execute();
-                Log.d("eventidplease",eventidplease);
+                CalendarUtil util=new CalendarUtil(title,text);
+                util.delegate=this;
+                util.execute();
+                /*Log.d("eventidplease","_addmenu"+eventidplease);
                 Intent intent = new Intent();
                 //text가 NULL이 아니라면
                 intent.putExtra("RESULT", "OK");
@@ -230,15 +230,14 @@ public class EditNoteActivity extends AppCompatActivity implements View.OnClickL
                 Log.d("EDITNOTEACTIVITY", text);
                 Log.d("EDITNOTEACTIVITY", " \n" + text + "\n" + editor.getContentAsHTML(text));
                 Log.d("EDITNOTEACTIVITY", editor.getContentAsHTML(text));
-                /*text가 NULL이라면
-                intent.putExtra("RESULT","CANCLED");
-                setResult(RESULT_CANCELED, intent);
-                */
-
+                //text가 NULL이라면
+                //intent.putExtra("RESULT","CANCLED");
+                //setResult(RESULT_CANCELED, intent);
                 Log.d("calendar","jjjjj");
-
                 finish();
+                */
                 return true;
+
             }
 
         }
@@ -608,6 +607,11 @@ public class EditNoteActivity extends AppCompatActivity implements View.OnClickL
         return annotateRequest;
     }
 
+    @Override
+    public void processFinish(String output) {
+        eventidplease=output;
+        Log.d("eventidplease","_processFinish  "+output);
+    }
 
     private static class LableDetectionTask extends AsyncTask<Object, Void, String> {
         private final WeakReference<EditNoteActivity> mActivityWeakReference;
@@ -633,7 +637,7 @@ public class EditNoteActivity extends AppCompatActivity implements View.OnClickL
             }
             return "Cloud Vision API request failed. Check logs for details.";
         }
-
+        @Override
         protected void onPostExecute(String result) {
             EditNoteActivity activity = mActivityWeakReference.get();
             if (activity != null && !activity.isFinishing()) {
@@ -760,8 +764,8 @@ public class EditNoteActivity extends AppCompatActivity implements View.OnClickL
     }*/
 
 
-    class CalendarUtil extends AsyncTask<Void, Void, String> {
-
+     private class CalendarUtil extends AsyncTask<Void, Void, String> {
+        public AsyncResponse delegate=null;
         HttpTransport transport = AndroidHttp.newCompatibleTransport();
         JacksonFactory jsonFactory = JacksonFactory.getDefaultInstance();
 
@@ -774,11 +778,10 @@ public class EditNoteActivity extends AppCompatActivity implements View.OnClickL
         String description;
 
 
-        public CalendarUtil(String title, String description) {
-
-
+        CalendarUtil(String title, String description) {
             this.title = title;
             this.description = description;
+
 
             // Google Accounts
             credential =
@@ -793,10 +796,28 @@ public class EditNoteActivity extends AppCompatActivity implements View.OnClickL
                             .setApplicationName("Uninote").build();
 
         }
+        @Override
+        protected void onPostExecute(String output){
+            delegate.processFinish(output);
+            Intent intent = new Intent();
+            //text가 NULL이 아니라면
+            intent.putExtra("RESULT", "OK");
+            intent.putExtra("NOTETITLE", title);
+            intent.putExtra("NOTECONTENT", description);
+            intent.putExtra("NOTEEVENTID",""+output);
+            setResult(RESULT_OK, intent);
+            //Log.d("EDITNOTEACTIVITY", description);
+            //Log.d("EDITNOTEACTIVITY", " \n" + description + "\n" + editor.getContentAsHTML(description));
+            //Log.d("EDITNOTEACTIVITY", editor.getContentAsHTML(description));
+            //text가 NULL이라면
+            //intent.putExtra("RESULT","CANCLED");
+            //setResult(RESULT_CANCELED, intent);
+            //Log.d("calendar","jjjjj");
+            finish();
 
+        }
         @Override
         protected String doInBackground(Void... voids) {
-
             if (calendartime == null && calendardate == null) {
 
                 return null;
@@ -895,15 +916,14 @@ public class EditNoteActivity extends AppCompatActivity implements View.OnClickL
 
                 try {
                     event = service.events().insert(calendarID, event).execute();
-                    eventidplease=event.getId();
-                    Log.d("eventid",eventidplease);
+                    Log.d("eventdate",event.getStart().toString());
                 } catch (Exception e) {
                     e.printStackTrace();
                     Log.e("Exception", "Exception : " + e.toString());
                 }
                 System.out.printf("Event created: %s\n", event.getHtmlLink());
                 Log.e("Event", "created : " + event.getHtmlLink());
-                String eventStrings = "created : " + event.getHtmlLink();
+                String eventStrings = event.getId();
                 return eventStrings;
             }
         }
