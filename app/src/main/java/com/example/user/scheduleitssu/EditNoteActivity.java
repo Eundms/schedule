@@ -930,11 +930,11 @@ public class EditNoteActivity extends AppCompatActivity implements View.OnClickL
                 for (CalendarListEntry calendarListEntry : items) {
                     if ( calendarListEntry.getSummary().toString().equals(calendarTitle)) {
                         id = calendarListEntry.getId().toString();
+
                     }
                 }
                 pageToken = calendarList.getNextPageToken();
             } while (pageToken != null);
-
             return id;
         }
 
