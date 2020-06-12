@@ -53,8 +53,8 @@ String subject;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_class);
 
-        backbtn=(Button) findViewById(R.id.addsubjectbackbtn);
-        addbtn=(Button) findViewById(R.id.addsubjectbtn) ;
+        backbtn= findViewById(R.id.addsubjectbackbtn);
+        addbtn= findViewById(R.id.addsubjectbtn);
 
         backbtn.setOnClickListener(this);
         addbtn.setOnClickListener(this);
@@ -76,8 +76,8 @@ String subject;
 
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        TextView subjectname=(TextView)findViewById(R.id.makesubjectname);
-                        TextView subjectinfo=(TextView)findViewById(R.id.makesubjectinfo);
+                        TextView subjectname= findViewById(R.id.makesubjectname);
+                        TextView subjectinfo= findViewById(R.id.makesubjectinfo);
                       /////////////////if you want to add code directly, do it!!!!!!////////////////
                       /*  ArrayList<Note> notes=new ArrayList<Note>();
                         notes.add(new Note("{\"nodes\":[{\"content\":[\"\\u003cp dir\\u003d\\\"ltr\\\"\\" +

@@ -69,7 +69,7 @@ public class TabFragment2 extends Fragment implements SubjectAdapter.OnItemClick
         subjectRecyclerView.setAdapter(subjectAdapter);
 
 
-        FloatingActionButton addclassbtn=(FloatingActionButton)root.findViewById(R.id.fb1);
+        FloatingActionButton addclassbtn= root.findViewById(R.id.fb1);
         addclassbtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){

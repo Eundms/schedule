@@ -54,16 +54,16 @@ public class InformationActivity extends AppCompatActivity implements View.OnCli
         context=this.getApplicationContext();
         setContentView(R.layout.activity_information);
 
-        nexttimeaddinfo=(TextView)findViewById(R.id.다음에입력);
-        addinfobtn=(Button)findViewById(R.id.addinformationbtn);
-        editimagebtn =(ImageView)findViewById(R.id.edit_userimag);
+        nexttimeaddinfo= findViewById(R.id.다음에입력);
+        addinfobtn= findViewById(R.id.addinformationbtn);
+        editimagebtn = findViewById(R.id.edit_userimag);
         //이름은 default로 앞 메일계정에서 받아야한다. 하지만, 고칠 수 있게!
         nexttimeaddinfo.setOnClickListener(this);
         addinfobtn.setOnClickListener(this);
         editimagebtn.setOnClickListener(this);
 
-        nickname=(EditText)findViewById(R.id.editNicName);
-        contactinfo=(EditText)findViewById(R.id.editContectInfo);
+        nickname= findViewById(R.id.editNicName);
+        contactinfo= findViewById(R.id.editContectInfo);
 
 
     }
@@ -106,10 +106,10 @@ public class InformationActivity extends AppCompatActivity implements View.OnCli
 
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(),uri);
                 //이미지가 한계이상(?) 크면 불러 오지 못하므로 사이즈를 줄여 준다.
-                int nh = (int) (bitmap.getHeight() * (1200 / bitmap.getWidth()));
+                int nh = bitmap.getHeight() * (1200 / bitmap.getWidth());
                 Bitmap scaled = Bitmap.createScaledBitmap(bitmap, 1200, nh, true);
 
-                imgView = (ImageView) findViewById(R.id.image);
+                imgView = findViewById(R.id.image);
                 imgView.setImageBitmap(scaled);
                 imgView.setBackground(new ShapeDrawable(new OvalShape()));
 

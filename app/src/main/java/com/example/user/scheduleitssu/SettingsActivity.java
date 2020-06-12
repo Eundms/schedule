@@ -31,20 +31,20 @@ public class SettingsActivity extends AppCompatActivity implements NavigationVie
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
-        backbtn=(ImageView)findViewById(R.id.backbtn);
+        backbtn= findViewById(R.id.backbtn);
         backbtn.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
             }
         });
-        NavigationView navigationView = (NavigationView) findViewById(R.id.settings_nav_view);
+        NavigationView navigationView = findViewById(R.id.settings_nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         View nav_header_view = navigationView.getHeaderView(0);
-        TextView nav_header_id_text = (TextView) nav_header_view.findViewById(R.id.username);
+        TextView nav_header_id_text = nav_header_view.findViewById(R.id.username);
         nav_header_id_text.setText(user.getDisplayName());
 
-        TextView email=(TextView)nav_header_view.findViewById(R.id.useremail);
+        TextView email= nav_header_view.findViewById(R.id.useremail);
         email.setText(user.getEmail());
     }
 
