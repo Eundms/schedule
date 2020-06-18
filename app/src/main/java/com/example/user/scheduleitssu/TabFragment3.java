@@ -27,7 +27,7 @@ public class TabFragment3 extends Fragment implements ProjectAdapter.OnItemClick
         projectArrayList=new ArrayList<>();
         projectArrayList.add(new Group("달려라하니팀",3));
 
-        ProjectRecyclerView=(RecyclerView)root.findViewById(R.id.subject_projectrecyclerview);
+        ProjectRecyclerView= root.findViewById(R.id.subject_projectrecyclerview);
         GridLayoutManager layoutManager=new GridLayoutManager(context,2);
 
         ProjectRecyclerView.setLayoutManager(layoutManager);

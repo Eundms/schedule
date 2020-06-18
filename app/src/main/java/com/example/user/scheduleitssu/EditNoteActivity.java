@@ -126,7 +126,7 @@ public class EditNoteActivity extends AppCompatActivity implements View.OnClickL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_note);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.editnote_toolbar);
+        Toolbar toolbar = findViewById(R.id.editnote_toolbar);
         toolbar.setTitle("editNoteActivity");
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -152,9 +152,9 @@ public class EditNoteActivity extends AppCompatActivity implements View.OnClickL
     public void onClick(View v) {
         //현재 년도, 월, 일
         Calendar cal = Calendar.getInstance();
-        int Current_year = cal.get(cal.YEAR);
-        int Current_month = cal.get(cal.MONTH);
-        int Current_date = cal.get(cal.DATE);
+        int Current_year = cal.get(Calendar.YEAR);
+        int Current_month = cal.get(Calendar.MONTH);
+        int Current_date = cal.get(Calendar.DATE);
 
         switch (v.getId()) {
             case R.id.note_adddate:
@@ -162,9 +162,9 @@ public class EditNoteActivity extends AppCompatActivity implements View.OnClickL
                 DatePickerDialog datePickerDialog = new DatePickerDialog(EditNoteActivity.this, new DatePickerDialog.OnDateSetListener() {
                     public void onDateSet(DatePicker view, int year, int month, int day) {
                         Calendar calendar = Calendar.getInstance();
-                        calendar.set(calendar.YEAR, year);
-                        calendar.set(calendar.MONTH, month);
-                        calendar.set(calendar.DAY_OF_MONTH, day);
+                        calendar.set(Calendar.YEAR, year);
+                        calendar.set(Calendar.MONTH, month);
+                        calendar.set(Calendar.DAY_OF_MONTH, day);
                         SimpleDateFormat simpledateformat = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
                         String datetime = simpledateformat.format(calendar.getTime());
                         calendardate = datetime;
@@ -712,7 +712,7 @@ public class EditNoteActivity extends AppCompatActivity implements View.OnClickL
 
 
     private static String convertResponseToString(BatchAnnotateImagesResponse response) {
-        StringBuilder message = new StringBuilder("");
+        StringBuilder message = new StringBuilder();
 
         List<EntityAnnotation> labels = response.getResponses().get(0).getTextAnnotations();
         if (labels != null) {
@@ -782,7 +782,7 @@ public class EditNoteActivity extends AppCompatActivity implements View.OnClickL
                     GoogleAccountCredential.usingOAuth2(getApplicationContext(), Collections.singleton(CalendarScopes.CALENDAR));
             credential.setSelectedAccountName(user.getEmail());
 
-            Log.d("calendar", credential.getSelectedAccountName().toString());
+            Log.d("calendar", credential.getSelectedAccountName());
 
             // Tasks client
             service =
@@ -934,8 +934,8 @@ public class EditNoteActivity extends AppCompatActivity implements View.OnClickL
                 List<CalendarListEntry> items = calendarList.getItems();
 
                 for (CalendarListEntry calendarListEntry : items) {
-                    if ( calendarListEntry.getSummary().toString().equals(calendarTitle)) {
-                        id = calendarListEntry.getId().toString();
+                    if ( calendarListEntry.getSummary().equals(calendarTitle)) {
+                        id = calendarListEntry.getId();
 
                     }
                 }

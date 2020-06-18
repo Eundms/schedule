@@ -87,8 +87,8 @@ protected void onResume() {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_subject);
-        toolbar = (Toolbar) findViewById(R.id.subject_toolbar);
-        subject_default=(TextView)findViewById(R.id.subject_default);
+        toolbar = findViewById(R.id.subject_toolbar);
+        subject_default= findViewById(R.id.subject_default);
 
         Intent receive=getIntent();
         noteArrayList=new ArrayList<>();
@@ -98,7 +98,7 @@ protected void onResume() {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
-        NoteRecyclerView=(RecyclerView)findViewById(R.id.subject_noterecyclerview);
+        NoteRecyclerView= findViewById(R.id.subject_noterecyclerview);
         LinearLayoutManager layoutManager2=new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
         NoteRecyclerView.setLayoutManager(layoutManager2);
         noteAdapter=new NoteAdapter(this,noteArrayList);
@@ -289,9 +289,9 @@ protected void onResume() {
 
                 for (CalendarListEntry calendarListEntry : items) {
 
-                    if ( calendarListEntry.getSummary().toString().equals(calendarTitle)) {
+                    if ( calendarListEntry.getSummary().equals(calendarTitle)) {
 
-                        id = calendarListEntry.getId().toString();
+                        id = calendarListEntry.getId();
                     }
                 }
                 pageToken = calendarList.getNextPageToken();

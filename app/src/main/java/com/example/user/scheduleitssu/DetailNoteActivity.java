@@ -67,7 +67,7 @@ public class DetailNoteActivity extends AppCompatActivity {
         noteeditdate=findViewById(R.id.note_edit_date);
         notemakedate.setText(notemakedate.getText()+note.getWhenmake_note());
         noteeditdate.setText(noteeditdate.getText()+note.getEditdate_note());
-        toolbar = (Toolbar) findViewById(R.id.detailnote_toolbar);
+        toolbar = findViewById(R.id.detailnote_toolbar);
         if(note.getTitle()==null){toolbar.setTitle(""+(position+1)+"번째 노트");}
         else{toolbar.setTitle(note.getTitle());}
         setnote();
@@ -89,7 +89,7 @@ public class DetailNoteActivity extends AppCompatActivity {
         }
     }
 void setnote(){
-    renderer= (Editor)findViewById(R.id.renderer);
+    renderer= findViewById(R.id.renderer);
     String content= serialized;
     EditorContent Deserialized= renderer.getContentDeserialized(content);
     renderer.render(Deserialized);
@@ -244,8 +244,8 @@ void setnote(){
                 List<CalendarListEntry> items = calendarList.getItems();
 
                 for (CalendarListEntry calendarListEntry : items) {
-                    if ( calendarListEntry.getSummary().toString().equals(calendarTitle)) {
-                        id = calendarListEntry.getId().toString();
+                    if ( calendarListEntry.getSummary().equals(calendarTitle)) {
+                        id = calendarListEntry.getId();
                     }
                 }
                 pageToken = calendarList.getNextPageToken();

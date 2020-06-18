@@ -22,7 +22,8 @@ public class Today2doAdapter extends RecyclerView.Adapter<Today2doAdapter.Today2
     private OnTodayItemClickListener listener=null;
     public void setOnTodayItemClickListener(OnTodayItemClickListener listener){
         this.listener=listener;
-    };
+    }
+
     public Today2doAdapter(Context context, ArrayList<What2Do> today2doArrayList) {
         inflater = LayoutInflater.from(context);
         this.today2doArrayList = today2doArrayList;

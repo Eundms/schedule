@@ -50,14 +50,14 @@ public class MainActivity extends AppCompatActivity {
             startNotificationListener();
 
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("UNIVERSITY NOTE");
         toolbar.setTitleMarginStart(170);
         setSupportActionBar(toolbar);
 
         //TabLayout과 ViewPager 초기화
-        tabLayout=(TabLayout)findViewById(R.id.tabs);
-        viewPager=(ViewPager)findViewById(R.id.viewpager);
+        tabLayout= findViewById(R.id.tabs);
+        viewPager= findViewById(R.id.viewpager);
 
         //PageAdpater 추가
         TabPagerAdapter pagerAdapter = new TabPagerAdapter(getSupportFragmentManager(), tabLayout.getTabCount());

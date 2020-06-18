@@ -66,8 +66,8 @@ public class TabFragment1 extends Fragment implements Today2doAdapter.OnTodayIte
         now =new Date();
 
 
-        selectedday=(TextView)root.findViewById(R.id.addwhichdaytodo);
-        todocalendar=(CalendarView)root.findViewById(R.id.todocalendar);
+        selectedday= root.findViewById(R.id.addwhichdaytodo);
+        todocalendar= root.findViewById(R.id.todocalendar);
 
         todocalendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
@@ -166,7 +166,7 @@ public class TabFragment1 extends Fragment implements Today2doAdapter.OnTodayIte
                     GoogleAccountCredential.usingOAuth2(context, Collections.singleton(CalendarScopes.CALENDAR));
             credential.setSelectedAccountName(user.getEmail());
 
-            Log.d("calendar1", credential.getSelectedAccountName().toString());
+            Log.d("calendar1", credential.getSelectedAccountName());
 
             // Tasks client
             service =
@@ -216,8 +216,8 @@ public class TabFragment1 extends Fragment implements Today2doAdapter.OnTodayIte
                 List<CalendarListEntry> items = calendarList.getItems();
 
                 for (CalendarListEntry calendarListEntry : items) {
-                    if ( calendarListEntry.getSummary().toString().equals(calendarTitle)) {
-                        id = calendarListEntry.getId().toString();
+                    if ( calendarListEntry.getSummary().equals(calendarTitle)) {
+                        id = calendarListEntry.getId();
                     }
                 }
                 pageToken = calendarList.getNextPageToken();
