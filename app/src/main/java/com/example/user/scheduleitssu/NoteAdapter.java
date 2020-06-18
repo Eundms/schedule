@@ -44,7 +44,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
             super(itemView);
             this.shownote=itemView.findViewById(R.id.shownote);
             this.notetitle=itemView.findViewById(R.id.note_title_subject);
-            this.notereserve=itemView.findViewById(R.id.note_reserve_date);
+           // this.notereserve=itemView.findViewById(R.id.note_reserve_date);
             itemView.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View v) {

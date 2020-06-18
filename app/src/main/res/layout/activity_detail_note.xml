@@ -23,13 +23,14 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/detailnote_toolbar"
         android:text="만듦:" />
+
     <TextView
         android:id="@+id/note_edit_date"
-        android:layout_alignParentRight="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/detailnote_toolbar"
-        android:text="수정:" />
+        android:layout_alignParentRight="true"
+        android:text="" />
 
     <ScrollView
         android:layout_width="match_parent"

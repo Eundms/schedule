@@ -191,7 +191,7 @@ public class EditNoteActivity extends AppCompatActivity implements View.OnClickL
                         String datetime = simpledateformat.format(date);
                         calendartime=datetime;
                         showselectedtime.setText(calendartime);
-                        Toast.makeText(getApplicationContext(), datetime, Toast.LENGTH_LONG).show();
+                      //  Toast.makeText(getApplicationContext(), datetime, Toast.LENGTH_LONG).show();
                     }
                 }, 12, 30, false);
                 timePickerDialog.show();
@@ -276,7 +276,7 @@ public class EditNoteActivity extends AppCompatActivity implements View.OnClickL
                 // Log.d(TAG, String.valueOf(bitmap));
                 editor.insertImage(bitmap);
             } catch (IOException e) {
-                Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
                 e.printStackTrace();
             }
         } else if (requestCode == GALLERY_IMAGE_REQUEST && resultCode == RESULT_OK && data != null) {
@@ -286,7 +286,7 @@ public class EditNoteActivity extends AppCompatActivity implements View.OnClickL
             uploadImage(photoUri);
         } else if (resultCode == Activity.RESULT_CANCELED) {
             //Write your code if there's no result
-            Toast.makeText(getApplicationContext(), "Cancelled", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getApplicationContext(), "Cancelled", Toast.LENGTH_SHORT).show();
             // editor.RestoreState();
         }
     }
@@ -295,7 +295,7 @@ public class EditNoteActivity extends AppCompatActivity implements View.OnClickL
         findViewById(R.id.action_camera).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(EditNoteActivity.this, "camera", Toast.LENGTH_LONG).show();
+              //  Toast.makeText(EditNoteActivity.this, "camera", Toast.LENGTH_LONG).show();
                 AlertDialog.Builder builder = new AlertDialog.Builder(EditNoteActivity.this);
                 builder
                         .setMessage(R.string.dialog_select_prompt)

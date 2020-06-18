@@ -72,7 +72,7 @@ public class TabFragment1 extends Fragment implements Today2doAdapter.OnTodayIte
         todocalendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
-                Toast.makeText(getContext(), ""+year+"/"+(month+1)+"/"+dayOfMonth, Toast.LENGTH_SHORT).show();
+               // Toast.makeText(getContext(), ""+year+"/"+(month+1)+"/"+dayOfMonth, Toast.LENGTH_SHORT).show();
                 selectedday.setText(""+year+"-"+String.format("%02d",month+1)+"-"+String.format("%02d",dayOfMonth));
 
 

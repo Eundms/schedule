@@ -20,11 +20,11 @@
     <!-- Google API -->
     <string name="image_details_header">Details:</string>
     <string name="image_preview_header">Preview:</string>
-    <string name="loading_message">Uploading image. Please wait.</string>
-    <string name="dialog_select_prompt">Choose a picture</string>
-    <string name="dialog_select_camera">Camera</string>
-    <string name="dialog_select_gallery">Gallery</string>
-    <string name="image_picker_error">Something is wrong with that image. Pick a different one please.</string>
+    <string name="loading_message">이미지 업로드 중 입니다. 잠시만 기다려주세요</string>
+    <string name="dialog_select_prompt">사진을 고르세요</string>
+    <string name="dialog_select_camera">카메라</string>
+    <string name="dialog_select_gallery">갤러리</string>
+    <string name="image_picker_error">잘못된 사진 형식입니다. 다시 선택해주세요</string>
 
 
 </resources>
