@@ -11,7 +11,6 @@ public class TabPagerAdapter extends FragmentPagerAdapter {
     int tabcount;
     public TabPagerAdapter(@NonNull FragmentManager fm, int tabcount) {
         super(fm, tabcount);
-        //  Log.d("TAB_COUNT",""+tabcount);
         this.tabcount=tabcount;
 
     }
@@ -27,9 +26,7 @@ public class TabPagerAdapter extends FragmentPagerAdapter {
             case 1:
                 TabFragment2 tabFragment2=new TabFragment2();
                 return tabFragment2;
-            /*case 2:
-                TabFragment3 tabFragment3=new TabFragment3();
-                return tabFragment3;*/
+
             default: return null;
         }
 

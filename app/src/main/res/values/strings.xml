@@ -3,24 +3,12 @@
     <string name="title_activity_settings">Settings</string>
 
     <!-- Preference Titles -->
-    <string name="messages_header">Messages</string>
-    <string name="sync_header">Sync</string>
 
     <!-- Messages Preferences -->
-    <string name="signature_title">Your signature</string>
-    <string name="reply_title">Default reply action</string>
 
     <!-- Sync Preferences -->
-    <string name="sync_title">Sync email periodically</string>
-    <string name="attachment_title">Download incoming attachments</string>
-    <string name="attachment_summary_on">Automatically download attachments for incoming emails
-    </string>
-    <string name="attachment_summary_off">Only download attachments when manually requested</string>
 
     <!-- Google API -->
-    <string name="image_details_header">Details:</string>
-    <string name="image_preview_header">Preview:</string>
-    <string name="loading_message">이미지 업로드 중 입니다. 잠시만 기다려주세요</string>
     <string name="dialog_select_prompt">사진을 고르세요</string>
     <string name="dialog_select_camera">카메라</string>
     <string name="dialog_select_gallery">갤러리</string>

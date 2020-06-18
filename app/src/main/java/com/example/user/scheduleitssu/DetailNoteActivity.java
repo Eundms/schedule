@@ -6,7 +6,6 @@ import androidx.appcompat.widget.Toolbar;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -41,15 +40,13 @@ import com.google.api.services.calendar.Calendar;
 
 public class DetailNoteActivity extends AppCompatActivity {
     private static final int DETAILNOTEACTIVITY_REQUEST = 11;
-    //////////////////////////////////////////////////////////////////
-    /*firebase 을 위해서*/
+
 
     FirebaseDatabase database= FirebaseDatabase.getInstance();
     FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();
     String userid=user.getDisplayName()+"_"+user.getUid();
     DatabaseReference myRef=database.getReference().child("Student").child(userid).child("SubjectList");
 
-    //////////////////////////////////////////////////////////////////
     Subject subject;
     Note note;
     String serialized;
@@ -99,7 +96,6 @@ void setnote(){
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == DETAILNOTEACTIVITY_REQUEST && resultCode == RESULT_OK){
             String serialized= data.getStringExtra("NOTECONTENT");
-            //Log.d("DETAILNOTEACTIVITY","Success: "+serialized);
             String notetitle=data.getStringExtra("NOTETITLE");
             toolbar.setTitle(notetitle);
             note.setTitle(notetitle);
@@ -110,14 +106,12 @@ void setnote(){
             EditorContent Deserialized2= renderer.getContentDeserialized(content);
             renderer.render(Deserialized2);
 
-//////////////////////////////////////////////////////////////////
             /*firebase 함수수*/
             SimpleDateFormat format1 = new SimpleDateFormat ( "yyyy-MM-dd");
             note.setEditdate_note(format1.format(new Date()));
             Map<String,Object>editnote=new HashMap<>();
             editnote.put(Integer.toString(position),note);
             myRef.child("Subject_"+subject.getClassname()).child("notelist").updateChildren(editnote);
-//////////////////////////////////////////////////////////////////
 
         }else if(requestCode == DETAILNOTEACTIVITY_REQUEST && resultCode == RESULT_CANCELED){
         }else{

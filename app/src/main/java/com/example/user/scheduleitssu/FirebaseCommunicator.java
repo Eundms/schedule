@@ -46,7 +46,6 @@ public class FirebaseCommunicator {
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-               // me = new User(dataSnapshot);
             }
 
             @Override
@@ -85,11 +84,7 @@ public class FirebaseCommunicator {
     //수정 필요...
    public void uploadNote(Note note){
         String key=myRef.push().getKey();
-       /* Map<Integer, String> editmap=new HashMap<>();
-        edit.setContentTypeface(editmap);
-        HashMap<String,Object> result=new HashMap<>();
-        result.put("note",editmap);
-        myRef.child("note");*/
+
        Map<String,Note> note1=new HashMap<>();
        note1.put("note1",note);
        myRef.setValue(note);

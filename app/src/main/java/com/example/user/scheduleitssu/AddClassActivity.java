@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -14,16 +13,12 @@ import android.widget.Toast;
 
 import com.example.user.scheduleitssu.DataClass.Note;
 import com.example.user.scheduleitssu.DataClass.Subject;
-import com.example.user.scheduleitssu.DataClass.User;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.json.jackson2.JacksonFactory;
-import com.google.api.client.util.DateTime;
 import com.google.api.services.calendar.CalendarScopes;
 import com.google.api.services.calendar.model.Calendar;
-import com.google.api.services.calendar.model.Event;
-import com.google.api.services.calendar.model.EventDateTime;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -78,17 +73,6 @@ String subject;
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         TextView subjectname= findViewById(R.id.makesubjectname);
                         TextView subjectinfo= findViewById(R.id.makesubjectinfo);
-                      /////////////////if you want to add code directly, do it!!!!!!////////////////
-                      /*  ArrayList<Note> notes=new ArrayList<Note>();
-                        notes.add(new Note("{\"nodes\":[{\"content\":[\"\\u003cp dir\\u003d\\\"ltr\\\"\\" +
-                                "u003e\\u003cu\\u003etest_note1\\u003c/u\\u003e\\u003c/p\\u003e\\n\"]," +
-                                "\"contentStyles\":[],\"textSettings\":{\"textColor\":\"#000000\"},\"type\":\"INPUT\"}]}"));
-                        notes.add(new Note("{\"nodes\":[{\"content\":[\"\\u003cp dir\\u003d\\\"ltr\\\"\\" +
-                                "u003e\\u003cu\\u003eserialized2\\u003c/u\\u003e\\u003c/p\\u003e\\n\"]," +
-                                "\"contentStyles\":[],\"textSettings\":{\"textColor\":\"#000000\"},\"type\":\"INPUT\"}]}"));
-                        Subject sub=new Subject(subjectname.getText().toString(),notes);*/
-                        /////////////////////////////////////////////////////////////////////////////
-                        /*1번째 버전*/
 
                         if(subjectname.getText().length()<=0){
                             Toast.makeText(AddClassActivity.this, "subject 이름을 입력하세요.",Toast.LENGTH_SHORT).show();
@@ -104,16 +88,6 @@ String subject;
                             finish();
                         }
 
-                        /*2번째 버전
-                        Subject sub=new Subject(subjectname.getText().toString(),new ArrayList<Note>());
-                        String uid=user.getDisplayName()+"_"+user.getUid();
-                        HashMap<String, Object> add_subject = new HashMap<>();
-                        add_subject.put("Subject_"+sub.getClassname(),sub);
-                        databaseReference.child("Subject").updateChildren(add_subject);
-
-                        HashMap<String,Object>add_subject_id=new HashMap<>();
-                        add_subject_id.put("Subject_"+sub.getClassname(),"Subject_"+sub.getClassname());
-                        databaseReference.child("Student").child(uid).child("SubjectID").updateChildren(add_subject_id);*/
                     }
 
                     @Override
@@ -121,8 +95,7 @@ String subject;
 
                     }
                 });
-                //subject class 업로드
-               // FirebaseDatabase.getInstance().getReference().child("Student").child(path).updateChildren(initial);
+
 
               break;
 
@@ -177,10 +150,6 @@ String subject;
 
             // 추가한 캘린더의 ID를 가져옴.
             String calendarId = createdCalendar.getId();
-
-
-
-            Log.d("calendar",createdCalendar.getId());
             return null;
         }
     }

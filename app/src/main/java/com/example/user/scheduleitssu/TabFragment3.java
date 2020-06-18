@@ -39,7 +39,6 @@ public class TabFragment3 extends Fragment implements ProjectAdapter.OnItemClick
     }
     @Override
     public void onItemClick(View v, int pos) {
-        //Toast.makeText(context, "projectrecyclerview"+pos, Toast.LENGTH_LONG).show();
 
     }
 }

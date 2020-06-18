@@ -80,7 +80,6 @@ public class InformationActivity extends AppCompatActivity implements View.OnCli
                 HashMap<String,Object> add_userinfo=new HashMap<>();
                 add_userinfo.put("UserInfo",new User(uid,nickname.getText().toString(),contactinfo.getText().toString()));
                 myRef.child("Student").child(uid).updateChildren(add_userinfo);
-                //Log.d("KEY",myRef.child("Student").child(uid).child("UserInfo").getKey());
                 finish();
                 break;
             case R.id.edit_userimag:
@@ -123,7 +122,6 @@ public class InformationActivity extends AppCompatActivity implements View.OnCli
         }
 
     }
-    /////////////////////////////////////////////////////////////////////////////
 
 }
 

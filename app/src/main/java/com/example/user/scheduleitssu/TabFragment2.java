@@ -47,21 +47,6 @@ public class TabFragment2 extends Fragment implements SubjectAdapter.OnItemClick
 
         subjectArrayList=new ArrayList<>();
 
-/*        ArrayList<Note>notelist=new ArrayList<>();
-        notelist.add(new Note("{\"nodes\":[{\"content\":[\"\\u003cp dir\\u003d\\\"ltr\\\"\\" +
-                "u003e\\u003cu\\u003eddd\\u003c/u\\u003e\\u003c/p\\u003e\\n\"]," +
-                "\"contentStyles\":[],\"textSettings\":{\"textColor\":\"#000000\"},\"type\":\"INPUT\"}]}"));
-        notelist.add(new Note("{\"nodes\":[{\"content\":[\"\\u003cp dir\\u003d\\\"ltr\\\"\\" +
-                "u003e\\u003cu\\u003eaaa\\u003c/u\\u003e\\u003c/p\\u003e\\n\"]," +
-                "\"contentStyles\":[],\"textSettings\":{\"textColor\":\"#000000\"},\"type\":\"INPUT\"}]}"));
-*/
-
-
-        /*subjectArrayList.add(new Subject(groups,"소프트웨어공학(arraylist)","온라인수업",notelist));//SUBJECTINFO_DEFAULT
-        subjectArrayList.add(new Subject("데이터베이스(arraylist)","월,수 1:30~",notelist));//SUBJECTINFO_NOGROUP
-        subjectArrayList.add(new Subject(groups,"소프트웨어프로젝트(arraylist)","월,수 2:30~"));//SUBJECTINFO_NONOTE
-*/
-
 
 
         subjectAdapter=new SubjectAdapter(this.getContext(),subjectArrayList);
@@ -91,7 +76,6 @@ public class TabFragment2 extends Fragment implements SubjectAdapter.OnItemClick
                for (DataSnapshot dataSnapshot2 : dataSnapshot.getChildren()) { //하위노드가 없을 떄까지 반복
                     Subject subject = dataSnapshot2.getValue(Subject.class);
                     subjectArrayList.add(subject);
-                    //subjectAdapter.notifyItemInserted(subjectArrayList.size()-1);
                 }
                 subjectAdapter.notifyDataSetChanged();
             }

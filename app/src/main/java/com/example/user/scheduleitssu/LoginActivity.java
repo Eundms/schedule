@@ -85,7 +85,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
-            //   Toast.makeText(LoginActivity.this,"로그인 실ttl",Toast.LENGTH_SHORT).show();
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
                 // Google Sign In was successful, authenticate with Firebase
@@ -114,7 +113,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                             // Sign in success, update UI with the signed-in user's information
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                             startActivity(intent);
-                            /////////////
                             /* */
                             FirebaseDatabase firebaseDatabase= FirebaseDatabase.getInstance();
                             DatabaseReference databaseReference=firebaseDatabase.getReference();
@@ -124,12 +122,9 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                             add_userinfo.put("UserInfo",new User(uid,"",""));
                             add_userinfo.put("Uid",uid);
                             databaseReference.child("Student").child(uid).updateChildren(add_userinfo);
-                            //add_userinfo.put(uid,new User(uid,"",""));
-                            // databaseReference.child("Student").updateChildren(add_userinfo);
 
                             finish();
 
-                            ///////////////
                             Toast.makeText(LoginActivity.this,"파이어베이스 아이디 생성 완료",Toast.LENGTH_SHORT).show();
 
                         }

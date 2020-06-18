@@ -72,11 +72,9 @@ public class TabFragment1 extends Fragment implements Today2doAdapter.OnTodayIte
         todocalendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
-               // Toast.makeText(getContext(), ""+year+"/"+(month+1)+"/"+dayOfMonth, Toast.LENGTH_SHORT).show();
                 selectedday.setText(""+year+"-"+String.format("%02d",month+1)+"-"+String.format("%02d",dayOfMonth));
 
 
-                //simpledateformat = new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ssZ", Locale.KOREA);
                 // Z에 대응하여 +0900이 입력되어 문제 생겨 수작업으로 입력
                 String datetime = String.valueOf(selectedday.getText());
 
@@ -97,16 +95,13 @@ public class TabFragment1 extends Fragment implements Today2doAdapter.OnTodayIte
                     Subject subject = dataSnapshot2.getValue(Subject.class);
                     Log.d("TABFRAGMENT2",subject.getClassname());
                     subjectArrayList.add(subject);
-                    //subjectAdapter.notifyItemInserted(subjectArrayList.size()-1);
                 }
-               //Log.d("TABFRAGMENT2",""+subjectArrayList.size());
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
         });
-      //  Log.d("TABFRAGMETNT2",""+subjectArrayList.size());
 
 
         return root;
@@ -258,7 +253,6 @@ public class TabFragment1 extends Fragment implements Today2doAdapter.OnTodayIte
 
 
                 eventStrings.add(new What2Do(event.getSummary(),0));
-                //Log.d("calendar3",eventStrings.toString());
 
             }
 

@@ -40,12 +40,10 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
     public class NoteViewHolder extends RecyclerView.ViewHolder{
          Editor shownote;
        TextView notetitle;
-       TextView notereserve;
         public NoteViewHolder(View itemView){
             super(itemView);
             this.shownote=itemView.findViewById(R.id.shownote);
             this.notetitle=itemView.findViewById(R.id.note_title_subject);
-           // this.notereserve=itemView.findViewById(R.id.note_reserve_date);
             itemView.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View v) {
